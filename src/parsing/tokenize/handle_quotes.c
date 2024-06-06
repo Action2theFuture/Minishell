@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/13 19:44:46 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/04 15:25:05 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/09 16:14:19 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static int	check_last_quote(const char *str)
 	in_double_quote = false;
 	last_quote_index = -1;
 	i = 0;
-	while (str[++i])
+	while (str[i])
 	{
 		if (str[i] == '\'' && !in_double_quote)
 		{

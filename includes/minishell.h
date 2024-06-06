@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rabouzia <rabouzia@student.42.fr>          +#+  +:+       +#+        */
+/*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/11 19:22:19 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/05 10:19:45 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/09 16:23:06 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -241,6 +241,9 @@ bool					parse_pipe(t_token **token, t_ast **node);
 
 // parse_phrase.c
 bool					parse_phrase(t_token **token, t_ast **node);
+bool					parse_phrase_part(\
+		t_token **token, t_ast **node, \
+		bool (*parse_func)(t_token **, t_ast **, t_ast **));
 
 // parse_phrase_part.c
 bool					parse_cmd(t_token **token, t_ast **node);
@@ -248,9 +251,6 @@ bool					parse_redirection_part(\
 		t_token **token, t_ast **phrase_node, t_ast **node);
 bool					parse_cmd_part(\
 		t_token **token, t_ast **phrase_node, t_ast **node);
-bool					parse_phrase_part(\
-		t_token **token, t_ast **node, \
-		bool (*parse_func)(t_token **, t_ast **, t_ast **));
 
 // parse_redirection.c
 bool					parse_redirection(t_token **token, t_ast **node);
