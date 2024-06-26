@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 18:50:55 by junsan            #+#    #+#             */
-/*   Updated: 2024/06/25 17:16:04 by junsan           ###   ########.fr       */
+/*   Updated: 2024/06/26 23:07:06 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,7 @@ static void	file_data(char *data, t_token **token)
 	ptr = data;
 	while (*token && (*token)->type == CMD)
 	{
+		// remove_double_quotes((*token)->data);
 		if ((*token)->data[0] == '-' && ft_strlen((*token)->data) > 2)
 		{
 			split_flag(ptr, (*token)->data);

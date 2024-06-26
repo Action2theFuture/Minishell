@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/11 19:22:19 by junsan            #+#    #+#             */
-/*   Updated: 2024/06/24 15:26:00 by junsan           ###   ########.fr       */
+/*   Updated: 2024/06/26 23:10:04 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@
 # define MEMORY_CAPACITY 256
 # define HISTSIZE 500
 # define DELIMS "|&<>"
-# define ARR_SEP '|'
+# define ARR_SEP ';'
 # define ASCII_ART_PATH "assets/ascii_art_doh"
 # define HEREDOC_TMP "heredoc_tmp"
 
@@ -184,6 +184,17 @@ typedef struct s_file_list
 	size_t				count;
 }						t_file_list;
 
+typedef struct s_env_var
+{
+	const char	*str;
+	char		*res;
+	t_info		*info;
+	size_t		i;
+	size_t		j;
+	int			in_single_quotes;
+	int			in_double_quotes;
+}	t_env_var;
+
 // process_input.c
 void					process_input(\
 		char *input, t_env *env, int *exit_status);
@@ -263,7 +274,7 @@ void					add_token(\
 		t_token **head, const char *start, size_t len);
 
 // handle_quotes.c
-void					handle_quotes(const char **input, char *in_quote,
+void					handle_quotes(const char **input,
 							const char **start, t_token **list);
 
 // handle_subshell.c
@@ -303,11 +314,25 @@ void					clear_info(t_info *info);
 // args_utils.c
 void					free_args(char **args);
 void					replace_env_vars_in_args(char **args, t_info *info);
-void					remove_quotes_from_args(char **args);
+void					remove_consecutive_double_quotes_from_args(char **args);
+void					remove_double_quotes_from_args(char **args);
 char					**allocate_null_and_cmd_chunk(const char *cmd);
 
 // var_expansion_with_args.c
 void					replace_env_vars_in_args(char **args, t_info *info);
+char					*process_replace_env_vars(char *arg, t_info *info);
+char					*process_replace_expansion_var(t_info *info);
+
+// replace_env_vars.c
+void					replace_env_vars(\
+		const char *str, char *res, t_info *info);
+void					extract_var_name(\
+		const char *str, size_t *i, char *var_name, int brace);
+char					*process_replace_env_vars(char *arg, t_info *info);
+char					*process_replace_expansion_var(t_info *info);
+
+// hanlde_replace_env_vars.c
+void					handle_dollar_sign(t_env_var *env_var);
 
 // get_path_type.c
 t_path_type				get_path_type(const char *path, t_info *info);
@@ -362,6 +387,7 @@ char					*trim_first_last(char *str);
 char					*trim_whitespace(const char *str);
 char					*ft_strndup(const char *str, size_t n);
 void					remove_quotes(char *str);
+void					remove_double_quotes(char *str);
 
 // error_utils.c
 int						fd_log_error(char *cmd, char *arg, char *error);
@@ -422,6 +448,7 @@ char					*remove_nested_subshell(t_token **token);
 //  prints.c
 void					print_token(t_token *head);
 void					print_file_list(t_file_list *file_list);
+void					print_s(const char *content, const char *str);
 
 //	prints_2.c
 void					print_tree(t_ast *root, int depth);

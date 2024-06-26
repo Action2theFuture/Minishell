@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/26 11:49:26 by junsan            #+#    #+#             */
-/*   Updated: 2024/06/25 18:34:20 by junsan           ###   ########.fr       */
+/*   Updated: 2024/06/26 12:31:50 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,4 +73,19 @@ void	print_file_list(t_file_list *file_list)
 	i = -1;
 	while (++i < (int)file_list->count)
 		printf("file_list %d.name :  %s\n", i, file_list->names[i]);
+}
+
+void	print_s(const char *content, const char *str)
+{
+	if (content)
+		printf("%s", content);
+	while (*str)
+	{
+		if (*str == ' ')
+			printf("\\s");
+		else
+			ft_putchar_fd(*str, STDOUT_FILENO);
+		str++;
+	}
+	ft_putchar_fd('\n', STDOUT_FILENO);
 }
