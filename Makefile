@@ -6,7 +6,7 @@
 #    By: junsan <junsan@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/11 19:03:01 by junsan            #+#    #+#              #
-#    Updated: 2024/06/25 14:38:32 by junsan           ###   ########.fr        #
+#    Updated: 2024/06/26 09:32:11 by junsan           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,7 @@ CC		= cc
 LIBFT 	= libft/libft.a
 IFLAGS 	:= -I ./includes/ -I ./libft/includes/
 
-CFLAGS 	= -Wall -Wextra -Werror -g3
+CFLAGS 	:= -Wall -Wextra -Werror
 
 SRC_DIR = src
 PARSING_DIR = $(SRC_DIR)/parsing
@@ -70,7 +70,7 @@ endif
 vpath %.c ./src/
 
 $(NAME) : $(LIBFT) $(OBJS)
-	$(CC) $(CFALGS) -o $@ $(OBJS) $(LIBFT) $(LD_FLAGS)
+	$(CC) $(CFLAGS) -o $@ $(OBJS) $(LIBFT) $(LD_FLAGS)
 
 $(OBJ_DIR)/%.o: %.c
 	@mkdir -p $(@D)
@@ -81,6 +81,9 @@ $(LIBFT):
 
 all: $(NAME)
 
+debug: CFLAGS += -g3 -fsanitize=address
+debug: $(NAME)
+
 clean:
 	rm -rf $(OBJ_DIR)
 
@@ -90,4 +93,4 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: all clean fclean re
+.PHONY: all clean fclean re debug
