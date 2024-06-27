@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/25 15:39:22 by junsan            #+#    #+#             */
-/*   Updated: 2024/06/26 21:53:11 by junsan           ###   ########.fr       */
+/*   Updated: 2024/06/27 13:21:59 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,5 +32,4 @@ void	tokenize(const char *input, t_token **tokens)
 	}
 	if (input > start)
 		add_token(tokens, start, input - start);
-	print_token(*tokens);
 }

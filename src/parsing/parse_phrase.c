@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/13 19:24:59 by junsan            #+#    #+#             */
-/*   Updated: 2024/06/26 23:11:14 by junsan           ###   ########.fr       */
+/*   Updated: 2024/06/27 16:30:19 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ static bool	parse_cmd(t_token **token, t_ast **node)
 		if (!cmd_node)
 			return (NULL);
 		// remove_double_quotes((*token)->data);
-		// print_token(*token);
 		cmd_node->left = new_node((*token)->data, (*token)->type);
 		*token = (*token)->next;
 		if (*token && (*token)->type == CMD)

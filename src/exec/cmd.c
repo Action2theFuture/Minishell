@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 17:58:55 by junsan            #+#    #+#             */
-/*   Updated: 2024/06/26 23:08:48 by junsan           ###   ########.fr       */
+/*   Updated: 2024/06/27 15:23:06 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,13 +49,7 @@ static char	**prepare_cmd(\
 	if (args_node)
 	{
 		args = ft_split(args_node->data, ARR_SEP);
-		int i = -1;
-		while (args[++i])
-			printf("before arg : %s, idx : %d\n", args[i], i);
 		remove_double_quotes_from_args(args);
-		i = -1;
-		while (args[++i])
-			printf("after arg : %s, idx : %d\n", args[i], i);
 		chunk = prepend_cmd_and_add_spaces(cmd_node->data, args);
 	}
 	else
@@ -71,7 +65,7 @@ static int	execute_cmd(char **chunk, t_info *info)
 
 	init_builtin(arr_built_in);
 	built_in = handler_builtin(chunk[0]);
-	if (built_in != NONE && info->pipe_used == false)
+	if (built_in != NONE)
 		status = arr_built_in[built_in](\
 				(const char *)chunk[0], (const char **)chunk, info->env);
 	else

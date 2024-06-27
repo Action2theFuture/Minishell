@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/11 19:22:19 by junsan            #+#    #+#             */
-/*   Updated: 2024/06/26 23:10:04 by junsan           ###   ########.fr       */
+/*   Updated: 2024/06/27 16:24:57 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,8 +65,8 @@ typedef enum type_descriptor
 
 typedef enum status
 {
-	SUCCESS,
-	FAILURE,
+	SUCCESS = 0,
+	FAILURE = 1,
 	MALLOC_ERR,
 }	t_status;
 
@@ -134,14 +134,15 @@ typedef struct s_env
 typedef struct s_info
 {
 	bool				pipe_exists; // pipe exist or not
-	bool				pipe_used;	// used pipe befor
 	bool				in_subshell;
 	char				*path;
+	int					pipe_cnt;
 	int					stdin_fd;
 	int					stdout_fd;
 	int					origin_stdin_fd;
 	int					origin_stdout_fd;
 	int					pipe[2];
+	int					prev_pipe[2];
 	int					tmp_fd;
 	int					exit_status;
 	int					status; // can proceed by logical
@@ -167,6 +168,7 @@ typedef struct s_ast
 	char				*data;
 	t_type				type;
 	t_token				*token;
+	struct s_ast		*parent;
 	struct s_ast		*left;
 	struct s_ast		*right;
 }						t_ast;
@@ -220,6 +222,10 @@ void					free_tree(t_ast *node);
 t_ast					*new_node(const char *data, t_type type);
 t_ast					*attach_to_tree(t_ast *root, t_ast *node, int side);
 void					remove_outer_parentheses(char **str, t_ast **root);
+
+// parsing_utils_c.
+void					add_parent(t_ast *node, t_ast *left, t_ast *right);
+
 // parsing.c
 bool					parsing_tree(t_token_list **tokens, t_ast **root);
 
@@ -314,9 +320,12 @@ void					clear_info(t_info *info);
 // args_utils.c
 void					free_args(char **args);
 void					replace_env_vars_in_args(char **args, t_info *info);
+char					**allocate_null_and_cmd_chunk(const char *cmd);
+
+// quotes_utils.c
 void					remove_consecutive_double_quotes_from_args(char **args);
 void					remove_double_quotes_from_args(char **args);
-char					**allocate_null_and_cmd_chunk(const char *cmd);
+void					remove_single_quotes_from_args(char **args);
 
 // var_expansion_with_args.c
 void					replace_env_vars_in_args(char **args, t_info *info);
@@ -386,7 +395,10 @@ int						count_repeated_chars(const char *str, int c);
 char					*trim_first_last(char *str);
 char					*trim_whitespace(const char *str);
 char					*ft_strndup(const char *str, size_t n);
+
+// quotes_str.c
 void					remove_quotes(char *str);
+void					remove_single_quotes(char *str);
 void					remove_double_quotes(char *str);
 
 // error_utils.c

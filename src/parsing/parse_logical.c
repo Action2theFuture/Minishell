@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/13 19:23:45 by junsan            #+#    #+#             */
-/*   Updated: 2024/06/24 09:00:19 by junsan           ###   ########.fr       */
+/*   Updated: 2024/06/27 16:33:57 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ bool	parse_logical(t_token **token, t_ast **node)
 			return (false);
 		logical_node->left = left;
 		logical_node->right = *node;
+		add_parent(logical_node, logical_node->left, logical_node->right);
 		*node = logical_node;
 	}
 	return (true);

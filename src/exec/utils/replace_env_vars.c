@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 16:53:48 by junsan            #+#    #+#             */
-/*   Updated: 2024/06/26 22:53:22 by junsan           ###   ########.fr       */
+/*   Updated: 2024/06/27 09:13:09 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,8 @@ void	replace_env_vars(const char *str, char *res, t_info *info)
 						env_var.str, &(env_var.i), env_var.in_double_quotes);
 		if (env_var.str[env_var.i] == '$' && env_var.str[env_var.i - 1] != '\'')
 			handle_dollar_sign(&env_var);
-		else if (env_var.str[env_var.i] == '\'')
+		else if (env_var.str[env_var.i] == '\'' && \
+				env_var.str[env_var.i + 1] == '$')
 			env_var.i++;
 		else
 			env_var.res[env_var.j++] = env_var.str[env_var.i++];
