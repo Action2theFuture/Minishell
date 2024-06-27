@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 18:34:10 by junsan            #+#    #+#             */
-/*   Updated: 2024/06/27 17:43:30 by junsan           ###   ########.fr       */
+/*   Updated: 2024/06/27 19:07:31 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,12 @@ static void	categorize_tree(t_ast *node, t_info *info)
 	}
 	else
 		info->pipe_exists = false;
+	if (node->type == PHRASE && info->status == SUCCESS && \
+		(node->left && node->left->type == PHRASE))
+		subshell_info.in_subshell = false;
 	if (node->type == PHRASE && info->status == SUCCESS)
 		process_phrase_node(node, info);
-	else if (node->type == SUBSHELL && ft_strncmp(node->data, "(", 1) == 0 \
+	if (node->type == SUBSHELL && ft_strncmp(node->data, "(", 1) == 0 \
 			&& info->status == SUCCESS)
 	{
 		init_info(&subshell_info);

@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/23 20:07:50 by junsan            #+#    #+#             */
-/*   Updated: 2024/06/27 15:33:57 by junsan           ###   ########.fr       */
+/*   Updated: 2024/06/27 18:42:14 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,9 @@ static bool	check_subshell_closed(t_token *head)
 	depth = 0;
 	while (head)
 	{
+		if ((head->data[0] == '(' && ft_strlen(head->data) == 1) && \
+			(head->next->data[0] == ')' && ft_strlen(head->next->data) == 1))
+			return (false);
 		if (head->data[0] == '(' && ft_strlen(head->data) == 1)
 			depth++;
 		if (head->data[0] == ')' && ft_strlen(head->data) == 1)
