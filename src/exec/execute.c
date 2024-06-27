@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 18:34:10 by junsan            #+#    #+#             */
-/*   Updated: 2024/06/27 17:17:07 by junsan           ###   ########.fr       */
+/*   Updated: 2024/06/27 17:43:30 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,14 +37,11 @@ static void	categorize_tree(t_ast *node, t_info *info)
 	}
 }
 
-static void	traverse_tree(t_ast *node, t_info *info)
+static void	cnt_pipe(t_ast *node, t_info *info)
 {
 	t_ast	*cnt_node_for_pipe;
 	int		cnt;
-	int		status;
 
-	if (node == NULL)
-		return ;
 	if (node->type == PIPE && info->pipe_cnt == -1)
 	{
 		cnt_node_for_pipe = node;
@@ -56,15 +53,27 @@ static void	traverse_tree(t_ast *node, t_info *info)
 		}
 		info->pipe_cnt = cnt;
 	}
+}
+
+static void	process_logical_node(t_ast *node, t_info *info)
+{
+	int	status;
+
+	traverse_tree(node->right, info);
+	status = info->exit_status;
+	// printf("status : %d, exit status : %d\n", info->status, info->exit_status);
+	if ((ft_strncmp(node->data, "&&", 2) == 0 && status == SUCCESS) || \
+		(ft_strncmp(node->data, "||", 2) == 0 && status > 0))
+		traverse_tree(node->left, info);
+}
+
+static void	traverse_tree(t_ast *node, t_info *info)
+{
+	if (node == NULL)
+		return ;
+	cnt_pipe(node, info);
 	if (node->type == LOGICAL)
-	{
-		traverse_tree(node->right, info);
-		status = info->exit_status;
-		// printf("status : %d, exit status : %d\n", info->status, info->exit_status);
-		if ((ft_strncmp(node->data, "&&", 2) == 0 && status == SUCCESS) || \
-			(ft_strncmp(node->data, "||", 2) == 0 && status > 0))
-			traverse_tree(node->left, info);
-	}
+		process_logical_node(node, info);
 	if (node->type == PIPE)
 	{
 		traverse_tree(node->right, info);
