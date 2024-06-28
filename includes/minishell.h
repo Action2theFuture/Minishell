@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/11 19:22:19 by junsan            #+#    #+#             */
-/*   Updated: 2024/06/28 15:07:50 by junsan           ###   ########.fr       */
+/*   Updated: 2024/06/28 17:23:09 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -297,8 +297,21 @@ t_token					*tokens_last(t_token *tokens);
 void					free_token(t_token *head);
 size_t					tokens_size(t_token *head);
 
+// ---------------------- validation for token ------------------//
 // valid_token.c
 int						valid_token(t_token *head);
+
+// valid_token_utlls.c
+bool					check_quotes_in_tokens(t_token *head);
+bool					check_subshell_closed(t_token *head);
+
+// valid_token_err.c
+bool					check_redir_err(t_token *head);
+bool					check_operator_before_after_err(t_token *head);
+
+// valid_token_err_2.c
+bool					check_logical_err(t_token *head);
+bool					is_cmd_valid(const char *cmd);
 
 // ------------------------ signal ---------------------------//
 // handler_signal.c
@@ -398,8 +411,9 @@ int						count_repeated_chars(const char *str, int c);
 char					*trim_first_last(char *str);
 char					*trim_whitespace(const char *str);
 char					*ft_strndup(const char *str, size_t n);
+bool					is_operator(const char *cmd);
 
-// quotes_str.c
+	// quotes_str.c
 void					remove_quotes(char *str);
 void					remove_single_quotes(char *str);
 void					remove_double_quotes(char *str);

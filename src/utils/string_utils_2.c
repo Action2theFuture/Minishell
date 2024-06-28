@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 15:29:43 by junsan            #+#    #+#             */
-/*   Updated: 2024/06/27 08:39:31 by junsan           ###   ########.fr       */
+/*   Updated: 2024/06/28 16:19:43 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,4 +51,11 @@ char	*trim_first_last(char *str)
 		return (NULL);
 	ft_strlcpy(new_str, str + 1, len - 1);
 	return (new_str);
+}
+
+bool	is_operator(const char *cmd)
+{
+	return ((ft_strncmp(cmd, "|", 1) == 0 && ft_strlen(cmd) == 1) || \
+		(ft_strncmp(cmd, "&&", 2) == 0 && ft_strlen(cmd) == 2) || \
+		(ft_strncmp(cmd, "||", 2) == 0 && ft_strlen(cmd) == 2));
 }

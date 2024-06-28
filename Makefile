@@ -6,7 +6,7 @@
 #    By: junsan <junsan@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/11 19:03:01 by junsan            #+#    #+#              #
-#    Updated: 2024/06/28 15:20:46 by junsan           ###   ########.fr        #
+#    Updated: 2024/06/28 17:26:19 by junsan           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,7 +37,9 @@ PARSING	= parsing.c arg_parse.c parse_subshell.c									\
 		/tokenize/handle_quotes.c /tokenize/handle_subshell.c						\
 		/utils/parsing_utils.c /utils/tokenize_utils.c /utils/tokenize_utils_2.c	\
 		/utils/type_redir_functions.c /utils/type_functions.c /utils/get_type.c 	\
-		/utils/subshell_utils.c /utils/valid_token.c /utils/parsing_utils_2.c
+		/utils/subshell_utils.c /utils/parsing_utils_2.c							\
+		/utils/validation/valid_token.c /utils/validation/valid_token_utils.c		\
+		/utils/validation/valid_token_err.c /utils/validation/valid_token_err_2.c
 UTILS	= string_utils.c string_utils_2.c quotes_str.c error_utils.c
 SIGNAL	= handler_signal.c
 EXECUTE = execute.c redir.c get_file_list.c execute_process.c cmd.c	launch_process.c\
