@@ -6,7 +6,7 @@
 #    By: junsan <junsan@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/11 19:03:01 by junsan            #+#    #+#              #
-#    Updated: 2024/06/27 15:43:32 by junsan           ###   ########.fr        #
+#    Updated: 2024/06/28 15:20:46 by junsan           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -45,7 +45,8 @@ EXECUTE = execute.c redir.c get_file_list.c execute_process.c cmd.c	launch_proce
 		/utils/stdio_redirector.c /utils/list_to_array.c /utils/args_utils.c 		\
 		/utils/get_absolute_path.c /utils/var_expansion_with_args.c					\
 		/utils/get_path_type.c /utils/find_cmd_in_path.c /utils/replace_env_vars.c	\
-		/utils/handler_replace_env_vars.c /utils/quotes_utils.c
+		/utils/replace_env_vars_utils.c /utils/handler_replace_env_vars.c 			\
+		/utils/quotes_utils.c
 BUILT_IN = built_in.c file_dir_operations.c	ft_cd.c  ft_env.c ft_export.c ft_unset.c\
 		ft_echo.c ft_exit.c ft_pwd.c
 PRINT	= prints.c prints_2.c

@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/23 19:03:26 by junsan            #+#    #+#             */
-/*   Updated: 2024/06/26 20:08:20 by junsan           ###   ########.fr       */
+/*   Updated: 2024/06/28 14:03:56 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	replace_env_vars_in_args(char **args, t_info *info)
 	char	*new_arg;
 	int		i;
 
-	i = -1;
+	i = 0;
 	while (args[++i])
 	{
 		new_arg = replace_env_vars_in_str(args[i], info);

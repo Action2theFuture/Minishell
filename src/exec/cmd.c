@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 17:58:55 by junsan            #+#    #+#             */
-/*   Updated: 2024/06/27 18:18:57 by junsan           ###   ########.fr       */
+/*   Updated: 2024/06/28 14:04:07 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,6 @@ static char	**prepare_cmd(\
 	if (args_node)
 	{
 		args = ft_split(args_node->data, ARR_SEP);
-		remove_double_quotes_from_args(args);
 		chunk = prepend_cmd_and_add_spaces(cmd_node->data, args);
 	}
 	else

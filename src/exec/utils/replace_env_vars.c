@@ -5,98 +5,73 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/26 16:53:48 by junsan            #+#    #+#             */
-/*   Updated: 2024/06/27 09:13:09 by junsan           ###   ########.fr       */
+/*   Created: 2024/06/28 15:08:22 by junsan            #+#    #+#             */
+/*   Updated: 2024/06/28 15:20:08 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*process_replace_env_vars(char *arg, t_info *info)
+static void	init_env_var(\
+	const char *str, char *res, t_env_var *env_var, t_info *info)
 {
-	t_env	*env;
-	char	*new_arg;
-
-	env = info->env;
-	new_arg = NULL;
-	while (env)
-	{
-		if ((ft_strncmp(env->name, arg, ft_strlen(arg)) == 0)
-			&& (ft_strlen(arg) == ft_strlen(env->name)))
-			new_arg = env->content;
-		env = env->next;
-	}
-	if (new_arg == NULL)
-		new_arg = "";
-	return (ft_strdup(new_arg));
+	env_var->is_value_expansion = false;
+	env_var->str = str;
+	env_var->res = res;
+	env_var->info = info;
+	env_var->i = 0;
+	env_var->j = 0;
+	env_var->in_double_quotes = 0;
 }
 
-char	*process_replace_expansion_var(t_info *info)
+static void	remove_outer_double_quotes(t_env_var *env_var)
 {
-	char	*new_arg;
-	int		status;
-
-	new_arg = NULL;
-	status = info->exit_status;
-	if (status == 0)
-		new_arg = ft_itoa(0);
-	else if (status > 0)
-		new_arg = ft_itoa(status);
-	return (new_arg);
+	while (env_var->str[0] == '\"' && \
+		env_var->str[ft_strlen(env_var->str) - 1] == '\"')
+	{
+		remove_double_quotes((char *)env_var->str);
+		env_var->is_value_expansion = true;
+	}
 }
 
-void	extract_var_name(\
-			const char *str, size_t *i, char *var_name, int brace)
+static void	remove_outer_single_quotes(t_env_var *env_var)
 {
-	size_t	var_start;
-
-	var_start = *i;
-	if (brace)
-	{
-		while (str[*i] != '}' && str[*i] != '\0')
-			(*i)++;
-	}
-	else
-	{
-		while (ft_isalnum(str[*i]) || str[*i] == '_')
-			(*i)++;
-	}
-	ft_strlcpy(var_name, str + var_start, *i - var_start + 1);
-	if (brace && str[*i] == '}')
-		(*i)++;
+	while (env_var->str[0] == '\'' && env_var->str[ft_strlen(env_var->str) - 1] == '\'' && \
+		!env_var->is_value_expansion)
+		remove_single_quotes((char *)env_var->str);
 }
 
-static int	pass_double_quotes(const char *str, size_t *i, int in_quotes)
+static void	process_str(t_env_var *env_var)
 {
-	if (str[*i] == '\"')
+	while (env_var->str[env_var->i])
 	{
-		in_quotes = !in_quotes;
-		(*i)++;
+		pass_double_quotes(env_var);
+		if ((env_var->str[env_var->i] == '\'' && \
+			(env_var->str[env_var->i - 1] == '\"' || \
+			env_var->str[env_var->i + 1] == '\"')) && \
+			env_var->is_value_expansion == true)
+			env_var->i++;
+		else if (env_var->str[env_var->i] == '$' && env_var->is_value_expansion)
+			handle_dollar_sign(env_var);
+		else
+			env_var->res[env_var->j++] = env_var->str[env_var->i++];
 	}
-	return (in_quotes);
+	env_var->res[env_var->j] = '\0';
 }
 
 void	replace_env_vars(const char *str, char *res, t_info *info)
 {
 	t_env_var	env_var;
 
-	env_var.str = str;
-	env_var.res = res;
-	env_var.info = info;
-	env_var.i = 0;
-	env_var.j = 0;
-	env_var.in_double_quotes = 0;
-	while (env_var.str[env_var.i])
+	init_env_var(str, res, &env_var, info);
+	if (env_var.str[0] == '$')
 	{
-		env_var.in_double_quotes = pass_double_quotes(\
-						env_var.str, &(env_var.i), env_var.in_double_quotes);
-		if (env_var.str[env_var.i] == '$' && env_var.str[env_var.i - 1] != '\'')
-			handle_dollar_sign(&env_var);
-		else if (env_var.str[env_var.i] == '\'' && \
-				env_var.str[env_var.i + 1] == '$')
-			env_var.i++;
-		else
-			env_var.res[env_var.j++] = env_var.str[env_var.i++];
+		handle_dollar_sign(&env_var);
+		if (env_var.res)
+			env_var.res[env_var.j] = '\0';
+		return ;
 	}
-	env_var.res[env_var.j] = '\0';
+	remove_outer_double_quotes(&env_var);
+	remove_outer_single_quotes(&env_var);
+	process_str(&env_var);
 }

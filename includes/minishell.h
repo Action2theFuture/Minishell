@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/11 19:22:19 by junsan            #+#    #+#             */
-/*   Updated: 2024/06/27 16:24:57 by junsan           ###   ########.fr       */
+/*   Updated: 2024/06/28 15:07:50 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -189,12 +189,12 @@ typedef struct s_file_list
 typedef struct s_env_var
 {
 	const char	*str;
+	bool		is_value_expansion;
+	bool		in_double_quotes;
 	char		*res;
 	t_info		*info;
 	size_t		i;
 	size_t		j;
-	int			in_single_quotes;
-	int			in_double_quotes;
 }	t_env_var;
 
 // process_input.c
@@ -335,6 +335,9 @@ char					*process_replace_expansion_var(t_info *info);
 // replace_env_vars.c
 void					replace_env_vars(\
 		const char *str, char *res, t_info *info);
+
+// replace_env_vars_utils.c
+void					pass_double_quotes(t_env_var *env_var);
 void					extract_var_name(\
 		const char *str, size_t *i, char *var_name, int brace);
 char					*process_replace_env_vars(char *arg, t_info *info);
