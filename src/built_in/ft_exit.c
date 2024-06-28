@@ -6,32 +6,49 @@
 /*   By: ramzerk <ramzerk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 12:05:58 by rabouzia          #+#    #+#             */
-/*   Updated: 2024/06/28 14:22:02 by ramzerk          ###   ########.fr       */
+/*   Updated: 2024/06/28 15:08:15 by ramzerk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+void  exit_msg(void)
+{
+	ft_putstr_fd("exit\n", 2);
+	exit(0);
+}
+
+
 int	ft_exit(const char *cmd, const char **args, t_env *list)
 {
+	int i = 0;
+	int num_args = 0;
+
 	(void)cmd;
 	(void)list;
-	if (*args && !ft_isdigit(ft_atoi(args[0])))
+	while (args[num_args])
+		num_args++;
+	if (num_args == 0)
+		exit_msg();
+	if (num_args > 2)
 	{
-		ft_putstr_fd("kashell: exit: ", 1);
-		ft_putstr_fd((char *)args[0], 1);
-		ft_putstr_fd(": numeric argument required\n", 1);
-		exit(1);
+		ft_putstr_fd("bash: exit: too many arguments\n", STDERR_FILENO);
+		return (1); // Return 1 to indicate error but not exit the shell
 	}
-	if (*args && sizeof(args) > 1)
+	if (args[1])
 	{
-		ft_putstr_fd("bash: exit: too many arguments\n", 1);
-		exit(1);
-		
-	}
-	else
-	{
-		ft_putstr_fd((char *)args[0], STDERR_FILENO);
+		while (args[0][i])
+		{
+			if (!ft_isdigit(args[0][i]) && args[0][i] != '-' && args[0][i] != '+')
+			{
+				ft_putstr_fd("kashell: exit: ", STDERR_FILENO);
+				ft_putstr_fd((char *)args[0], STDERR_FILENO);
+				ft_putstr_fd(": numeric argument required\n", STDERR_FILENO);
+				exit(255); // Exit with status 255
+			}
+			i++;
+		}
 		exit(ft_atoi(args[0]));
 	}
+	exit(0);
 }

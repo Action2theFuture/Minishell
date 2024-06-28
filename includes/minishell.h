@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ramzerk <ramzerk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/11 19:22:19 by junsan            #+#    #+#             */
-/*   Updated: 2024/06/24 15:26:00 by junsan           ###   ########.fr       */
+/*   Updated: 2024/06/28 14:43:48 by ramzerk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -397,6 +397,7 @@ int						ft_env(const char *cmd, const char **args, t_env *list);
 char					*ft_strndup(const char *src, size_t n);
 t_env					*builtin_new_node(char *name, char *content);
 t_env					*fill_env(int ac, char **av, char **env);
+void	env_split(const char *str, char **name, char **content);
 
 // ft_exit.c
 int						ft_exit(const char *cmd, const char **args,

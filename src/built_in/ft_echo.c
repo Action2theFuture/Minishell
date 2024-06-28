@@ -6,7 +6,7 @@
 /*   By: ramzerk <ramzerk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 21:38:26 by rabouzia          #+#    #+#             */
-/*   Updated: 2024/06/28 14:21:05 by ramzerk          ###   ########.fr       */
+/*   Updated: 2024/06/28 15:11:29 by ramzerk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int	ft_echo(const char *cmd, const char **args, t_env *list)
 	(void)list;
 	if (!args || !*args)
 		return (write(1, "\n", 1), 0);
-	i = 0;
+	i = 1;
 	new_line = 0;
 	while (args[i] && good_flag(args[i]))
 	{

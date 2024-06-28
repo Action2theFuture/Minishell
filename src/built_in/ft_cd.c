@@ -6,7 +6,7 @@
 /*   By: ramzerk <ramzerk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/02 02:39:36 by rabouzia          #+#    #+#             */
-/*   Updated: 2024/06/28 14:20:41 by ramzerk          ###   ########.fr       */
+/*   Updated: 2024/06/28 14:36:47 by ramzerk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,22 +26,19 @@ void	lst_swap(t_env *a)
 
 int	ft_cd(const char *cmd, const char **args, t_env *list)
 {
-	printf("cmd in cd: %s\n", cmd);
-	// if (!args[0])
-	// 	return (change_dir("home", list), 1);
-	if (args[1])
+	(void)cmd;
+	// printf("cmd in cd: %s\n", cmd);
+	if (!args[1])
+		return (change_dir("home", list), 1);
+	if (chdir(args[1]) == -1)
 	{
-		ft_putstr_fd("cd: too many arguments", 2);
-		return (1);
-	}
-	if (chdir(args[0]) == -1)
-	{
-		ft_putstr_fd("cd: no such file or directory: ", 2);
+		ft_putstr_fd("cd: ",2);
 		ft_putstr_fd((char *)args[1], 2);
+		ft_putstr_fd(": No such file or directory\n", 2);
 		return (1);
 	}
 	else
-		change_dir(args[0], list);
+		change_dir(args[1], list);
 	return (0);
 }
 
