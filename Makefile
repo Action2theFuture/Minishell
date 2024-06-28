@@ -5,13 +5,22 @@
 #                                                     +:+ +:+         +:+      #
 #    By: junsan <junsan@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2024/05/11 19:03:01 by junsan            #+#    #+#              #
-#    Updated: 2024/06/28 17:26:19 by junsan           ###   ########.fr        #
+#    CreateCd: 2024/05/11 19:03:01 by junsan            #+#    #+#              #
+#    Updated: 2024/06/28 18:58:49 by junsan           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
+COLOR_RESET = \033[0m
+COLOR_RED = \033[1;31m
+COLOR_GREEN = \033[1;32m
+COLOR_YELLOW = \033[1;33m
+COLOR_BLUE = \033[1;34m
+COLOR_CYAN = \033[1;36m
+
 NAME 	= minishell
 OS		= $(shell uname)
+
+SPINNER_SCRIPT = assets/spinner.sh
 
 CC		= cc
 LIBFT 	= libft/libft.a
@@ -73,28 +82,45 @@ endif
 
 vpath %.c ./src/
 
+all: $(NAME)
+
 $(NAME) : $(LIBFT) $(OBJS)
-	$(CC) $(CFLAGS) -o $@ $(OBJS) $(LIBFT) $(LD_FLAGS)
+	@$(CC) $(CFLAGS) -o $@ $(OBJS) $(LIBFT) $(LD_FLAGS) > /dev/null 2>&1 & COMPILER_PID=$$!; \
+	./$(SPINNER_SCRIPT) $$COMPILER_PID; \
+	wait $$COMPILER_PID
+	@echo "$(COLOR_GREEN)Compilation completed successfully! 🎉$(COLOR_RESET)"
+	@echo "$(COLOR_CYAN)Welcome to Kashell$(COLOR_RESET)"
+	@echo "$(COLOR_GREEN)Program Name : $(NAME)$(COLOR_RESET)"
+
+OBJ_FILES_SPINNER_PID=
 
 $(OBJ_DIR)/%.o: %.c
 	@mkdir -p $(@D)
-	$(CC) $(CFLAGS) $(IFLAGS) -c $< -o $@
+	@$(CC) $(CFLAGS) $(IFLAGS) -c $< -o $@ > /dev/null 2>&1
 
 $(LIBFT): 
-	@make -C libft/
-
-all: $(NAME)
+	@echo "$(COLOR_YELLOW)Compliling $(NAME)...$(COLOR_RESET)"
+	@chmod +x $(SPINNER_SCRIPT)
+	@$(MAKE) -s -C libft/ > /dev/null 2>&1 & COMPILER_PID=$$!; \
+	./$(SPINNER_SCRIPT) $$COMPILER_PID; \
+	wait $$COMPILER_PID
+	@echo "$(COLOR_BLUE)Compliling Obj files...$(COLOR_RESET)"
 
 debug: CFLAGS += -g3 -fsanitize=address
 debug: $(NAME)
+		@echo "$(COLOR_GREEN)Start Debugging! 🛠️$(COLOR_RESET)"
 
 clean:
-	rm -rf $(OBJ_DIR)
+	@rm -rf $(OBJ_DIR)
+	@echo "$(COLOR_RED)Cleaning completed successfully 🧹$(COLOR_RESET)"
 
-fclean: clean
-	@make -C libft/ fclean
-	rm -f $(NAME)
+fclean:
+	@make -s -C libft/ fclean
+	@rm -f $(NAME)
+	@rm -rf $(OBJ_DIR)
+	@echo "$(COLOR_RED)Full Cleaning completed successfully 🧹$(COLOR_RESET)"
 
 re: fclean all
+	@echo "$(COLOR_GREEN)Recompleted successfully 🎉$(COLOR_RESET)"
 
 .PHONY: all clean fclean re debug
