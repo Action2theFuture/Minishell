@@ -6,32 +6,41 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/13 19:44:46 by junsan            #+#    #+#             */
-/*   Updated: 2024/06/21 13:13:10 by junsan           ###   ########.fr       */
+/*   Updated: 2024/06/26 23:05:15 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	handle_quotes(\
-	const char **input, char *in_quote, const char **start, t_token **list)
+static int	check_last_quote(const char *str)
 {
-	if (*in_quote)
+	int	i;
+	int	cmd;
+
+	i = -1;
+	cmd = 0;
+	while (str[++i])
 	{
-		if (**input == *in_quote)
+		if (str[i] == '"' || str[i] == '\'')
 		{
-			add_token(list, *start, *input - *start + 1);
-			*in_quote = 0;
-			*start = *input + 1;
+			if (cmd < i)
+				cmd = i;
 		}
 	}
-	else
+	return (cmd);
+}
+
+void	handle_quotes(\
+	const char **input, const char **start, t_token **list)
+{
+	int	cmd;
+
+	if (**input == '"' || **input == '\'')
 	{
-		if (**input == '"' || **input == '\'')
-		{
-			if (*input > *start)
-				add_token(list, *start, *input - *start);
-			*in_quote = **input;
-			*start = *input;
-		}
+		*start = *input;
+		cmd = check_last_quote(*input);
+		add_token(list, *input, cmd + 1);
+		*input += cmd;
+		*start = *input + 1;
 	}
 }

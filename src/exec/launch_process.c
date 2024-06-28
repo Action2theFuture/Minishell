@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/23 17:08:10 by junsan            #+#    #+#             */
-/*   Updated: 2024/06/25 16:50:06 by junsan           ###   ########.fr       */
+/*   Updated: 2024/06/28 13:55:54 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,11 +42,19 @@ static void	prepare_and_execute(\
 static int	exec_child_task(char *cmd, char **env, char **args, t_info *info)
 {
 	replace_env_vars_in_args(args, info);
+	if (info->prev_pipe[0] != -1)
+	{
+		close(info->prev_pipe[1]);
+		if (dup2(info->prev_pipe[0], STDIN_FILENO) == -1)
+			return (fd_log_error("Dup pipe error 1", NULL, NULL));
+		close(info->prev_pipe[0]);
+	}
 	if (info->pipe_exists)
 	{
 		close(info->pipe[0]);
 		if (dup2(info->pipe[1], STDOUT_FILENO) == -1)
-			return (fd_log_error("Dup pipe error", NULL, NULL));
+			return (fd_log_error("Dup pipe error 2", NULL, NULL));
+		close(info->pipe[1]);
 	}
 	prepare_and_execute(cmd, args, info, env);
 	return (SUCCESS);
@@ -56,12 +64,6 @@ static int	monitor_child_task(char *cmd, pid_t pid, t_info *info)
 {
 	int	status;
 
-	if (info->pipe_exists)
-	{
-		close(info->pipe[1]);
-		if (dup2(info->pipe[0], STDIN_FILENO) == -1)
-			return (fd_log_error("Dup pipe error", NULL, NULL));
-	}
 	if ((ft_strncmp(cmd, "./minishell", 11) == 0)
 		&& (ft_strlen(cmd) == ft_strlen("./minishell")))
 		disable_interrupt_signals();
@@ -75,8 +77,11 @@ static int	monitor_child_task(char *cmd, pid_t pid, t_info *info)
 	else if (WIFEXITED(status))
 		info->exit_status = WEXITSTATUS(status);
 	set_signal_handler();
-	if (info->pipe_exists)
-		close(info->pipe[0]);
+	if (info->prev_pipe[0] != -1)
+	{
+		close(info->prev_pipe[0]);
+		close(info->prev_pipe[1]);
+	}
 	return (SUCCESS);
 }
 
@@ -86,18 +91,25 @@ int	launch_process(char *cmd, char **args, t_info *info)
 	char	**env;
 
 	pid = fork();
+	if (pid == -1)
+		return (fd_log_error("fork error", NULL, NULL));
 	env = (char **)list_to_array(info->env);
 	if (env == NULL)
 	{
 		perror("Empty env");
 		exit(EXIT_FAILURE);
 	}
-	if (pid == -1)
-		return (fd_log_error("fork error", NULL, NULL));
 	if (pid == 0)
 		exec_child_task(cmd, env, args, info);
 	monitor_child_task(cmd, pid, info);
 	if (env)
 		clear_arr((int) sizeof(env), env);
+	if (info->pipe_exists)
+	{
+		close(info->pipe[1]);
+		info->prev_pipe[0] = info->pipe[0];
+		info->prev_pipe[1] = info->pipe[1];
+		info->pipe_cnt--;
+	}
 	return (info->exit_status);
 }

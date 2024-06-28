@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/13 19:24:59 by junsan            #+#    #+#             */
-/*   Updated: 2024/06/25 17:23:59 by junsan           ###   ########.fr       */
+/*   Updated: 2024/06/28 12:25:44 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static bool	parse_cmd(t_token **token, t_ast **node)
 		cmd_node = new_node(NULL, CMD);
 		if (!cmd_node)
 			return (NULL);
-		remove_quotes((*token)->data);
+		// remove_double_quotes((*token)->data);
 		cmd_node->left = new_node((*token)->data, (*token)->type);
 		*token = (*token)->next;
 		if (*token && (*token)->type == CMD)
@@ -93,16 +93,23 @@ static bool	parse_cmd_part(t_token **token, t_ast **phrase_node, t_ast **node)
 bool	parse_phrase(t_token **token, t_ast **node)
 {
 	t_ast	*phrase_node;
+	t_ast	*subshell_node;
 
 	// printf("pharse >> \n");
 	phrase_node = new_node(NULL, PHRASE);
+	subshell_node = NULL;
 	if (!phrase_node)
 		return (false);
-	if (!parse_subshell(token, node))
-		return (false);
+	if (*token && (*token)->type == SUBSHELL)
+		parse_subshell(token, &subshell_node);
 	if (*token && (*token)->type == REDIRECTION)
-		return (parse_redirection_part(token, &phrase_node, node));
+		parse_redirection_part(token, &phrase_node, node);
 	else if (*token && (*token)->type == CMD)
-		return (parse_cmd_part(token, &phrase_node, node));
+		parse_cmd_part(token, &phrase_node, node);
+	if (subshell_node)
+	{
+		attach_to_tree(subshell_node, *node, LEFT);
+		*node = subshell_node;
+	}
 	return (true);
 }

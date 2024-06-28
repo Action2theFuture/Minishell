@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 17:58:55 by junsan            #+#    #+#             */
-/*   Updated: 2024/06/25 17:00:49 by junsan           ###   ########.fr       */
+/*   Updated: 2024/06/28 16:18:23 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,6 @@ static char	**prepare_cmd(\
 	if (args_node)
 	{
 		args = ft_split(args_node->data, ARR_SEP);
-		remove_quotes_from_args(args);
 		chunk = prepend_cmd_and_add_spaces(cmd_node->data, args);
 	}
 	else
@@ -65,7 +64,7 @@ static int	execute_cmd(char **chunk, t_info *info)
 
 	init_builtin(arr_built_in);
 	built_in = handler_builtin(chunk[0]);
-	if (built_in != NONE && info->pipe_used == false)
+	if (built_in != NONE)
 		status = arr_built_in[built_in](\
 				(const char *)chunk[0], (const char **)chunk, info->env);
 	else
