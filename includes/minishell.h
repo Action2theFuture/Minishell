@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/11 19:22:19 by junsan            #+#    #+#             */
-/*   Updated: 2024/06/28 17:23:09 by junsan           ###   ########.fr       */
+/*   Updated: 2024/06/29 17:22:46 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@
 # include <unistd.h>    // write, access, close, fork, execve, pipe, dup, dup2
 
 # define MAX_PATH_LENGTH 4096
+# define MAX_ARGS 100
 # define MEMORY_CAPACITY 256
 # define HISTSIZE 500
 # define DELIMS "|&<>"
@@ -245,6 +246,10 @@ bool					parse_io_redirection(t_token **token, t_ast **node);
 // parse_subshell.c
 bool					parse_subshell(t_token **token, t_ast **node);
 
+// parsing_quotes_in_cmd.c
+char					**parse_cmd_line_with_quotes(\
+		const char *input, int *cnt);
+
 // type_functions.c
 bool					is_logical_operator(const char *token);
 bool					is_pipe_operator(const char *token);
@@ -333,7 +338,7 @@ void					clear_info(t_info *info);
 // args_utils.c
 void					free_args(char **args);
 void					replace_env_vars_in_args(char **args, t_info *info);
-char					**allocate_null_and_cmd_chunk(const char *cmd);
+char					**allocate_null_and_cmd_chunk(char **cmd);
 
 // quotes_utils.c
 void					remove_consecutive_double_quotes_from_args(char **args);

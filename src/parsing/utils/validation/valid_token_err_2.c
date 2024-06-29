@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   valid_token_utils.c                                :+:      :+:    :+:   */
+/*   valid_token_err_2.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/28 16:17:02 by junsan            #+#    #+#             */
-/*   Updated: 2024/06/28 17:23:14 by junsan           ###   ########.fr       */
+/*   Updated: 2024/06/29 13:10:52 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@ bool	check_logical_err(t_token *head)
 {
 	while (head)
 	{
+		if (head->data[0] == '&' && ft_strlen(head->data) == 1)
+			return (true);
 		if (head->type == LOGICAL && ft_strlen(head->data) > 2)
 			return (true);
 		head = head->next;
