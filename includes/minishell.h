@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ramzerk <ramzerk@student.42.fr>            +#+  +:+       +#+        */
+/*   By: rabouzia <rabouzia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/11 19:22:19 by junsan            #+#    #+#             */
-/*   Updated: 2024/06/28 14:43:48 by ramzerk          ###   ########.fr       */
+/*   Updated: 2024/06/29 16:14:59 by rabouzia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,27 +48,27 @@ typedef enum tree_direction
 {
 	LEFT,
 	RIGHT,
-}	t_tree_direction;
+}						t_tree_direction;
 
 typedef enum type_dir
 {
 	IS_DIRECTORY = 126,
 	CMD_NOT_FOUND = 127,
-}	t_type_dir;
+}						t_type_dir;
 
 typedef enum type_descriptor
 {
 	READ,
 	WRITE,
 	APPEND,
-}	t_type_descriptor;
+}						t_type_descriptor;
 
 typedef enum status
 {
 	SUCCESS,
 	FAILURE,
 	MALLOC_ERR,
-}	t_status;
+}						t_status;
 
 typedef enum type_logical
 {
@@ -100,7 +100,7 @@ typedef enum error
 	UNCLOSED_QUOTE,
 	TOKEN_ERROR,
 	PARSE_ERROR,
-}	t_error;
+}						t_error;
 
 typedef enum path_type
 {
@@ -108,7 +108,7 @@ typedef enum path_type
 	PATH_RELATIVE,
 	PATH_COMMAND,
 	PATH_INVALID
-}	t_path_type;
+}						t_path_type;
 
 typedef enum built_in
 {
@@ -133,8 +133,8 @@ typedef struct s_env
 
 typedef struct s_info
 {
-	bool				pipe_exists; // pipe exist or not
-	bool				pipe_used;	// used pipe befor
+	bool pipe_exists; // pipe exist or not
+	bool pipe_used;   // used pipe befor
 	bool				in_subshell;
 	char				*path;
 	int					stdin_fd;
@@ -144,7 +144,7 @@ typedef struct s_info
 	int					pipe[2];
 	int					tmp_fd;
 	int					exit_status;
-	int					status; // can proceed by logical
+	int status; // can proceed by logical
 	t_env				*env;
 }						t_info;
 
@@ -185,8 +185,8 @@ typedef struct s_file_list
 }						t_file_list;
 
 // process_input.c
-void					process_input(\
-		char *input, t_env *env, int *exit_status);
+void					process_input(char *input, t_env *env,
+							int *exit_status);
 
 // --------------------------- init --------------------------//
 // init_minishell.c
@@ -195,6 +195,7 @@ void					init_minishell(char **envp, t_env **env);
 // env_init.c
 void					add_env(t_env **head, const char *str);
 t_env					*env_init(char **envp);
+void					env_split(const char *str, char **name, char **content);
 
 // env_utils.c
 size_t					env_size(t_env *head);
@@ -259,8 +260,8 @@ void					tokenize(const char *input, t_token **tokens);
 
 // tokenize_utils.c
 t_token_list			*get_token_list(t_token *token);
-void					add_token(\
-		t_token **head, const char *start, size_t len);
+void					add_token(t_token **head, const char *start,
+							size_t len);
 
 // handle_quotes.c
 void					handle_quotes(const char **input, char *in_quote,
@@ -394,10 +395,8 @@ void					add_builtin_node(t_env **head, char *name,
 							char *content);
 void					printf_env(t_env *list);
 int						ft_env(const char *cmd, const char **args, t_env *list);
-char					*ft_strndup(const char *src, size_t n);
-t_env					*builtin_new_node(char *name, char *content);
-t_env					*fill_env(int ac, char **av, char **env);
-void	env_split(const char *str, char **name, char **content);
+
+// void	env_split(const char *str, char **name, char **content);
 
 // ft_exit.c
 int						ft_exit(const char *cmd, const char **args,

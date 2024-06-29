@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ramzerk <ramzerk@student.42.fr>            +#+  +:+       +#+        */
+/*   By: rabouzia <rabouzia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 23:38:01 by rabouzia          #+#    #+#             */
-/*   Updated: 2024/06/28 14:22:25 by ramzerk          ###   ########.fr       */
+/*   Updated: 2024/06/29 16:14:39 by rabouzia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,37 @@ int	ft_export(const char *cmd, const char **args, t_env *list)
 	return (0);
 }
 
+t_env	*builtin_new_node(char *name, char *content)
+{
+	t_env	*res;
+
+	res = (t_env *)malloc(sizeof(t_env));
+	if (!res)
+		return (NULL);
+	res->name = ft_strdup(name);
+	res->content = ft_strdup(content);
+	res->next = NULL;
+	return (res);
+}
+
+void	add_builtin_node(t_env **head, char *name, char *content)
+{
+	t_env	*new_node;
+	t_env	*cur;
+
+	new_node = builtin_new_node(name, content);
+	if (!name || !content || !new_node)
+		return ;
+	if (*head == NULL)
+		*head = new_node;
+	else
+	{
+		cur = *head;
+		while (cur->next)
+			cur = cur->next;
+		cur->next = new_node;
+	}
+}
 void	swap_nodes(t_env *a, t_env *b)
 {
 	char	*tmp_name;

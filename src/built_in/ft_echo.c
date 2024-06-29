@@ -3,18 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   ft_echo.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ramzerk <ramzerk@student.42.fr>            +#+  +:+       +#+        */
+/*   By: rabouzia <rabouzia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 21:38:26 by rabouzia          #+#    #+#             */
-/*   Updated: 2024/06/28 15:11:29 by ramzerk          ###   ########.fr       */
+/*   Updated: 2024/06/29 17:36:19 by rabouzia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 // to be completed
-
-
+// echo $?
+// echo env expansion $USER
 int	good_flag(const char *str)
 {
 	int	i;
@@ -42,6 +42,9 @@ int	ft_echo(const char *cmd, const char **args, t_env *list)
 		return (write(1, "\n", 1), 0);
 	i = 1;
 	new_line = 0;
+	if(ft_strncmp(args[0], "$?", 2) == 0)
+		return(1);
+	if(args[0][0] == "?")
 	while (args[i] && good_flag(args[i]))
 	{
 		new_line = 1;
@@ -54,7 +57,7 @@ int	ft_echo(const char *cmd, const char **args, t_env *list)
 			ft_putstr_fd(" ", 1);
 		i++;
 	}
-	if(!new_line)
+	if (!new_line)
 		ft_putstr_fd("\n", 1);
 	return (1);
 }
