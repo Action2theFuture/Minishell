@@ -5,19 +5,28 @@
 #                                                     +:+ +:+         +:+      #
 #    By: junsan <junsan@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2024/05/11 19:03:01 by junsan            #+#    #+#              #
-#    Updated: 2024/06/25 14:38:32 by junsan           ###   ########.fr        #
+#    CreateCd: 2024/05/11 19:03:01 by junsan            #+#    #+#              #
+#    Updated: 2024/06/28 18:58:49 by junsan           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
+COLOR_RESET = \033[0m
+COLOR_RED = \033[1;31m
+COLOR_GREEN = \033[1;32m
+COLOR_YELLOW = \033[1;33m
+COLOR_BLUE = \033[1;34m
+COLOR_CYAN = \033[1;36m
+
 NAME 	= minishell
 OS		= $(shell uname)
+
+SPINNER_SCRIPT = assets/spinner.sh
 
 CC		= cc
 LIBFT 	= libft/libft.a
 IFLAGS 	:= -I ./includes/ -I ./libft/includes/
 
-CFLAGS 	= -Wall -Wextra -Werror -g3
+CFLAGS 	:= -Wall -Wextra -Werror
 
 SRC_DIR = src
 PARSING_DIR = $(SRC_DIR)/parsing
@@ -37,14 +46,18 @@ PARSING	= parsing.c arg_parse.c parse_subshell.c									\
 		/tokenize/handle_quotes.c /tokenize/handle_subshell.c						\
 		/utils/parsing_utils.c /utils/tokenize_utils.c /utils/tokenize_utils_2.c	\
 		/utils/type_redir_functions.c /utils/type_functions.c /utils/get_type.c 	\
-		/utils/subshell_utils.c /utils/valid_token.c
-UTILS	= string_utils.c string_utils_2.c error_utils.c
+		/utils/subshell_utils.c /utils/parsing_utils_2.c							\
+		/utils/validation/valid_token.c /utils/validation/valid_token_utils.c		\
+		/utils/validation/valid_token_err.c /utils/validation/valid_token_err_2.c
+UTILS	= string_utils.c string_utils_2.c quotes_str.c error_utils.c
 SIGNAL	= handler_signal.c
 EXECUTE = execute.c redir.c get_file_list.c execute_process.c cmd.c	launch_process.c\
 		/utils/redir_utils.c /utils/info_utils.c /utils/get_file_list_utils.c		\
 		/utils/stdio_redirector.c /utils/list_to_array.c /utils/args_utils.c 		\
 		/utils/get_absolute_path.c /utils/var_expansion_with_args.c					\
-		/utils/get_path_type.c /utils/find_cmd_in_path.c
+		/utils/get_path_type.c /utils/find_cmd_in_path.c /utils/replace_env_vars.c	\
+		/utils/replace_env_vars_utils.c /utils/handler_replace_env_vars.c 			\
+		/utils/quotes_utils.c
 BUILT_IN = built_in.c file_dir_operations.c	ft_cd.c  ft_env.c ft_export.c ft_unset.c\
 		ft_echo.c ft_exit.c ft_pwd.c
 PRINT	= prints.c prints_2.c
@@ -69,25 +82,45 @@ endif
 
 vpath %.c ./src/
 
+all: $(NAME)
+
 $(NAME) : $(LIBFT) $(OBJS)
-	$(CC) $(CFALGS) -o $@ $(OBJS) $(LIBFT) $(LD_FLAGS)
+	@$(CC) $(CFLAGS) -o $@ $(OBJS) $(LIBFT) $(LD_FLAGS) > /dev/null 2>&1 & COMPILER_PID=$$!; \
+	./$(SPINNER_SCRIPT) $$COMPILER_PID; \
+	wait $$COMPILER_PID
+	@echo "$(COLOR_GREEN)Compilation completed successfully! 🎉$(COLOR_RESET)"
+	@echo "$(COLOR_CYAN)Welcome to Kashell$(COLOR_RESET)"
+	@echo "$(COLOR_GREEN)Program Name : $(NAME)$(COLOR_RESET)"
+
+OBJ_FILES_SPINNER_PID=
 
 $(OBJ_DIR)/%.o: %.c
 	@mkdir -p $(@D)
-	$(CC) $(CFLAGS) $(IFLAGS) -c $< -o $@
+	@$(CC) $(CFLAGS) $(IFLAGS) -c $< -o $@ > /dev/null 2>&1
 
 $(LIBFT): 
-	@make -C libft/
+	@echo "$(COLOR_YELLOW)Compliling $(NAME)...$(COLOR_RESET)"
+	@chmod +x $(SPINNER_SCRIPT)
+	@$(MAKE) -s -C libft/ > /dev/null 2>&1 & COMPILER_PID=$$!; \
+	./$(SPINNER_SCRIPT) $$COMPILER_PID; \
+	wait $$COMPILER_PID
+	@echo "$(COLOR_BLUE)Compliling Obj files...$(COLOR_RESET)"
 
-all: $(NAME)
+debug: CFLAGS += -g3 -fsanitize=address
+debug: $(NAME)
+		@echo "$(COLOR_GREEN)Start Debugging! 🛠️$(COLOR_RESET)"
 
 clean:
-	rm -rf $(OBJ_DIR)
+	@rm -rf $(OBJ_DIR)
+	@echo "$(COLOR_RED)Cleaning completed successfully 🧹$(COLOR_RESET)"
 
-fclean: clean
-	@make -C libft/ fclean
-	rm -f $(NAME)
+fclean:
+	@make -s -C libft/ fclean
+	@rm -f $(NAME)
+	@rm -rf $(OBJ_DIR)
+	@echo "$(COLOR_RED)Full Cleaning completed successfully 🧹$(COLOR_RESET)"
 
 re: fclean all
+	@echo "$(COLOR_GREEN)Recompleted successfully 🎉$(COLOR_RESET)"
 
-.PHONY: all clean fclean re
+.PHONY: all clean fclean re debug

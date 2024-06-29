@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/26 12:05:45 by junsan            #+#    #+#             */
-/*   Updated: 2024/06/22 18:59:40 by junsan           ###   ########.fr       */
+/*   Updated: 2024/06/27 16:33:49 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ t_ast	*new_node(const char *data, t_type type)
 	if (data)
 		new_node->data = ft_strdup(data);
 	new_node->type = type;
+	new_node->parent = NULL;
 	new_node->left = NULL;
 	new_node->right = NULL;
 	return (new_node);

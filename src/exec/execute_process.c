@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 16:44:23 by junsan            #+#    #+#             */
-/*   Updated: 2024/06/25 17:13:50 by junsan           ###   ########.fr       */
+/*   Updated: 2024/06/28 12:34:27 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,11 +33,14 @@ void	process_phrase_node(t_ast *node, t_info *info)
 	t_ast	*redir_node;
 	t_ast	*cmd_node;
 
-	(void)info;
+	if (node == NULL)
+		return ;
 	redir_node = node->left;
 	cmd_node = node->right;
 	if (redir_node)
 	{
+		if (redir_node->type == PHRASE)
+			redir_node = redir_node->left;
 		info->status = handle_io_redirection(redir_node->left, info);
 		if (redir_node->right)
 			info ->status = handle_io_redirection(redir_node->right, info);

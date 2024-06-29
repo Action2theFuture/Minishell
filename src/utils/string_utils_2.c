@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 15:29:43 by junsan            #+#    #+#             */
-/*   Updated: 2024/06/25 14:05:27 by junsan           ###   ########.fr       */
+/*   Updated: 2024/06/28 16:19:43 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,15 +53,9 @@ char	*trim_first_last(char *str)
 	return (new_str);
 }
 
-void	remove_quotes(char *str)
+bool	is_operator(const char *cmd)
 {
-	size_t	len;
-
-	len = ft_strlen(str);
-	if (len >= 2 && ((str[0] == '"' && str[len - 1] == '"') \
-					|| (str[0] == '\'' && str[len - 1] == '\'')))
-	{
-		ft_memmove(str, str + 1, len - 2);
-		str[len - 2] = '\0';
-	}
+	return ((ft_strncmp(cmd, "|", 1) == 0 && ft_strlen(cmd) == 1) || \
+		(ft_strncmp(cmd, "&&", 2) == 0 && ft_strlen(cmd) == 2) || \
+		(ft_strncmp(cmd, "||", 2) == 0 && ft_strlen(cmd) == 2));
 }

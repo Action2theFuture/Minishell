@@ -6,7 +6,7 @@
 /*   By: rabouzia <rabouzia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/11 19:22:19 by junsan            #+#    #+#             */
-/*   Updated: 2024/06/29 16:14:59 by rabouzia         ###   ########.fr       */
+/*   Updated: 2024/06/29 17:44:12 by rabouzia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@
 # define MEMORY_CAPACITY 256
 # define HISTSIZE 500
 # define DELIMS "|&<>"
-# define ARR_SEP '|'
+# define ARR_SEP ';'
 # define ASCII_ART_PATH "assets/ascii_art_doh"
 # define HEREDOC_TMP "heredoc_tmp"
 
@@ -65,8 +65,8 @@ typedef enum type_descriptor
 
 typedef enum status
 {
-	SUCCESS,
-	FAILURE,
+	SUCCESS = 0,
+	FAILURE = 1,
 	MALLOC_ERR,
 }						t_status;
 
@@ -133,15 +133,21 @@ typedef struct s_env
 
 typedef struct s_info
 {
+<<<<<<< HEAD
 	bool pipe_exists; // pipe exist or not
 	bool pipe_used;   // used pipe befor
+=======
+	bool				pipe_exists; // pipe exist or not
+>>>>>>> main
 	bool				in_subshell;
 	char				*path;
+	int					pipe_cnt;
 	int					stdin_fd;
 	int					stdout_fd;
 	int					origin_stdin_fd;
 	int					origin_stdout_fd;
 	int					pipe[2];
+	int					prev_pipe[2];
 	int					tmp_fd;
 	int					exit_status;
 	int status; // can proceed by logical
@@ -167,6 +173,7 @@ typedef struct s_ast
 	char				*data;
 	t_type				type;
 	t_token				*token;
+	struct s_ast		*parent;
 	struct s_ast		*left;
 	struct s_ast		*right;
 }						t_ast;
@@ -183,6 +190,17 @@ typedef struct s_file_list
 	char				**names;
 	size_t				count;
 }						t_file_list;
+
+typedef struct s_env_var
+{
+	const char	*str;
+	bool		is_value_expansion;
+	bool		in_double_quotes;
+	char		*res;
+	t_info		*info;
+	size_t		i;
+	size_t		j;
+}	t_env_var;
 
 // process_input.c
 void					process_input(char *input, t_env *env,
@@ -210,6 +228,10 @@ void					free_tree(t_ast *node);
 t_ast					*new_node(const char *data, t_type type);
 t_ast					*attach_to_tree(t_ast *root, t_ast *node, int side);
 void					remove_outer_parentheses(char **str, t_ast **root);
+
+// parsing_utils_c.
+void					add_parent(t_ast *node, t_ast *left, t_ast *right);
+
 // parsing.c
 bool					parsing_tree(t_token_list **tokens, t_ast **root);
 
@@ -264,7 +286,7 @@ void					add_token(t_token **head, const char *start,
 							size_t len);
 
 // handle_quotes.c
-void					handle_quotes(const char **input, char *in_quote,
+void					handle_quotes(const char **input,
 							const char **start, t_token **list);
 
 // handle_subshell.c
@@ -281,8 +303,21 @@ t_token					*tokens_last(t_token *tokens);
 void					free_token(t_token *head);
 size_t					tokens_size(t_token *head);
 
+// ---------------------- validation for token ------------------//
 // valid_token.c
 int						valid_token(t_token *head);
+
+// valid_token_utlls.c
+bool					check_quotes_in_tokens(t_token *head);
+bool					check_subshell_closed(t_token *head);
+
+// valid_token_err.c
+bool					check_redir_err(t_token *head);
+bool					check_operator_before_after_err(t_token *head);
+
+// valid_token_err_2.c
+bool					check_logical_err(t_token *head);
+bool					is_cmd_valid(const char *cmd);
 
 // ------------------------ signal ---------------------------//
 // handler_signal.c
@@ -304,11 +339,31 @@ void					clear_info(t_info *info);
 // args_utils.c
 void					free_args(char **args);
 void					replace_env_vars_in_args(char **args, t_info *info);
-void					remove_quotes_from_args(char **args);
 char					**allocate_null_and_cmd_chunk(const char *cmd);
+
+// quotes_utils.c
+void					remove_consecutive_double_quotes_from_args(char **args);
+void					remove_double_quotes_from_args(char **args);
+void					remove_single_quotes_from_args(char **args);
 
 // var_expansion_with_args.c
 void					replace_env_vars_in_args(char **args, t_info *info);
+char					*process_replace_env_vars(char *arg, t_info *info);
+char					*process_replace_expansion_var(t_info *info);
+
+// replace_env_vars.c
+void					replace_env_vars(\
+		const char *str, char *res, t_info *info);
+
+// replace_env_vars_utils.c
+void					pass_double_quotes(t_env_var *env_var);
+void					extract_var_name(\
+		const char *str, size_t *i, char *var_name, int brace);
+char					*process_replace_env_vars(char *arg, t_info *info);
+char					*process_replace_expansion_var(t_info *info);
+
+// hanlde_replace_env_vars.c
+void					handle_dollar_sign(t_env_var *env_var);
 
 // get_path_type.c
 t_path_type				get_path_type(const char *path, t_info *info);
@@ -362,7 +417,12 @@ int						count_repeated_chars(const char *str, int c);
 char					*trim_first_last(char *str);
 char					*trim_whitespace(const char *str);
 char					*ft_strndup(const char *str, size_t n);
+bool					is_operator(const char *cmd);
+
+	// quotes_str.c
 void					remove_quotes(char *str);
+void					remove_single_quotes(char *str);
+void					remove_double_quotes(char *str);
 
 // error_utils.c
 int						fd_log_error(char *cmd, char *arg, char *error);
@@ -422,6 +482,7 @@ char					*remove_nested_subshell(t_token **token);
 //  prints.c
 void					print_token(t_token *head);
 void					print_file_list(t_file_list *file_list);
+void					print_s(const char *content, const char *str);
 
 //	prints_2.c
 void					print_tree(t_ast *root, int depth);
