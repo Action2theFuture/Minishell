@@ -6,7 +6,7 @@
 #    By: junsan <junsan@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    CreateCd: 2024/05/11 19:03:01 by junsan            #+#    #+#              #
-#    Updated: 2024/06/28 18:58:49 by junsan           ###   ########.fr        #
+#    Updated: 2024/06/29 17:44:57 by rabouzia         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,7 +26,7 @@ CC		= cc
 LIBFT 	= libft/libft.a
 IFLAGS 	:= -I ./includes/ -I ./libft/includes/
 
-CFLAGS 	:= -Wall -Wextra -Werror
+CFLAGS 	:= -Wall -Wextra -Werror -g3
 
 SRC_DIR = src
 PARSING_DIR = $(SRC_DIR)/parsing
@@ -96,7 +96,8 @@ OBJ_FILES_SPINNER_PID=
 
 $(OBJ_DIR)/%.o: %.c
 	@mkdir -p $(@D)
-	@$(CC) $(CFLAGS) $(IFLAGS) -c $< -o $@ > /dev/null 2>&1
+	#@$(CC) $(CFLAGS) $(IFLAGS) -c $< -o $@ > /dev/null 2>&1
+	$(CC) $(CFLAGS) $(IFLAGS) -c $< -o $@
 
 $(LIBFT): 
 	@echo "$(COLOR_YELLOW)Compliling $(NAME)...$(COLOR_RESET)"

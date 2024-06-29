@@ -6,7 +6,7 @@
 /*   By: rabouzia <rabouzia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/02 02:39:36 by rabouzia          #+#    #+#             */
-/*   Updated: 2024/06/29 17:35:20 by rabouzia         ###   ########.fr       */
+/*   Updated: 2024/06/29 20:54:34 by rabouzia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,15 @@ int	ft_cd(const char *cmd, const char **args, t_env *list)
 {
 	(void)cmd;
 	// printf("cmd in cd: %s\n", cmd);
+	// cd src 23d2 wd -> too many args
+	// create fct search in env to do cd (alone)
+	// cd -
 	if (!args[1])
-		return (change_dir("home", list), 1);
+		return (change_dir("/home", list), 1);
+	if (!args[2])
+	{
+		
+	}
 	if (chdir(args[1]) == -1)
 	{
 		ft_putstr_fd("cd: ",2);

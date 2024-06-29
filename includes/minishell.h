@@ -6,7 +6,7 @@
 /*   By: rabouzia <rabouzia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/11 19:22:19 by junsan            #+#    #+#             */
-/*   Updated: 2024/06/29 17:44:12 by rabouzia         ###   ########.fr       */
+/*   Updated: 2024/06/29 19:54:21 by rabouzia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,12 +133,7 @@ typedef struct s_env
 
 typedef struct s_info
 {
-<<<<<<< HEAD
-	bool pipe_exists; // pipe exist or not
-	bool pipe_used;   // used pipe befor
-=======
 	bool				pipe_exists; // pipe exist or not
->>>>>>> main
 	bool				in_subshell;
 	char				*path;
 	int					pipe_cnt;
@@ -465,7 +460,7 @@ int						ft_exit(const char *cmd, const char **args,
 // ft_export.c
 // void			ft_export_add(char *var, char **arg);
 // void			ft_export_show(t_env *env);
-// int				ft_export(char *cmd, char **args, t_env *list);
+int	ft_export(const char *cmd, const char **args, t_env *list);
 // t_env			*sort_list(t_env *env);
 
 // ft_pwd.c

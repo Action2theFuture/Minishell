@@ -6,7 +6,7 @@
 /*   By: rabouzia <rabouzia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 21:38:26 by rabouzia          #+#    #+#             */
-/*   Updated: 2024/06/29 17:36:19 by rabouzia         ###   ########.fr       */
+/*   Updated: 2024/06/29 17:50:46 by rabouzia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,9 +42,9 @@ int	ft_echo(const char *cmd, const char **args, t_env *list)
 		return (write(1, "\n", 1), 0);
 	i = 1;
 	new_line = 0;
-	if(ft_strncmp(args[0], "$?", 2) == 0)
-		return(1);
-	if(args[0][0] == "?")
+	// if(ft_strncmp(args[0], "$?", 2) == 0)
+	// 	return(1);
+	// if(args[0][0] == "?")
 	while (args[i] && good_flag(args[i]))
 	{
 		new_line = 1;

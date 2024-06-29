@@ -6,7 +6,7 @@
 /*   By: rabouzia <rabouzia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 14:48:24 by junsan            #+#    #+#             */
-/*   Updated: 2024/06/29 16:39:46 by rabouzia         ###   ########.fr       */
+/*   Updated: 2024/06/29 17:45:44 by rabouzia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,13 +21,13 @@ t_env	*ft_envlast(t_env *lst)
 	return (lst);
 }
 
-t_env *del_first(t_env **lst)
-{
-    t_env **tmp;
-    tmp = (*lst)->next;
-    free(*lst);
-    return (tmp);
-}
+// t_env *del_first(t_env **lst)
+// {
+//     t_env **tmp;
+//     tmp = (*lst)->next;
+//     free(*lst);
+//     return (tmp);
+// }
 
 int	del_node(t_env **lst, const char *to_unset)
 {

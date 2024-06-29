@@ -6,7 +6,7 @@
 /*   By: rabouzia <rabouzia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 11:48:50 by junsan            #+#    #+#             */
-/*   Updated: 2024/06/29 16:14:29 by rabouzia         ###   ########.fr       */
+/*   Updated: 2024/06/29 19:48:15 by rabouzia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,13 +38,14 @@ static int	check_in_env(const char *arg, t_env *list)
 		}
 		cur = cur->next;
 	}
-	return (0);
+	return (1);
 }
 
 // UnCompleted
 int	ft_env(const char *cmd, const char **args, t_env *list)
 {
 	(void)cmd;
+	printf("args : %s\n", args[1]);
 	if (!args)
 	{
 		printf_env(list);
