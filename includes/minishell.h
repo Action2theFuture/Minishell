@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/11 19:22:19 by junsan            #+#    #+#             */
-/*   Updated: 2024/06/29 17:22:46 by junsan           ###   ########.fr       */
+/*   Updated: 2024/06/30 21:40:25 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@
 # define MEMORY_CAPACITY 256
 # define HISTSIZE 500
 # define DELIMS "|&<>"
+# define SHELL_METACHARS "\"\'()&|<>"
 # define ARR_SEP ';'
 # define ASCII_ART_PATH "assets/ascii_art_doh"
 # define HEREDOC_TMP "heredoc_tmp"
@@ -247,6 +248,7 @@ bool					parse_io_redirection(t_token **token, t_ast **node);
 bool					parse_subshell(t_token **token, t_ast **node);
 
 // parsing_quotes_in_cmd.c
+char					*remove_all_quotes(const char *input);
 char					**parse_cmd_line_with_quotes(\
 		const char *input, int *cnt);
 
@@ -338,7 +340,7 @@ void					clear_info(t_info *info);
 // args_utils.c
 void					free_args(char **args);
 void					replace_env_vars_in_args(char **args, t_info *info);
-char					**allocate_null_and_cmd_chunk(char **cmd);
+char					**allocate_null_and_cmd_chunk(char **cmd, int cmd_cnt);
 
 // quotes_utils.c
 void					remove_consecutive_double_quotes_from_args(char **args);
@@ -422,6 +424,7 @@ bool					is_operator(const char *cmd);
 void					remove_quotes(char *str);
 void					remove_single_quotes(char *str);
 void					remove_double_quotes(char *str);
+void					remove_empty_quotes(char *str);
 
 // error_utils.c
 int						fd_log_error(char *cmd, char *arg, char *error);

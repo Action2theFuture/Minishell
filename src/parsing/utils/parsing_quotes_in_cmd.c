@@ -6,13 +6,13 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/29 13:19:33 by junsan            #+#    #+#             */
-/*   Updated: 2024/06/29 16:56:30 by junsan           ###   ########.fr       */
+/*   Updated: 2024/06/30 21:59:07 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static char	*remove_all_quotes(const char *input)
+char	*remove_all_quotes(const char *input)
 {
 	int		len;
 	char	*res;
@@ -32,52 +32,67 @@ static char	*remove_all_quotes(const char *input)
 	return (res);
 }
 
+static void	handle_quotes_in_args(\
+			const char **ptr, bool *in_single_quotes, bool *in_double_quotes)
+{
+	if (*in_double_quotes)
+		*in_double_quotes = false;
+	else if (!*in_single_quotes)
+		*in_double_quotes = true;
+	(*ptr)++;
+}
+
+static void	parse_arg(\
+			const char **ptr, char *arg, int *arg_len, bool *in_quotes)
+{
+	*arg_len = 0;
+	while (**ptr && (in_quotes[0] || in_quotes[1] || **ptr != ' '))
+	{
+		if (**ptr == '"')
+			handle_quotes_in_args(ptr, &in_quotes[0], &in_quotes[1]);
+		else if (**ptr == '\'')
+		{
+			if (in_quotes[0])
+				in_quotes[0] = false;
+			else if (!in_quotes[1])
+				in_quotes[0] = true;
+			else
+				arg[(*arg_len)++] = **ptr;
+			(*ptr)++;
+		}
+		else
+			arg[(*arg_len)++] = *(*ptr)++;
+	}
+	arg[*arg_len] = '\0';
+}
+
+// arg_idx[0] -> arg_len arg_idx[1] -> arg_idx;
+// in_quotes[0] -> in_single_quotes in_quotes[1] -> in_double_quotes
 char	**parse_cmd_line_with_quotes(const char *input, int *cnt)
 {
 	const char	*ptr;
 	char		**args;
 	char		*arg;
-	bool		in_quotes;
-	char		quote_char;
-	int			len;
-	int			arg_idx;
+	bool		in_quotes[2];
+	int			arg_idx[2];
 
-	len = ft_strlen(input);
 	args = (char **)malloc(sizeof(char *) * MAX_ARGS);
-	arg = (char *)malloc(sizeof(char) * (len + 1));
-	in_quotes = false;
-	quote_char = '\0';
-	arg_idx = 0;
+	arg = (char *)malloc(sizeof(char) * (ft_strlen(input) + 1));
+	if (!args || !arg)
+		return (perror("malloc error"), NULL);
+	in_quotes[0] = false;
+	in_quotes[1] = false;
+	arg_idx[0] = 0;
+	arg_idx[1] = 0;
 	ptr = input;
 	while (*ptr)
 	{
 		while (*ptr == ' ')
 			ptr++;
-		int arg_len = 0;
-		if (*ptr == '"' || *ptr == '\'')
-		{
-			in_quotes = true;
-			quote_char = *ptr++;
-		}
-		else
-			in_quotes = false;
-		while (*ptr && (in_quotes || *ptr != ' '))
-		{
-			if (in_quotes && *ptr == quote_char)
-			{
-				in_quotes = false;
-				ptr++;
-				break ;
-			}
-			arg[arg_len++] = *ptr++;
-		}
-		arg[arg_len] = '\0';
-		if (arg_len > 0)
-			args[arg_idx++] = remove_all_quotes(arg);
-		if (*ptr == ' ' && !in_quotes)
-			ptr++;
+		parse_arg(&ptr, arg, &arg_idx[0], in_quotes);
+		if (arg_idx[0] > 0)
+			args[arg_idx[1]++] = ft_strdup(arg);
+		ft_memset(arg, '\0', ft_strlen(arg));
 	}
-	free(arg);
-	*cnt = arg_idx;
-	return (args);
+	return (free(arg), args[arg_idx[1]++] = NULL, *cnt = arg_idx[1] - 1, args);
 }
