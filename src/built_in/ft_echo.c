@@ -6,7 +6,7 @@
 /*   By: rabouzia <rabouzia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 21:38:26 by rabouzia          #+#    #+#             */
-/*   Updated: 2024/06/29 17:50:46 by rabouzia         ###   ########.fr       */
+/*   Updated: 2024/07/01 01:20:11 by rabouzia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,8 @@ int	good_flag(const char *str)
 
 int	ft_echo(const char *cmd, const char **args, t_env *list)
 {
-	int	i;
-	int	new_line;
+	int		i;
+	bool	new_line;
 
 	(void)cmd;
 	(void)list;

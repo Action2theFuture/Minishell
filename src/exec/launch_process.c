@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   launch_process.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rabouzia <rabouzia@student.42.fr>          +#+  +:+       +#+        */
+/*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/23 17:08:10 by junsan            #+#    #+#             */
-/*   Updated: 2024/06/29 17:59:57 by rabouzia         ###   ########.fr       */
+/*   Updated: 2024/07/01 10:44:19 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,8 @@ static void	prepare_and_execute(\
 		exit(SUCCESS);
 	else if (ft_strncmp(cmd, "false", 5) == 0 && ft_strlen(cmd) == 5)
 		exit(FAILURE);
-
 	init_builtin(arr_built_in);
 	built_in = handler_builtin(cmd);
-	printf("%d\n", built_in);
 	if (built_in != NONE)
 		exit(arr_built_in[built_in](\
 			(const char *)cmd, (const char **)args, info->env));

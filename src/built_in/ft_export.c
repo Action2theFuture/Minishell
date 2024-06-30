@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rabouzia <rabouzia@student.42.fr>          +#+  +:+       +#+        */
+/*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 23:38:01 by rabouzia          #+#    #+#             */
-/*   Updated: 2024/06/29 20:36:56 by rabouzia         ###   ########.fr       */
+/*   Updated: 2024/07/01 10:43:47 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ t_env	*sort_list(t_env *env)
 	t_env	*current;
 	int		swapped;
 
-	head = ft_calloc(sizeof(t_env),1);
+	head = ft_calloc(sizeof(t_env), 1);
 	head = env;
 	if (env == NULL)
 		return (NULL);
@@ -50,7 +50,8 @@ t_env	*sort_list(t_env *env)
 		current = head;
 		while (current->next != NULL)
 		{
-			if (ft_strncmp(current->name, current->next->name,ft_strlen(current->name)) > 0)
+			if (ft_strncmp(current->name, current->next->name,
+					ft_strlen(current->name)) > 0)
 			{
 				swap_nodes(current, current->next);
 				swapped = 1;
@@ -63,8 +64,8 @@ t_env	*sort_list(t_env *env)
 
 void	ft_export_show(t_env *env)
 {
-	t_env *tmp;
-	
+	t_env	*tmp;
+
 	tmp = sort_list(env);
 	while (tmp)
 	{
@@ -73,9 +74,19 @@ void	ft_export_show(t_env *env)
 	}
 }
 
-// modifier une variable si elle existe deja
-// expand 
+int	var_exist_already(const char *var, t_env *lst)
+{
+	while (lst)
+	{
+		if (ft_strncmp(var, lst->name, ft_strlen(var)))
+			return (1);
+		lst = lst->next;
+	}
+	return (0);
+}
 
+// modifier une variable si elle existe deja
+// expand
 
 int	ft_export(const char *cmd, const char **args, t_env *list)
 {
@@ -87,17 +98,17 @@ int	ft_export(const char *cmd, const char **args, t_env *list)
 	(void)cmd;
 	tmp = list;
 	if (!args[1] || !*args)
-		return (ft_export_show(list), 1); // print sorted_env
+		return (ft_export_show(list), 1);
 	i = 1;
 	while (args[i])
 	{
-		// printf("check_first %d\n",check_first_arg(args[i][0]));
-		if (check_first_arg(args[i][0]))
-		{
-	
-			ft_putstr_fd("export: ", 2);
-			ft_putstr_fd((char *)args[i], 2);
-			ft_putstr_fd(": not a valid identifier\n", 2);
+		if (var_exist_already(args[i], list))
+		{	if (check_first_arg(args[i][0]))
+			{
+				ft_putstr_fd("export: ", 2);
+				ft_putstr_fd((char *)args[i], 2);
+				ft_putstr_fd(": not a valid identifier\n", 2);
+			}
 		}
 		else
 		{
@@ -140,7 +151,3 @@ void	add_builtin_node(t_env **head, char *name, char *content)
 		cur->next = new_node;
 	}
 }
-
-
-
-
