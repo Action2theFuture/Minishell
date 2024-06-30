@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 17:58:55 by junsan            #+#    #+#             */
-/*   Updated: 2024/06/29 18:05:52 by junsan           ###   ########.fr       */
+/*   Updated: 2024/06/30 10:47:20 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,17 +71,8 @@ static char	**prepare_cmd(\
 static int	execute_cmd(char **chunk, t_info *info)
 {
 	int		status;
-	int		built_in;
-	int		(*arr_built_in[8])(const char *, const char **, t_env *);
 
-	init_builtin(arr_built_in);
-	built_in = handler_builtin(chunk[0]);
-	// to do : built in ... why 
-	//if (built_in != NONE)
-	//	status = arr_built_in[built_in](\
-	//			(const char *)chunk[0], (const char **)chunk, info->env);
-	//else
-		status = launch_process(chunk[0], chunk, info);
+	status = launch_process(chunk[0], chunk, info);
 	free(chunk[0]);
 	free(chunk);
 	if (info->path)
