@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/13 19:46:03 by junsan            #+#    #+#             */
-/*   Updated: 2024/06/13 19:46:28 by junsan           ###   ########.fr       */
+/*   Updated: 2024/06/29 13:02:54 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,7 @@ static void	handle_repeated_operators(const char **input, t_token **list)
 			(*input)++;
 		}
 		else
-		{
-			if (**input != '&')
-				add_token(list, *input, 1);
-		}
+			add_token(list, *input, 1);
 	}
 	else
 	{
