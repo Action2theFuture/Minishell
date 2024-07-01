@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cd.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rabouzia <rabouzia@student.42.fr>          +#+  +:+       +#+        */
+/*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/02 02:39:36 by rabouzia          #+#    #+#             */
-/*   Updated: 2024/06/29 20:54:34 by rabouzia         ###   ########.fr       */
+/*   Updated: 2024/07/01 11:33:56 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 // cd -
 void	lst_swap(t_env *a)
 {
-	t_env *tmp;
+	t_env	*tmp;
 
 	tmp = a->pwd;
 	a->pwd = a->old_pwd;

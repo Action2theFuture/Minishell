@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rabouzia <rabouzia@student.42.fr>          +#+  +:+       +#+        */
+/*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/11 19:22:19 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/01 09:16:15 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/01 11:36:11 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,7 +147,7 @@ typedef struct s_info
 	int					prev_pipe[2];
 	int					tmp_fd;
 	int					exit_status;
-	int status; // can proceed by logical
+	int					status; // can proceed by logical
 	t_env				*env;
 }						t_info;
 
@@ -469,7 +469,8 @@ int						ft_exit(const char *cmd, const char **args,
 // ft_export.c
 // void			ft_export_add(char *var, char **arg);
 // void			ft_export_show(t_env *env);
-int           ft_export(const char *cmd, const char **args, t_env *list);
+int						ft_export(\
+		const char *cmd, const char **args, t_env *list);
 // t_env			*sort_list(t_env *env);
 
 // ft_pwd.c

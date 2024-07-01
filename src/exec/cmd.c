@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rabouzia <rabouzia@student.42.fr>          +#+  +:+       +#+        */
+/*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 17:58:55 by junsan            #+#    #+#             */
-/*   Updated: 2024/06/30 22:14:41 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/01 11:30:44 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,8 +65,16 @@ static int	execute_cmd(char **chunk, t_info *info)
 {
 	int		status;
 	int		i;
+	int		built_in;
+	int		(*arr_built_in[8])(const char *, const char **, t_env *);
 
-	status = launch_process(chunk[0], chunk, info);
+	init_builtin(arr_built_in);
+	built_in = handler_builtin(chunk[0]);
+	if (built_in == ENV || built_in == M_ECHO || built_in == NONE)
+		status = launch_process(chunk[0], chunk, info);
+	else
+		status = arr_built_in[built_in](\
+			(const char *)chunk[0], (const char **)chunk, info->env);
 	i = -1;
 	while (chunk[++i])
 		free(chunk[i]);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_env.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rabouzia <rabouzia@student.42.fr>          +#+  +:+       +#+        */
+/*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 11:48:50 by junsan            #+#    #+#             */
-/*   Updated: 2024/06/29 19:48:15 by rabouzia         ###   ########.fr       */
+/*   Updated: 2024/07/01 11:34:06 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,6 @@ int	ft_env(const char *cmd, const char **args, t_env *list)
 	}
 	return (0);
 }
-
 
 // void	env_split(const char *str, char **name, char **content)
 // {
