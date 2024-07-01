@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 20:03:41 by junsan            #+#    #+#             */
-/*   Updated: 2024/06/28 14:01:00 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/01 11:07:48 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,6 @@ void	handle_dollar_sign(t_env_var *env_var)
 {
 	char	var_name[100];
 
-	printf("str : %c\n", env_var->str[env_var->i]);
 	if (env_var->str[env_var->i] == '$' && \
 			env_var->str[env_var->i + 1] == '{')
 		handle_braced_var(env_var, var_name);

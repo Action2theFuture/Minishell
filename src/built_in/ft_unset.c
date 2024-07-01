@@ -6,30 +6,69 @@
 /*   By: rabouzia <rabouzia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 14:48:24 by junsan            #+#    #+#             */
-/*   Updated: 2024/06/20 18:14:04 by rabouzia         ###   ########.fr       */
+/*   Updated: 2024/06/29 17:45:44 by rabouzia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	ft_unset(const char *cmd, const char **args, t_env *list)
+t_env	*ft_envlast(t_env *lst)
 {
-	t_env *cur;
-	(void) cmd;
-
-	if (!args)
-	 	perror("unset");
-	cur = list;
-	while(cur)
-	{
-		// if (cur->next->next != NULL)
-		// 	cur = env->next;
-		cur = cur->next;
-	}
-	free (cur);
-	// env->next = NULL;
-	return 0;
+	if (!lst)
+		return (0);
+	while (lst->next)
+		lst = lst->next;
+	return (lst);
 }
 
-	// if (unsertenv(var) != NULL)
-	// 	perror("unset");
+// t_env *del_first(t_env **lst)
+// {
+//     t_env **tmp;
+//     tmp = (*lst)->next;
+//     free(*lst);
+//     return (tmp);
+// }
+
+int	del_node(t_env **lst, const char *to_unset)
+{
+	t_env	*cur;
+	t_env	*prev;
+
+	if (!lst || !*lst)
+		return (0);
+	cur = *lst;
+	prev = NULL;
+	while (cur)
+	{
+		if (strcmp(cur->name, to_unset) == 0)
+		{
+			if (prev == NULL)
+				*lst = cur->next;
+			else
+				prev->next = cur->next;
+			free(cur->name);
+			free(cur->content);
+			free(cur);
+			return (1);
+		}
+		prev = cur;
+		cur = cur->next;
+	}
+	return (0);
+}
+
+int	ft_unset(const char *cmd, const char **args, t_env *list)
+{
+	int	i;
+
+	(void)cmd;
+	i = 0;
+	if (!args || !list)
+		return (0);
+	while (args[i])
+	{
+		del_node(&list, args[i]);
+		i++;
+	}
+	return (1);
+}

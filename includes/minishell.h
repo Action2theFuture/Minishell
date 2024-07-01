@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/11 19:22:19 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/01 17:36:59 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/01 11:36:11 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,27 +50,27 @@ typedef enum tree_direction
 {
 	LEFT,
 	RIGHT,
-}	t_tree_direction;
+}						t_tree_direction;
 
 typedef enum type_dir
 {
 	IS_DIRECTORY = 126,
 	CMD_NOT_FOUND = 127,
-}	t_type_dir;
+}						t_type_dir;
 
 typedef enum type_descriptor
 {
 	READ,
 	WRITE,
 	APPEND,
-}	t_type_descriptor;
+}						t_type_descriptor;
 
 typedef enum status
 {
 	SUCCESS = 0,
 	FAILURE = 1,
 	MALLOC_ERR,
-}	t_status;
+}						t_status;
 
 typedef enum type_logical
 {
@@ -102,7 +102,7 @@ typedef enum error
 	UNCLOSED_QUOTE,
 	TOKEN_ERROR,
 	PARSE_ERROR,
-}	t_error;
+}						t_error;
 
 typedef enum path_type
 {
@@ -110,7 +110,7 @@ typedef enum path_type
 	PATH_RELATIVE,
 	PATH_COMMAND,
 	PATH_INVALID
-}	t_path_type;
+}						t_path_type;
 
 typedef enum built_in
 {
@@ -200,8 +200,8 @@ typedef struct s_env_var
 }	t_env_var;
 
 // process_input.c
-void					process_input(\
-		char *input, t_env *env, int *exit_status);
+void					process_input(char *input, t_env *env,
+							int *exit_status);
 
 // --------------------------- init --------------------------//
 // init_minishell.c
@@ -210,6 +210,8 @@ void					init_minishell(char **envp, t_env **env);
 // env_init.c
 void					add_env(t_env **head, const char *str);
 t_env					*env_init(char **envp);
+void					env_split(const char *str, char **name, char **content);
+char					*valid_required_env_vars(void);
 
 // env_utils.c
 size_t					env_size(t_env *head);
@@ -283,8 +285,8 @@ void					tokenize(const char *input, t_token **tokens);
 
 // tokenize_utils.c
 t_token_list			*get_token_list(t_token *token);
-void					add_token(\
-		t_token **head, const char *start, size_t len);
+void					add_token(t_token **head, const char *start,
+							size_t len);
 
 // handle_quotes.c
 void					handle_quotes(const char **input,
@@ -457,9 +459,8 @@ void					add_builtin_node(t_env **head, char *name,
 							char *content);
 void					printf_env(t_env *list);
 int						ft_env(const char *cmd, const char **args, t_env *list);
-char					*ft_strndup(const char *src, size_t n);
-t_env					*builtin_new_node(char *name, char *content);
-t_env					*fill_env(int ac, char **av, char **env);
+
+// void	env_split(const char *str, char **name, char **content);
 
 // ft_exit.c
 int						ft_exit(const char *cmd, const char **args,
@@ -468,7 +469,8 @@ int						ft_exit(const char *cmd, const char **args,
 // ft_export.c
 // void			ft_export_add(char *var, char **arg);
 // void			ft_export_show(t_env *env);
-// int				ft_export(char *cmd, char **args, t_env *list);
+int						ft_export(\
+		const char *cmd, const char **args, t_env *list);
 // t_env			*sort_list(t_env *env);
 
 // ft_pwd.c

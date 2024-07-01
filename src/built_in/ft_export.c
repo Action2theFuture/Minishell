@@ -3,102 +3,151 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rabouzia <rabouzia@student.42.fr>          +#+  +:+       +#+        */
+/*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 23:38:01 by rabouzia          #+#    #+#             */
-/*   Updated: 2024/06/20 18:12:14 by rabouzia         ###   ########.fr       */
+/*   Updated: 2024/07/01 10:43:47 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// void sort_env(t_cmd_list *env)
-// {
-// }
-
-
-int ft_export(const char *cmd, const char **args, t_env *list)
+int	check_first_arg(const char arg)
 {
-	(void) cmd;
-	(void) list;
-	(void) args;
-
-	
-	return 0;
+	if (ft_isalpha(arg) || arg == '_')
+		return (0);
+	else
+		return (1);
 }
 
-// char	**env_split(char const *str, char c)
-// {
-// 	char		**str_arr;
-// 	size_t		i;
-// 	size_t		j;
-// 	size_t		tmp;
-
-// 	if (!str)
-// 		return (NULL);
-// 	str_arr = (char **)malloc(sizeof(char *) * (count_word(str, c) + 1));
-// 	if (!str_arr)
-// 		return (NULL);
-// 	i = 0;
-// 	j = 0;
-// 	while (i < count_word(str, c) && str[j])
-// 	{
-// 		while (str[j] == c)
-// 			j++;
-// 		tmp = j;
-// 		while ((str[j] != c) && str[j])
-// 			j++;
-// 		str_arr[i] = ft_strdup_result(&((char *)str)[tmp], j - tmp);
-// 		if (!str_arr[i++])
-// 			ft_free(str_arr);
-// 	}
-// 	str_arr[i] = NULL;
-// 	return (str_arr);
-// }
-
-// t_env	*sort_list(t_env *env)
-// {
-// 	t_env	*head;
-// 	int		tmp;
-
-// 	head = env;
-// 	while (env->next != NULL)
-// 	{
-// 		if (ft_strcmp(env->name, env->next->name) == 0)
-// 		{
-// 			tmp = env->name;
-// 			env->name = env->next->name;
-// 			env->next->name = tmp;
-// 			env = head;
-// 		}
-// 		else
-// 			env = env->next;
-// 	}
-//     env = head;
-// 	return (env);
-// }
-
-// void ft_export_show(t_env *env)
-// {
-// 	env = sort_list(env);
-// 	while (env)
-// 	{
-// 		printf("%s=%s\n", env->name, env->content);
-// 		env = env->next;
-// 	}	
-// }
-
-/*
-void ft_export_add(char *var, char **arg)
+void	swap_nodes(t_env *a, t_env *b)
 {
-	t_env *env;
-	env = arg->env;
-	while(env)
-		env= env->next;
-	if (node->right != NULL)
-	
-	if (ft_strchr(var,'=')) // search a = then stop
-		env = add_builtin_node(var, var);
+	char	*tmp_name;
+	char	*tmp_content;
+
+	tmp_name = a->name;
+	tmp_content = a->content;
+	a->name = b->name;
+	a->content = b->content;
+	b->name = tmp_name;
+	b->content = tmp_content;
+}
+
+t_env	*sort_list(t_env *env)
+{
+	t_env	*head;
+	t_env	*current;
+	int		swapped;
+
+	head = ft_calloc(sizeof(t_env), 1);
+	head = env;
+	if (env == NULL)
+		return (NULL);
+	swapped = 1;
+	while (swapped)
+	{
+		swapped = 0;
+		current = head;
+		while (current->next != NULL)
+		{
+			if (ft_strncmp(current->name, current->next->name,
+					ft_strlen(current->name)) > 0)
+			{
+				swap_nodes(current, current->next);
+				swapped = 1;
+			}
+			current = current->next;
+		}
+	}
+	return (head);
+}
+
+void	ft_export_show(t_env *env)
+{
+	t_env	*tmp;
+
+	tmp = sort_list(env);
+	while (tmp)
+	{
+		printf("%s=%s\n", tmp->name, tmp->content);
+		tmp = tmp->next;
+	}
+}
+
+int	var_exist_already(const char *var, t_env *lst)
+{
+	while (lst)
+	{
+		if (ft_strncmp(var, lst->name, ft_strlen(var)))
+			return (1);
+		lst = lst->next;
+	}
+	return (0);
+}
+
+// modifier une variable si elle existe deja
+// expand
+
+int	ft_export(const char *cmd, const char **args, t_env *list)
+{
+	int		i;
+	t_env	*tmp;
+	char	*name;
+	char	*content;
+
+	(void)cmd;
+	tmp = list;
+	if (!args[1] || !*args)
+		return (ft_export_show(list), 1);
+	i = 1;
+	while (args[i])
+	{
+		if (var_exist_already(args[i], list))
+		{	if (check_first_arg(args[i][0]))
+			{
+				ft_putstr_fd("export: ", 2);
+				ft_putstr_fd((char *)args[i], 2);
+				ft_putstr_fd(": not a valid identifier\n", 2);
+			}
+		}
+		else
+		{
+			env_split(args[i], &name, &content);
+			add_builtin_node(&tmp, name, content);
+		}
+		i++;
+	}
+	return (0);
+}
+
+t_env	*builtin_new_node(char *name, char *content)
+{
+	t_env	*res;
+
+	res = (t_env *)malloc(sizeof(t_env));
+	if (!res)
+		return (NULL);
+	res->name = ft_strdup(name);
+	res->content = ft_strdup(content);
+	res->next = NULL;
+	return (res);
+}
+
+void	add_builtin_node(t_env **head, char *name, char *content)
+{
+	t_env	*new_node;
+	t_env	*cur;
+
+	new_node = builtin_new_node(name, content);
+	if (!name || !content || !new_node)
+		return ;
+	if (*head == NULL)
+		*head = new_node;
 	else
-		return;
-}*/
+	{
+		cur = *head;
+		while (cur->next)
+			cur = cur->next;
+		cur->next = new_node;
+	}
+}

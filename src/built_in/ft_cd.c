@@ -3,20 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cd.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rabouzia <rabouzia@student.42.fr>          +#+  +:+       +#+        */
+/*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/02 02:39:36 by rabouzia          #+#    #+#             */
-/*   Updated: 2024/06/20 19:10:49 by rabouzia         ###   ########.fr       */
+/*   Updated: 2024/07/01 11:33:56 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 // to be completed
-
+// cd -
 void	lst_swap(t_env *a)
 {
-	t_env *tmp;
+	t_env	*tmp;
 
 	tmp = a->pwd;
 	a->pwd = a->old_pwd;
@@ -26,24 +26,23 @@ void	lst_swap(t_env *a)
 
 int	ft_cd(const char *cmd, const char **args, t_env *list)
 {
-	printf("cmd in cd: %s\n", cmd);
-	if (!args[0])
-		return (change_dir("HOME", list), 1);
-	if (args[1])
+	(void)cmd;
+	// printf("cmd in cd: %s\n", cmd);
+	// cd src 23d2 wd -> too many args
+	// create fct search in env to do cd (alone)
+	// cd -
+	if (!args[1])
+		return (change_dir("/home", list), 1);
+	if (!args[2])
 	{
-		ft_putstr_fd("cd: too many arguments", 2);
-		return 1;
-	}
-	if (ft_strncmp(args[0], "-", 1))
-	{
-		change_dir(list->old_pwd->content, list);
-		lst_swap(list);
+		
 	}
 	if (chdir(args[1]) == -1)
 	{
-		ft_putstr_fd("cd: no such file or directory: ", 2);
+		ft_putstr_fd("cd: ",2);
 		ft_putstr_fd((char *)args[1], 2);
-		return 1;
+		ft_putstr_fd(": No such file or directory\n", 2);
+		return (1);
 	}
 	else
 		change_dir(args[1], list);

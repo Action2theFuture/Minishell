@@ -6,13 +6,13 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 11:37:49 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/01 19:32:24 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/01 11:04:14 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	env_split(const char *str, char **name, char **content)
+void	env_split(const char *str, char **name, char **content)
 {
 	size_t	i;
 

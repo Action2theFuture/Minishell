@@ -3,34 +3,58 @@
 /*                                                        :::      ::::::::   */
 /*   ft_exit.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rabouzia <rabouzia@student.42.fr>          +#+  +:+       +#+        */
+/*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 12:05:58 by rabouzia          #+#    #+#             */
-/*   Updated: 2024/06/20 18:18:40 by rabouzia         ###   ########.fr       */
+/*   Updated: 2024/07/01 11:34:48 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+static int	validate_exit_args(const char **args)
+{
+	int	i;
+
+	i = 0;
+	while (args[1][i])
+	{
+		if (!ft_isdigit(\
+			args[1][i]) && args[1][i] != '-' && args[1][i] != '+')
+		{
+			ft_putstr_fd("kashell$> exit: ", STDERR_FILENO);
+			ft_putstr_fd((char *)args[0], STDERR_FILENO);
+			ft_putstr_fd(": numeric argument required\n", STDERR_FILENO);
+			return (255); // Exit with status 255
+		}
+		i++;
+	}
+	return (0);
+}
+
 int	ft_exit(const char *cmd, const char **args, t_env *list)
 {
-	(void) cmd;
+	int	num_args;
+	int	exit_code;
+
+	(void)cmd;
 	(void)list;
-	if (*args && !ft_isdigit(ft_atoi(args[0])))
+	num_args = 0;
+	while (args[num_args])
+		num_args++;
+	if (num_args == 1)
+		(ft_putstr_fd("exit\n", 2), exit(0));
+	if (num_args > 2)
 	{
-		ft_putstr_fd("kashell: exit: ", 1);
-		ft_putstr_fd((char *)args[0], 1);
-		ft_putstr_fd(": numeric argument required\n", 1);
-		exit(1);
+		ft_putstr_fd("bash: exit: too many arguments\n", STDERR_FILENO);
+		return (1); // Return 1 to indicate error but not exit the shell
 	}
-	if (*args && sizeof(args) > 1)
+	if (args[1])
 	{
-		ft_putstr_fd("bash: exit: too many arguments\n", 1);
-		return (0);
-	}
-	else
-	{
-		ft_putstr_fd((char *)args[0], STDERR_FILENO);
+		exit_code = validate_exit_args(args);
+		if (exit_code != 0)
+			exit(exit_code);
 		exit(ft_atoi(args[0]));
 	}
+	exit(0);
 }
