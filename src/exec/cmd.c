@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 17:58:55 by junsan            #+#    #+#             */
-/*   Updated: 2024/06/30 22:14:41 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/01 20:11:51 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,16 +39,20 @@ static char	**prepend_cmd_and_add_spaces(char **cmd, char **args, int cmd_cnt)
 static char	**prepare_cmd(\
 			char **args, t_ast *cmd_node, t_ast *args_node, t_info *info)
 {
-	char	**chunk;
-	char	**parsed_cmd;
-	int		cnt;
+	t_path_type	path_type;
+	char		**chunk;
+	char		**parsed_cmd;
+	int			cnt;
 
 	args = NULL;
 	chunk = NULL;
-	if (get_path_type(cmd_node->data, info) == PATH_RELATIVE)
+	path_type = get_path_type(cmd_node->data, info);
+	if (path_type == PATH_RELATIVE)
 		info->path = get_absolute_path(cmd_node->data);
-	if (get_path_type(cmd_node->data, info) == PATH_COMMAND)
+	if (path_type == PATH_COMMAND)
 		info->path = find_cmd_in_path(cmd_node->data, info->env);
+	if (path_type == PATH_INVALID)
+		info->path = NULL;
 	cnt = 0;
 	parsed_cmd = parse_cmd_line_with_quotes(cmd_node->data, &cnt);
 	if (args_node)

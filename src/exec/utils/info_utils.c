@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/16 19:56:30 by junsan            #+#    #+#             */
-/*   Updated: 2024/06/27 16:53:16 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/01 19:36:49 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ void	init_info(t_info *info)
 	info->prev_pipe[1] = -1;
 	info->pipe_cnt = -1;
 	info->in_subshell = false;
+	info->path = NULL;
 }
 
 void	clear_info(t_info *info)
