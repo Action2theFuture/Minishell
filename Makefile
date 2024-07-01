@@ -5,8 +5,8 @@
 #                                                     +:+ +:+         +:+      #
 #    By: junsan <junsan@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    CreateCd: 2024/05/11 19:03:01 by junsan            #+#    #+#              #
-#    Updated: 2024/06/29 17:44:57 by rabouzia         ###   ########.fr        #
+#    CreateCd: 2024/05/11 19:03:01 by junsan            #+#    #+#             #
+#    Updated: 2024/06/29 13:50:10 by junsan           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -47,6 +47,7 @@ PARSING	= parsing.c arg_parse.c parse_subshell.c									\
 		/utils/parsing_utils.c /utils/tokenize_utils.c /utils/tokenize_utils_2.c	\
 		/utils/type_redir_functions.c /utils/type_functions.c /utils/get_type.c 	\
 		/utils/subshell_utils.c /utils/parsing_utils_2.c							\
+		/utils/parsing_quotes_in_cmd.c												\
 		/utils/validation/valid_token.c /utils/validation/valid_token_utils.c		\
 		/utils/validation/valid_token_err.c /utils/validation/valid_token_err_2.c
 UTILS	= string_utils.c string_utils_2.c quotes_str.c error_utils.c
@@ -85,7 +86,9 @@ vpath %.c ./src/
 all: $(NAME)
 
 $(NAME) : $(LIBFT) $(OBJS)
-	@$(CC) $(CFLAGS) -o $@ $(OBJS) $(LIBFT) $(LD_FLAGS) > /dev/null 2>&1 & COMPILER_PID=$$!; \
+	#@$(CC) $(CFLAGS) -o $@ $(OBJS) $(LIBFT) $(LD_FLAGS) > /dev/null 2>&1 & COMPILER_PID=$$!; \
+	
+	$(CC) $(CFLAGS) -o $@ $(OBJS) $(LIBFT) $(LD_FLAGS)
 	./$(SPINNER_SCRIPT) $$COMPILER_PID; \
 	wait $$COMPILER_PID
 	@echo "$(COLOR_GREEN)Compilation completed successfully! 🎉$(COLOR_RESET)"
@@ -97,7 +100,7 @@ OBJ_FILES_SPINNER_PID=
 $(OBJ_DIR)/%.o: %.c
 	@mkdir -p $(@D)
 	#@$(CC) $(CFLAGS) $(IFLAGS) -c $< -o $@ > /dev/null 2>&1
-	$(CC) $(CFLAGS) $(IFLAGS) -c $< -o $@
+	@$(CC) $(CFLAGS) $(IFLAGS) -c $< -o $@
 
 $(LIBFT): 
 	@echo "$(COLOR_YELLOW)Compliling $(NAME)...$(COLOR_RESET)"

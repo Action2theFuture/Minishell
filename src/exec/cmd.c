@@ -6,13 +6,13 @@
 /*   By: rabouzia <rabouzia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 17:58:55 by junsan            #+#    #+#             */
-/*   Updated: 2024/06/29 18:02:36 by rabouzia         ###   ########.fr       */
+/*   Updated: 2024/06/30 22:14:41 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static char	**prepend_cmd_and_add_spaces(const char *cmd, char **args)
+static char	**prepend_cmd_and_add_spaces(char **cmd, char **args, int cmd_cnt)
 {
 	char	**new_args;
 	int		arg_cnt;
@@ -21,24 +21,27 @@ static char	**prepend_cmd_and_add_spaces(const char *cmd, char **args)
 	arg_cnt = 0;
 	while (args[arg_cnt])
 		arg_cnt++;
-	new_args = (char **)malloc(sizeof(char *) * (arg_cnt + 2));
+	new_args = (char **)malloc(sizeof(char *) * (cmd_cnt + arg_cnt + 1));
 	if (!new_args)
-	{
-		perror("malloc error");
-		return (NULL);
-	}
-	new_args[0] = ft_strdup(cmd);
+		return (perror("malloc error"), NULL);
+	i = -1;
+	while (++i < cmd_cnt)
+		new_args[i] = cmd[i];
 	i = -1;
 	while (++i < arg_cnt)
-		new_args[i + 1] = args[i];
-	new_args[arg_cnt + 1] = NULL;
-	return (new_args);
+	{
+		remove_empty_quotes(args[i]);
+		new_args[cmd_cnt + i] = ft_strdup(args[i]);
+	}
+	return (new_args[cmd_cnt + arg_cnt] = NULL, new_args);
 }
 
 static char	**prepare_cmd(\
 			char **args, t_ast *cmd_node, t_ast *args_node, t_info *info)
 {
 	char	**chunk;
+	char	**parsed_cmd;
+	int		cnt;
 
 	args = NULL;
 	chunk = NULL;
@@ -46,30 +49,27 @@ static char	**prepare_cmd(\
 		info->path = get_absolute_path(cmd_node->data);
 	if (get_path_type(cmd_node->data, info) == PATH_COMMAND)
 		info->path = find_cmd_in_path(cmd_node->data, info->env);
+	cnt = 0;
+	parsed_cmd = parse_cmd_line_with_quotes(cmd_node->data, &cnt);
 	if (args_node)
 	{
 		args = ft_split(args_node->data, ARR_SEP);
-		chunk = prepend_cmd_and_add_spaces(cmd_node->data, args);
+		chunk = prepend_cmd_and_add_spaces(parsed_cmd, args, cnt);
 	}
 	else
-		chunk = allocate_null_and_cmd_chunk(cmd_node->data);
+		chunk = allocate_null_and_cmd_chunk(parsed_cmd, cnt);
 	return (chunk);
 }
 
 static int	execute_cmd(char **chunk, t_info *info)
 {
 	int		status;
-	int		built_in;
-	int		(*arr_built_in[8])(const char *, const char **, t_env *);
+	int		i;
 
-	init_builtin(arr_built_in);
-	built_in = handler_builtin(chunk[0]);
-	if (built_in != NONE)
-		status = arr_built_in[built_in](\
-				(const char *)chunk[0], (const char **)chunk, info->env);
-	else
-		status = launch_process(chunk[0], chunk, info);
-	free(chunk[0]);
+	status = launch_process(chunk[0], chunk, info);
+	i = -1;
+	while (chunk[++i])
+		free(chunk[i]);
 	free(chunk);
 	if (info->path)
 		free(info->path);

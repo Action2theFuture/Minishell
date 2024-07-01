@@ -6,7 +6,7 @@
 /*   By: rabouzia <rabouzia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/11 19:22:19 by junsan            #+#    #+#             */
-/*   Updated: 2024/06/29 19:54:21 by rabouzia         ###   ########.fr       */
+/*   Updated: 2024/07/01 09:16:15 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,11 @@
 # include <unistd.h>    // write, access, close, fork, execve, pipe, dup, dup2
 
 # define MAX_PATH_LENGTH 4096
+# define MAX_ARGS 100
 # define MEMORY_CAPACITY 256
 # define HISTSIZE 500
 # define DELIMS "|&<>"
+# define SHELL_METACHARS "\"\'()&|<>"
 # define ARR_SEP ';'
 # define ASCII_ART_PATH "assets/ascii_art_doh"
 # define HEREDOC_TMP "heredoc_tmp"
@@ -209,6 +211,7 @@ void					init_minishell(char **envp, t_env **env);
 void					add_env(t_env **head, const char *str);
 t_env					*env_init(char **envp);
 void					env_split(const char *str, char **name, char **content);
+char					*valid_required_env_vars(void);
 
 // env_utils.c
 size_t					env_size(t_env *head);
@@ -245,6 +248,11 @@ bool					parse_io_redirection(t_token **token, t_ast **node);
 
 // parse_subshell.c
 bool					parse_subshell(t_token **token, t_ast **node);
+
+// parsing_quotes_in_cmd.c
+char					*remove_all_quotes(const char *input);
+char					**parse_cmd_line_with_quotes(\
+		const char *input, int *cnt);
 
 // type_functions.c
 bool					is_logical_operator(const char *token);
@@ -334,7 +342,7 @@ void					clear_info(t_info *info);
 // args_utils.c
 void					free_args(char **args);
 void					replace_env_vars_in_args(char **args, t_info *info);
-char					**allocate_null_and_cmd_chunk(const char *cmd);
+char					**allocate_null_and_cmd_chunk(char **cmd, int cmd_cnt);
 
 // quotes_utils.c
 void					remove_consecutive_double_quotes_from_args(char **args);
@@ -418,6 +426,7 @@ bool					is_operator(const char *cmd);
 void					remove_quotes(char *str);
 void					remove_single_quotes(char *str);
 void					remove_double_quotes(char *str);
+void					remove_empty_quotes(char *str);
 
 // error_utils.c
 int						fd_log_error(char *cmd, char *arg, char *error);
@@ -460,7 +469,7 @@ int						ft_exit(const char *cmd, const char **args,
 // ft_export.c
 // void			ft_export_add(char *var, char **arg);
 // void			ft_export_show(t_env *env);
-int	ft_export(const char *cmd, const char **args, t_env *list);
+int           ft_export(const char *cmd, const char **args, t_env *list);
 // t_env			*sort_list(t_env *env);
 
 // ft_pwd.c

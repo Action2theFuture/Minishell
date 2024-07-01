@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/28 15:08:22 by junsan            #+#    #+#             */
-/*   Updated: 2024/06/28 15:31:01 by junsan           ###   ########.fr       */
+/*   Updated: 2024/06/30 12:11:23 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,8 @@ static void	remove_outer_double_quotes(t_env_var *env_var)
 
 static void	remove_outer_single_quotes(t_env_var *env_var)
 {
-	while (env_var->str[0] == '\'' && env_var->str[ft_strlen(env_var->str) - 1] == '\'' && \
+	while (env_var->str[0] == '\'' && \
+		env_var->str[ft_strlen(env_var->str) - 1] == '\'' && \
 		!env_var->is_value_expansion)
 		remove_single_quotes((char *)env_var->str);
 }

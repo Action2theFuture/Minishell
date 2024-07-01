@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 12:01:59 by junsan            #+#    #+#             */
-/*   Updated: 2024/06/27 18:20:02 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/01 10:10:54 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,11 +86,15 @@ static int	output_redir(t_ast *node, t_info *info)
 static int	handle_ft_redirection(t_ast *node, t_info *info)
 {
 	t_ast	*io_node;
+	t_ast	*arg_node;
 
 	io_node = node->left;
+	arg_node = node->right;
 	if (io_node->type == IN_REDIR || io_node->type == IN_HEREDOC || \
 		io_node->type == IN_HERESTR)
 	{
+		if (io_node->type == IN_REDIR && (access(arg_node->data, F_OK) == -1))
+			return (fd_log_error(NULL, arg_node->data, strerror(errno)), 127);
 		if (input_redir(node, info) == FAILURE)
 			return (FAILURE);
 	}
@@ -114,7 +118,7 @@ int	handle_io_redirection(t_ast *node, t_info *info)
 	while (node && status == SUCCESS)
 	{
 		status = handle_ft_redirection(node, info);
-		if (status == FAILURE)
+		if (status > SUCCESS)
 			info->pipe_exists = false;
 		if (!node->left->left)
 			break ;
