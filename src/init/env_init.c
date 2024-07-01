@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 11:37:49 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/01 09:13:40 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/01 18:03:48 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,24 @@ void	add_env(t_env **head, const char *str)
 	}
 }
 
+static void	add_env_minimum(t_env **head)
+{
+	char	*cur_dir;
+
+	cur_dir = getcwd(NULL, 0);
+	if (!cur_dir)
+	{
+		perror("getcwd error");
+		return ;
+	}
+	*head = new_env("HOME", cur_dir);
+	(*head)->next = new_env("PWD", cur_dir);
+	(*head)->next->next = new_env("SHLVL", "1");
+	(*head)->next->next->next = new_env("PATH", "/usr/bin:/bin");
+	(*head)->next->next->next->next = new_env("_", "/usr/bin/env");
+	free(cur_dir);
+}
+
 t_env	*env_init(char **envp)
 {
 	t_env	*env;
@@ -84,24 +102,7 @@ t_env	*env_init(char **envp)
 	env = NULL;
 	while (envp[++i])
 		add_env(&env, envp[i]);
+	if (env == NULL)
+		add_env_minimum(&env);
 	return (env);
-}
-
-char	*valid_required_env_vars(void)
-{
-	if (getenv("PATH") == NULL)
-		return ("PATH");
-	else if (getenv("HOME") == NULL)
-		return ("HOME");
-	else if (getenv("SHELL") == NULL)
-		return ("SHELL");
-	else if (getenv("PWD") == NULL)
-		return ("PWD");
-	else if (getenv("OLDPWD") == NULL)
-		return ("OLDPWD");
-	else if (getenv("USER") == NULL)
-		return ("USER");
-	else if (getenv("SHLVL") == NULL)
-		return ("SHLVL");
-	return (NULL);
 }

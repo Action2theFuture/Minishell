@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/11 19:22:19 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/01 09:16:15 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/01 17:36:59 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -210,7 +210,6 @@ void					init_minishell(char **envp, t_env **env);
 // env_init.c
 void					add_env(t_env **head, const char *str);
 t_env					*env_init(char **envp);
-char					*valid_required_env_vars(void);
 
 // env_utils.c
 size_t					env_size(t_env *head);
