@@ -5,7 +5,7 @@
 #                                                     +:+ +:+         +:+      #
 #    By: junsan <junsan@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    CreateCd: 2024/05/11 19:03:01 by junsan            #+#    #+#              #
+#    CreateCd: 2024/05/11 19:03:01 by junsan            #+#    #+#             #
 #    Updated: 2024/06/29 13:50:10 by junsan           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
@@ -26,7 +26,7 @@ CC		= cc
 LIBFT 	= libft/libft.a
 IFLAGS 	:= -I ./includes/ -I ./libft/includes/
 
-CFLAGS 	:= -Wall -Wextra -Werror
+CFLAGS 	:= -Wall -Wextra -Werror -g3
 
 SRC_DIR = src
 PARSING_DIR = $(SRC_DIR)/parsing

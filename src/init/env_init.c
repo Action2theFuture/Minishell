@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   env_init.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rabouzia <rabouzia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 11:37:49 by junsan            #+#    #+#             */
 /*   Updated: 2024/07/01 09:13:40 by junsan           ###   ########.fr       */
@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-static void	env_split(const char *str, char **name, char **content)
+void	env_split(const char *str, char **name, char **content)
 {
 	size_t	i;
 
