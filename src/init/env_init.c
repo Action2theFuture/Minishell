@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_init.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ramzerk <ramzerk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 11:37:49 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/01 11:04:14 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/01 13:58:19 by ramzerk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,8 @@ void	env_split(const char *str, char **name, char **content)
 		i++;
 	if (str[i] != '=')
 	{
-		*name = NULL;
-		*content = NULL;
+		*name = (char *)str;
+		*content =NULL;
 		return ;
 	}
 	*name = ft_strndup(str, i);

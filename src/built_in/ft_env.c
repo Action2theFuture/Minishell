@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_env.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ramzerk <ramzerk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 11:48:50 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/01 11:34:06 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/01 16:09:02 by ramzerk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,10 @@ void	printf_env(t_env *list)
 	cur = list;
 	while (cur)
 	{
-		printf("%s=%s\n", cur->name, cur->content);
+		if (!cur->content)
+            continue;        
+		else
+            printf("export %s=%s\n", cur->name, cur->content);
 		cur = cur->next;
 	}
 }
