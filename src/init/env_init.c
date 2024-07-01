@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 11:37:49 by junsan            #+#    #+#             */
-/*   Updated: 2024/06/23 18:04:47 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/01 09:13:40 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,4 +85,23 @@ t_env	*env_init(char **envp)
 	while (envp[++i])
 		add_env(&env, envp[i]);
 	return (env);
+}
+
+char	*valid_required_env_vars(void)
+{
+	if (getenv("PATH") == NULL)
+		return ("PATH");
+	else if (getenv("HOME") == NULL)
+		return ("HOME");
+	else if (getenv("SHELL") == NULL)
+		return ("SHELL");
+	else if (getenv("PWD") == NULL)
+		return ("PWD");
+	else if (getenv("OLDPWD") == NULL)
+		return ("OLDPWD");
+	else if (getenv("USER") == NULL)
+		return ("USER");
+	else if (getenv("SHLVL") == NULL)
+		return ("SHLVL");
+	return (NULL);
 }
