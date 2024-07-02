@@ -3,21 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rabouzia <rabouzia@student.42.fr>          +#+  +:+       +#+        */
+/*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/11 19:14:21 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/01 09:11:27 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/02 12:27:52 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-/*
-Thinking !! :
-1 case. gettenv variable by env argument in main fuction
-	and putting them in struct
-2 case. or just env variable by function, getenv()
-----------------------------------------------------------
-*/
 #include "minishell.h"
+
+static void	exit_shell(void)
+{
+	printf("\033[1A");
+	printf("\033[10C");
+	printf("exit\n");
+}
 
 int	main(int ac, char **av, char **envp)
 {
@@ -35,13 +35,15 @@ int	main(int ac, char **av, char **envp)
 	{
 		input = readline("kashell$> ");
 		if (!input)
+		{
+			exit_shell();
 			break ;
+		}
 		if (!*input)
 			continue ;
 		else
 			add_history(input);
 		process_input(input, env, &exit_status);
 	}
-	clear_env(env);
-	return (0);
+	return (clear_env(env), 0);
 }
