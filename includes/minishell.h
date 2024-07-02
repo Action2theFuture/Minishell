@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/11 19:22:19 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/02 10:04:17 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/02 11:48:28 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -425,11 +425,14 @@ char					*trim_whitespace(const char *str);
 char					*ft_strndup(const char *str, size_t n);
 bool					is_operator(const char *cmd);
 
-	// quotes_str.c
+// quotes_str.c
 void					remove_quotes(char *str);
 void					remove_single_quotes(char *str);
 void					remove_double_quotes(char *str);
 void					remove_empty_quotes(char *str);
+
+// subshell_and_quote_str.c
+bool					are_parentheses_balanced(const char *input);
 
 // error_utils.c
 int						fd_log_error(char *cmd, char *arg, char *error);

@@ -6,12 +6,13 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/25 22:45:45 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/02 09:05:53 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/02 11:52:42 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+//print_tree(root, 10);
 static void	parse_and_execute(\
 		t_token *tokens, t_env *env, int *exit_status, int *err)
 {
@@ -34,38 +35,18 @@ static void	parse_and_execute(\
 	free_token(tokens);
 }
 
-static bool	are_parentheses_balanced(const char *input)
+static void	tokenize_and_validate(char *input, t_token **tokens, int *err)
 {
-	int		balance;
-	int		i;
-	bool	in_single_quotes;
-	bool	in_double_quotes;
-
-	in_single_quotes = false;
-	in_double_quotes = false;
-	i = -1;
-	balance = 0;
-	while (input[++i])
+	tokenize(input, tokens);
+	*err = valid_token(*tokens);
+	if (*err != -1)
 	{
-		if (input[i] == '\'' && !in_double_quotes)
-			in_single_quotes = !in_single_quotes;
-		else if (input[i] == '"' && !in_single_quotes)
-			in_double_quotes = !in_double_quotes;
-		else if (!in_single_quotes && !in_double_quotes)
-		{
-			if (input[i] == '(')
-				balance++;
-			else if (input[i] == ')')
-			{
-				balance--;
-				if (balance < 0)
-					return (false);
-			}
-		}
+		free_token(*tokens);
+		*tokens = NULL;
 	}
-	return (balance == 0);
 }
 
+// print_token(token);
 void	process_input(char *input, t_env *env, int *exit_status)
 {
 	t_token			*tokens;
@@ -77,14 +58,7 @@ void	process_input(char *input, t_env *env, int *exit_status)
 	{
 		if (are_parentheses_balanced(input))
 		{
-			tokenize(input, &tokens);
-			print_token(tokens);
-			err = valid_token(tokens);
-			if (err != -1)
-			{
-				free_token(tokens);
-				tokens = NULL;
-			}
+			tokenize_and_validate(input, &tokens, &err);
 			if (tokens)
 				parse_and_execute(tokens, env, exit_status, &err);
 			parse_log_error(err, exit_status);

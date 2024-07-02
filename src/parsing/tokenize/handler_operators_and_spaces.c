@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/13 19:46:03 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/01 16:03:11 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/02 11:25:51 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,21 @@ static void	handle_repeated_operators(\
 	*start = *input + 1;
 }
 
+static void	hanlde_quotes_for_handle_cmd(\
+			const char **input, bool *in_quotes, char *quote_char)
+{
+	if (**input == '"' || **input == '\'')
+	{
+		if (*in_quotes && **input == *quote_char)
+			*in_quotes = false;
+		else if (!*in_quotes)
+		{
+			*in_quotes = true;
+			*quote_char = **input;
+		}
+	}
+}
+
 static void	handle_cmd(const char **input, const char **start, t_token **list)
 {
 	bool	in_quotes;
@@ -46,16 +61,7 @@ static void	handle_cmd(const char **input, const char **start, t_token **list)
 	while (**input && (in_quotes || \
 		(!ft_isspace(**input) && **input != '(' && **input != ')')))
 	{
-		if (**input == '"' || **input == '\'')
-		{
-			if (in_quotes && **input == quote_char)
-				in_quotes = false;
-			else if (!in_quotes)
-			{
-				in_quotes = true;
-				quote_char = **input;
-			}
-		}
+		hanlde_quotes_for_handle_cmd(input, &in_quotes, &quote_char);
 		(*input)++;
 	}
 	if (*input > *start)

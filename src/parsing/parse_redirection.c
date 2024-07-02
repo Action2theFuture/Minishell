@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/13 19:25:32 by junsan            #+#    #+#             */
-/*   Updated: 2024/06/25 17:55:33 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/02 11:26:20 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,8 @@ bool	parse_io_redirection(t_token **token, t_ast **node)
 	t_ast	*right;
 
 	right = NULL;
-	// printf("io_redirection >> \n");
 	if (*token && (*token)->type == REDIRECTION)
 	{
-		// printf("token data : %s\n", (*token)->data);
 		io_redirection_node = new_node(NULL, IO);
 		if (!io_redirection_node)
 			return (false);
@@ -44,8 +42,6 @@ bool	parse_redirection(t_token **token, t_ast **node)
 	t_ast	*redirection_node;
 	t_ast	*left;
 
-	// printf("redirection >> \n");
-	// printf("token data : %s\n", (*token)->data);
 	redirection_node = new_node(NULL, REDIRECTION);
 	if (!redirection_node)
 		return (false);
