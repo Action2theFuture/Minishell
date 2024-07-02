@@ -6,7 +6,7 @@
 /*   By: ramzerk <ramzerk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 23:38:01 by rabouzia          #+#    #+#             */
-/*   Updated: 2024/07/01 16:32:23 by ramzerk          ###   ########.fr       */
+/*   Updated: 2024/07/02 16:00:09 by ramzerk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,18 +41,16 @@ int	ft_strcmp(char *s1, char *s2)
 	return (s1[i] - s2[i]);
 }
 
-t_env *find_next_lower(t_env *lst, char *name)
+t_env *find_next_lower(t_env *lst, char *prec)
 {
     t_env *cur = lst;
     t_env *next_lower = NULL;
 
     while (cur)
     {
-        if (strcmp(cur->name, name) < 0)
-        {
-            if (!next_lower || strcmp(cur->name, next_lower->name) > 0)
-                next_lower = cur;
-        }
+        if (ft_strcmp(cur->name, prec) > 0 && (next_lower == NULL || ft_strcmp(cur->name, next_lower->name) < 0))
+			next_lower = cur;
+		//printf("habibi %s\n", next_lower->name);
         cur = cur->next;
     }
     return next_lower;
@@ -65,7 +63,7 @@ t_env *find_lowest(t_env *lst)
 
     while (cur)
     {
-        if (strcmp(cur->name, lowest->name) < 0)
+        if (ft_strcmp(cur->name, lowest->name) < 0)
             lowest = cur;
         cur = cur->next;
     }
@@ -74,8 +72,7 @@ t_env *find_lowest(t_env *lst)
 
 void ft_export_show(t_env *env)
 {
-    t_env *cur = env;
-    t_env *next_lower= find_lowest(env);
+    t_env *cur = find_lowest(env);
 
     while (cur)
     {
@@ -83,8 +80,9 @@ void ft_export_show(t_env *env)
             printf("export %s\n", cur->name);
         else
             printf("export %s=%s\n", cur->name, cur->content);
-        next_lower = find_next_lower(env, cur->name);
-    	cur = next_lower;
+		
+        cur = find_next_lower(env, cur->name);
+    	// printf("Dedbug %s\n", next_lower->name);
     }
 }
 
