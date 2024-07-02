@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 18:34:10 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/02 10:22:20 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/02 11:42:58 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,13 +60,13 @@ static void	cnt_pipe(t_ast *node, t_info *info)
 	}
 }
 
+// printf("status : %d, exit status : %d\n", info->status, info->exit_status);
 static void	process_logical_node(t_ast *node, t_info *info)
 {
 	int	status;
 
 	traverse_tree(node->right, info);
 	status = info->exit_status;
-	// printf("status : %d, exit status : %d\n", info->status, info->exit_status);
 	if ((ft_strncmp(node->data, "&&", 2) == 0 && status == SUCCESS) || \
 		(ft_strncmp(node->data, "||", 2) == 0 && status > 0))
 		traverse_tree(node->left, info);
@@ -83,10 +83,7 @@ static void	traverse_tree(t_ast *node, t_info *info)
 	{
 		traverse_tree(node->right, info);
 		if (node->type == PIPE && info->status == SUCCESS)
-		{
-			//print_tree(node, 10);
 			traverse_tree(node->left, info);
-		}
 	}
 	if (node->type != PIPE && node->type != LOGICAL)
 	{

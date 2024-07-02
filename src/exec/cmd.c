@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 17:58:55 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/02 10:39:00 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/02 11:52:36 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,23 +36,29 @@ static char	**prepend_cmd_and_add_spaces(char **cmd, char **args, int cmd_cnt)
 	return (new_args[cmd_cnt + arg_cnt] = NULL, new_args);
 }
 
+static void	determine_and_set_path(const char *cmd, t_info *info)
+{
+	t_path_type	path_type;
+
+	path_type = get_path_type(cmd, info);
+	if (path_type == PATH_RELATIVE)
+		info->path = get_absolute_path(cmd);
+	else if (path_type == PATH_COMMAND)
+		info->path = find_cmd_in_path(cmd, info->env);
+	else if (path_type == PATH_INVALID)
+		info->path = get_bin_path(cmd);
+}
+
 static char	**prepare_cmd(\
 			char **args, t_ast *cmd_node, t_ast *args_node, t_info *info)
 {
-	t_path_type	path_type;
 	char		**chunk;
 	char		**parsed_cmd;
 	int			cnt;
 
 	args = NULL;
 	chunk = NULL;
-	path_type = get_path_type(cmd_node->data, info);
-	if (path_type == PATH_RELATIVE)
-		info->path = get_absolute_path(cmd_node->data);
-	if (path_type == PATH_COMMAND)
-		info->path = find_cmd_in_path(cmd_node->data, info->env);
-	if (path_type == PATH_INVALID)
-		info->path = get_bin_path(cmd_node->data);
+	determine_and_set_path(cmd_node->data, info);
 	cnt = 0;
 	parsed_cmd = parse_cmd_line_with_quotes(cmd_node->data, &cnt);
 	if (args_node)

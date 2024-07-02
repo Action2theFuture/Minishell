@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 11:48:50 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/02 10:16:11 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/02 11:53:35 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ static int	check_in_env(const char *arg, t_env *list)
 int	ft_env(const char *cmd, const char **args, t_env *list)
 {
 	int	i;
+
 	(void)cmd;
 	i = 0;
 	if (args[1] == NULL)

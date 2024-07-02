@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/13 19:24:59 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/02 08:41:41 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/02 11:37:46 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,12 @@
 
 // what to do : cmd(left) + flag(right)
 // or echo "something"
+// remove_double_quotes((*token)->data); under return NULL
 static bool	parse_cmd(t_token **token, t_ast **node)
 {
 	t_ast	*cmd_node;
 	char	*arg_tokens;
 
-	//printf("cmd >> \n");
 	printf("token cmd : %s\n", (*token)->data);
 	if (*token && (*token)->type == CMD)
 	{
@@ -27,7 +27,6 @@ static bool	parse_cmd(t_token **token, t_ast **node)
 		cmd_node = new_node(NULL, CMD);
 		if (!cmd_node)
 			return (NULL);
-		// remove_double_quotes((*token)->data);
 		cmd_node->left = new_node((*token)->data, (*token)->type);
 		*token = (*token)->next;
 		if (*token && (*token)->type == CMD)
@@ -90,28 +89,35 @@ static bool	parse_cmd_part(t_token **token, t_ast **phrase_node, t_ast **node)
 	return (true);
 }
 
-bool	parse_phrase(t_token **token, t_ast **node)
+bool	parse_phrase_part(\
+	t_token **token, t_ast **node, \
+	bool (*parse_func)(t_token **, t_ast **, t_ast **))
 {
 	t_ast	*phrase_node;
+
+	phrase_node = new_node(NULL, PHRASE);
+	if (!phrase_node)
+		return (false);
+	return (parse_func(token, &phrase_node, node));
+}
+
+bool	parse_phrase(t_token **token, t_ast **node)
+{
 	t_ast	*subshell_node;
 
-	// printf("pharse >> \n");
 	subshell_node = NULL;
 	if (*token && (*token)->type == SUBSHELL)
 		parse_subshell(token, &subshell_node);
 	if (*token && (*token)->type == REDIRECTION)
-	{	
-		phrase_node = new_node(NULL, PHRASE);
-		if (!phrase_node)
+	{
+		if (!parse_phrase_part(\
+				token, node, parse_redirection_part))
 			return (false);
-		parse_redirection_part(token, &phrase_node, node);
 	}
 	else if (*token && (*token)->type == CMD)
 	{
-		phrase_node = new_node(NULL, PHRASE);
-		if (!phrase_node)
+		if (!parse_phrase_part(token, node, parse_cmd_part))
 			return (false);
-		parse_cmd_part(token, &phrase_node, node);
 	}
 	if (subshell_node)
 	{
