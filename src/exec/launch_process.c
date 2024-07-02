@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/23 17:08:10 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/02 10:44:49 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/02 12:11:50 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,10 +96,7 @@ int	launch_process(char *cmd, char **args, t_info *info)
 		return (fd_log_error("fork error", NULL, NULL));
 	env = (char **)list_to_array(info->env);
 	if (env == NULL)
-	{
-		perror("Empty env");
-		exit(EXIT_FAILURE);
-	}
+		return (perror("Empty env"), 1);
 	if (pid == 0)
 		exec_child_task(cmd, env, args, info);
 	monitor_child_task(cmd, pid, info);

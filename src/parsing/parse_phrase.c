@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/13 19:24:59 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/02 11:37:46 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/02 12:14:08 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ static bool	parse_cmd(t_token **token, t_ast **node)
 	t_ast	*cmd_node;
 	char	*arg_tokens;
 
-	printf("token cmd : %s\n", (*token)->data);
 	if (*token && (*token)->type == CMD)
 	{
 		arg_tokens = NULL;
