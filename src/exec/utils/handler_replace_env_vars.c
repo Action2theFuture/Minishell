@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 20:03:41 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/01 11:07:48 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/02 11:13:48 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ static void	copy_var_value(const char *var_value, char *res, size_t *j)
 	var_value_len = ft_strlen(var_value);
 	ft_strlcpy(res + *j, var_value, var_value_len + 1);
 	*j += var_value_len;
+	free((char *)var_value);
+	var_value = NULL;
 }
 
 static void	handle_braced_var(t_env_var *env_var, char *var_name)
@@ -55,7 +57,7 @@ static void	handle_simple_var(t_env_var *env_var, char *var_name)
 
 void	handle_dollar_sign(t_env_var *env_var)
 {
-	char	var_name[100];
+	char	var_name[MAX_ARGS];
 
 	if (env_var->str[env_var->i] == '$' && \
 			env_var->str[env_var->i + 1] == '{')
