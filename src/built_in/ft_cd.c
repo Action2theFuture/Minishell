@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cd.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rabouzia <rabouzia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/02 02:39:36 by rabouzia          #+#    #+#             */
-/*   Updated: 2024/07/01 11:33:56 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/02 20:40:33 by rabouzia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,13 +31,19 @@ int	ft_cd(const char *cmd, const char **args, t_env *list)
 	// cd src 23d2 wd -> too many args
 	// create fct search in env to do cd (alone)
 	// cd -
+	int i = 0;
+	while(args[i])
+		i++;
 	if (!args[1])
 		return (change_dir("/home", list), 1);
-	if (!args[2])
+	if (i > 2)
 	{
-		
+		ft_putstr_fd("kashell: ",2);
+		ft_putstr_fd("cd: ",2);
+		ft_putstr_fd(": too many arguments\n", 2);
+		return (1);
 	}
-	if (chdir(args[1]) == -1)
+	if (chdir(args[1]) == -1 && i == 2)
 	{
 		ft_putstr_fd("cd: ",2);
 		ft_putstr_fd((char *)args[1], 2);
