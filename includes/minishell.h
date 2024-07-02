@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/11 19:22:19 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/01 11:36:11 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/02 08:54:38 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -393,7 +393,7 @@ t_file_list				*get_entry_list(t_file_list *file_list, DIR *dir);
 
 // list_to_array.c
 char					**list_to_array(t_env *env);
-void					clear_arr(int len, char **arr);
+void					clear_arr(char **arr);
 
 // cmd.c
 int						dispatch_cmd(t_ast *node, t_info *info);

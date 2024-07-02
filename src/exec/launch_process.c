@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/23 17:08:10 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/01 11:21:04 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/02 08:54:48 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,10 @@ static void	prepare_and_execute(\
 	int		built_in;
 	int		(*arr_built_in[8])(const char *, const char **, t_env *);
 
-	if (ft_strncmp(cmd, "true", 4) == 0 && ft_strlen(cmd) == 4)
+	printf("cmd : %s\n", cmd);
+	if (ft_strlen(cmd) == 4 && ft_strncmp(cmd, "true", 4) == 0)
 		exit(SUCCESS);
-	else if (ft_strncmp(cmd, "false", 5) == 0 && ft_strlen(cmd) == 5)
+	else if (ft_strlen(cmd) == 5 && ft_strncmp(cmd, "false", 5) == 0)
 		exit(FAILURE);
 	init_builtin(arr_built_in);
 	built_in = handler_builtin(cmd);
@@ -103,7 +104,7 @@ int	launch_process(char *cmd, char **args, t_info *info)
 		exec_child_task(cmd, env, args, info);
 	monitor_child_task(cmd, pid, info);
 	if (env)
-		clear_arr((int) sizeof(env), env);
+		clear_arr(env);
 	if (info->pipe_exists)
 	{
 		close(info->pipe[1]);

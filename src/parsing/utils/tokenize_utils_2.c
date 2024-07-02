@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 22:24:56 by junsan            #+#    #+#             */
-/*   Updated: 2024/06/23 20:07:59 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/01 22:54:44 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,16 +38,16 @@ size_t	tokens_size(t_token *head)
 
 void	free_token(t_token *head)
 {
-	t_token	*node;
+	t_token	*tmp;
 
 	if (!head)
 		return ;
 	while (head)
 	{
-		node = head->next;
-		free(head->data);
-		free(head);
-		head = node;
+		tmp = head;
+		head = head->next;
+		if (tmp->data)
+			free(tmp->data);
+		free(tmp);
 	}
-	head = NULL;
 }
