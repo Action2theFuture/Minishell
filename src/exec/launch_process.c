@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/23 17:08:10 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/02 09:56:43 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/02 10:44:49 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static void	prepare_and_execute(\
 	else if (args[0][0] == '.' && args[0][1] == '/'
 		&& execve(args[0], args, env) == -1)
 		exit(125 + execve_log_error(args[0], errno));
-	if (info->path)
+	else if (info->path)
 	{
 		execve(info->path, args, env);
 		free(info->path);
@@ -42,6 +42,7 @@ static void	prepare_and_execute(\
 static int	exec_child_task(char *cmd, char **env, char **args, t_info *info)
 {
 	replace_env_vars_in_args(args, info);
+	cmd = args[0];
 	if (info->prev_pipe[0] != -1)
 	{
 		close(info->prev_pipe[1]);
