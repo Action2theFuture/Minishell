@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/23 17:08:10 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/02 08:54:48 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/02 09:56:43 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@ static void	prepare_and_execute(\
 	int		built_in;
 	int		(*arr_built_in[8])(const char *, const char **, t_env *);
 
-	printf("cmd : %s\n", cmd);
 	if (ft_strlen(cmd) == 4 && ft_strncmp(cmd, "true", 4) == 0)
 		exit(SUCCESS);
 	else if (ft_strlen(cmd) == 5 && ft_strncmp(cmd, "false", 5) == 0)

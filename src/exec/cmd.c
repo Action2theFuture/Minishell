@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 17:58:55 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/02 08:55:04 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/02 10:04:55 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ static char	**prepare_cmd(\
 	if (path_type == PATH_COMMAND)
 		info->path = find_cmd_in_path(cmd_node->data, info->env);
 	if (path_type == PATH_INVALID)
-		info->path = NULL;
+		info->path = get_bin_path(cmd_node->data);
 	cnt = 0;
 	parsed_cmd = parse_cmd_line_with_quotes(cmd_node->data, &cnt);
 	if (args_node)

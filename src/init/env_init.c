@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 11:37:49 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/01 11:04:14 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/02 09:54:13 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,10 +85,9 @@ static void	add_env_minimum(t_env **head)
 		perror("getcwd error");
 		return ;
 	}
-	*head = new_env("HOME", cur_dir);
-	(*head)->next = new_env("PWD", cur_dir);
-	(*head)->next->next = new_env("SHLVL", "1");
-	(*head)->next->next->next = new_env("_", "/usr/bin/env");
+	(*head) = new_env("PWD", cur_dir);
+	(*head)->next = new_env("SHLVL", "1");
+	(*head)->next->next = new_env("_", "/usr/bin/env");
 	free(cur_dir);
 }
 
