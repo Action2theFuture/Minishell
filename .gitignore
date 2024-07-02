@@ -62,4 +62,4 @@ dkms.conf
 # minishell
 minishell
 
-run_with_valgrind.sh
+*.sh
