@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/23 19:03:26 by junsan            #+#    #+#             */
-/*   Updated: 2024/06/30 10:42:43 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/01 21:20:14 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,10 @@ static char	*replace_env_vars_in_str(const char *str, t_info *info)
 
 	res_size = ft_strlen(str) * 2 + 1;
 	res = (char *)malloc(sizeof(char) * res_size);
-	if (res)
-		replace_env_vars(str, res, info);
+	if (!res)
+		return (perror("malloc error"), NULL);
+	replace_env_vars(str, res, info);
+	free((char *)str);
 	return (res);
 }
 
@@ -33,10 +35,6 @@ void	replace_env_vars_in_args(char **args, t_info *info)
 	while (args[++i])
 	{
 		new_arg = replace_env_vars_in_str(args[i], info);
-		if (new_arg)
-		{
-			free(args[i]);
-			args[i] = new_arg;
-		}
+		args[i] = new_arg;
 	}
 }

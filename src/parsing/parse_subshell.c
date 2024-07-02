@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/13 19:26:43 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/01 16:10:07 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/02 08:36:44 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,8 @@ size_t *total_len, size_t *capacity, char *data_in_subshell, t_token **token)
 
 	while (*token && (*token)->type != SUBSHELL)
 	{
-		space_needed = *total_len + data_len + 1;
 		data_len = ft_strlen((*token)->data);
+		space_needed = *total_len + data_len + 1;
 		if ((*token)->next && (*token)->next->type != SUBSHELL)
 			space_needed++;
 		ensure_capacity(&data_in_subshell, capacity, space_needed);
@@ -80,6 +80,7 @@ static char	*collect_data_until_subshell(t_token **token)
 bool	parse_subshell(t_token **token, t_ast **node)
 {
 	t_token	*tokens_in_subshell;
+	t_token *token_head;
 	t_ast	*subshell_node;
 	char	*data_in_subshell;
 
@@ -93,9 +94,10 @@ bool	parse_subshell(t_token **token, t_ast **node)
 		*token = (*token)->next;
 		data_in_subshell = collect_data_until_subshell(token);
 		tokenize(data_in_subshell, &tokens_in_subshell);
+		token_head = tokens_in_subshell;
 		parse_logical(&tokens_in_subshell, node);
 		free(data_in_subshell);
-		free_token(tokens_in_subshell);
+		free_token(token_head);
 		subshell_node->left = *node;
 		// print_token(*token);
 		*token = (*token)->next;

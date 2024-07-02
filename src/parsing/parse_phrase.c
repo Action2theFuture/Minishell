@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/13 19:24:59 by junsan            #+#    #+#             */
-/*   Updated: 2024/06/30 15:15:10 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/02 08:41:41 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static bool	parse_cmd(t_token **token, t_ast **node)
 	char	*arg_tokens;
 
 	//printf("cmd >> \n");
-	//printf("token cmd : %s\n", (*token)->data);
+	printf("token cmd : %s\n", (*token)->data);
 	if (*token && (*token)->type == CMD)
 	{
 		arg_tokens = NULL;
@@ -96,16 +96,23 @@ bool	parse_phrase(t_token **token, t_ast **node)
 	t_ast	*subshell_node;
 
 	// printf("pharse >> \n");
-	phrase_node = new_node(NULL, PHRASE);
 	subshell_node = NULL;
-	if (!phrase_node)
-		return (false);
 	if (*token && (*token)->type == SUBSHELL)
 		parse_subshell(token, &subshell_node);
 	if (*token && (*token)->type == REDIRECTION)
+	{	
+		phrase_node = new_node(NULL, PHRASE);
+		if (!phrase_node)
+			return (false);
 		parse_redirection_part(token, &phrase_node, node);
+	}
 	else if (*token && (*token)->type == CMD)
+	{
+		phrase_node = new_node(NULL, PHRASE);
+		if (!phrase_node)
+			return (false);
 		parse_cmd_part(token, &phrase_node, node);
+	}
 	if (subshell_node)
 	{
 		attach_to_tree(subshell_node, *node, LEFT);

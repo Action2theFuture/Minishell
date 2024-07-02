@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 17:58:55 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/01 11:30:44 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/02 08:55:04 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static char	**prepend_cmd_and_add_spaces(char **cmd, char **args, int cmd_cnt)
 		return (perror("malloc error"), NULL);
 	i = -1;
 	while (++i < cmd_cnt)
-		new_args[i] = cmd[i];
+		new_args[i] = ft_strdup(cmd[i]);
 	i = -1;
 	while (++i < arg_cnt)
 	{
@@ -59,9 +59,11 @@ static char	**prepare_cmd(\
 	{
 		args = ft_split(args_node->data, ARR_SEP);
 		chunk = prepend_cmd_and_add_spaces(parsed_cmd, args, cnt);
+		clear_arr(args);
 	}
 	else
 		chunk = allocate_null_and_cmd_chunk(parsed_cmd, cnt);
+	clear_arr(parsed_cmd);
 	return (chunk);
 }
 
