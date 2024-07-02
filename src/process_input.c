@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/25 22:45:45 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/02 11:52:42 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/02 11:58:43 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,7 @@ static void	parse_and_execute(\
 	token_list = get_token_list(tokens);
 	is_parse = parsing_tree(&token_list, &root);
 	if (is_parse)
-	{
-		print_tree(root, 10);
 		execute(root, env, exit_status);
-	}
 	else
 		*err = PARSE_ERROR;
 	free_tree(root);
@@ -35,6 +32,7 @@ static void	parse_and_execute(\
 	free_token(tokens);
 }
 
+// print_token(token);
 static void	tokenize_and_validate(char *input, t_token **tokens, int *err)
 {
 	tokenize(input, tokens);
@@ -46,7 +44,6 @@ static void	tokenize_and_validate(char *input, t_token **tokens, int *err)
 	}
 }
 
-// print_token(token);
 void	process_input(char *input, t_env *env, int *exit_status)
 {
 	t_token			*tokens;
