@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 18:34:10 by junsan            #+#    #+#             */
-/*   Updated: 2024/06/30 12:26:28 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/02 10:22:20 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,8 @@ static void	categorize_tree(t_ast *node, t_info *info)
 		init_info(&subshell_info);
 		subshell_info.in_subshell = true;
 		traverse_tree(node->right, &subshell_info);
+		info = &subshell_info;
+		info->in_subshell = false;
 	}
 }
 
