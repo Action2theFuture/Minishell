@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 21:38:26 by rabouzia          #+#    #+#             */
-/*   Updated: 2024/07/01 11:34:42 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/02 09:21:30 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,31 @@ int	good_flag(const char *str)
 	return (1);
 }
 
+static bool	handle_flags(const char **args, int *i)
+{
+	bool	new_line;
+
+	new_line = false;
+	while (args[*i] && good_flag(args[*i]))
+	{
+		new_line = true;
+		(*i)++;
+	}
+	return (new_line);
+}
+
+static int	print_args(const char **args, int i)
+{
+	while (args[i])
+	{
+		ft_putstr_fd((char *)args[i], 1);
+		if (args[i + 1])
+			ft_putstr_fd(" ", 1);
+		i++;
+	}
+	return (0);
+}
+
 int	ft_echo(const char *cmd, const char **args, t_env *list)
 {
 	int		i;
@@ -39,27 +64,19 @@ int	ft_echo(const char *cmd, const char **args, t_env *list)
 	(void)cmd;
 	(void)list;
 	if (!args || !*args)
-		return (write(1, "\n", 1), 0);
+	{
+		ft_putstr_fd("\n", 1);
+		return (0);
+	}
 	i = 1;
-	new_line = 0;
+	new_line = handle_flags(args, &i);
 	// if(ft_strncmp(args[0], "$?", 2) == 0)
 	// 	return(1);
 	// if(args[0][0] == "?")
-	while (args[i] && good_flag(args[i]))
-	{
-		new_line = 1;
-		i++;
-	}
-	while (args[i])
-	{
-		ft_putstr_fd((char *)args[i], 1);
-		if (args[i + 1])
-			ft_putstr_fd(" ", 1);
-		i++;
-	}
+	print_args(args, i);
 	if (!new_line)
 		ft_putstr_fd("\n", 1);
-	return (1);
+	return (0);
 }
 
 // void print_echo(t_cmd_list *list)
