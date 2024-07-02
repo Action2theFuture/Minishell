@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 18:50:55 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/02 11:38:22 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/02 20:39:43 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static size_t	arg_len(const char *arg)
 
 	len = ft_strlen(arg);
 	if (arg[0] == '-' && ft_strlen(arg) > 2)
-		return ((len - 1 * 2) + len - 2);
+		return (((len - 1) * 2) + len - 2);
 	return (len);
 }
 
