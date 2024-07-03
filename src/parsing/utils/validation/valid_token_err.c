@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/28 17:14:53 by junsan            #+#    #+#             */
-/*   Updated: 2024/06/28 17:22:13 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/03 21:10:12 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,12 @@
 
 static bool	is_redir_err(t_token *prev, t_token *cur, t_token *next)
 {
+	(void)prev;
 	if (cur->data[0] == '<' || cur->data[0] == '>')
 	{
 		if (get_type_redir(cur->data) == NOT_REDIR)
 			return (true);
-		if (!prev || is_operator(prev->data) || \
-			!is_cmd_valid(prev->data))
-			return (true);
-		if (!next || is_operator(next->data) || \
-			!is_cmd_valid(next->data))
+		if (!next || is_operator(next->data))
 			return (true);
 	}
 	return (false);
@@ -51,15 +48,12 @@ bool	check_redir_err(t_token *head)
 
 static bool	is_operator_err(t_token *prev, t_token *cur, t_token *next)
 {
-	if (cur->data[0] == '<' || cur->data[0] == '>')
+	(void)prev;
+	if (is_operator(cur->data))
 	{
-		if (get_type_redir(cur->data) == NOT_REDIR)
+		if (!prev)
 			return (true);
-		if (!prev || is_operator(prev->data) || \
-			!is_cmd_valid(prev->data))
-			return (true);
-		if (!next || is_operator(next->data) || \
-			!is_cmd_valid(next->data))
+		if (!next)
 			return (true);
 	}
 	return (false);
@@ -85,5 +79,28 @@ bool	check_operator_before_after_err(t_token *head)
 	}
 	if (prev && is_operator(prev->data))
 		return (true);
+	return (false);
+}
+
+bool	check_subshell_err(t_token *head)
+{
+	t_token	*cur;
+	bool	found_redir;
+
+	found_redir = false;
+	cur = head;
+	while (cur)
+	{
+		if (get_type(cur->data) == REDIRECTION)
+			found_redir = true;
+		if (get_type(cur->data) == SUBSHELL && cur->data[0] == '(')
+		{
+			if (found_redir)
+				return (true);
+		}
+		if (get_type(cur->data) == LOGICAL || get_type(cur->data) == PIPE)
+			found_redir = false;
+		cur = cur->next;
+	}
 	return (false);
 }
