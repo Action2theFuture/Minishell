@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 12:01:59 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/01 10:10:54 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/03 19:06:08 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ static int	input_redir(t_ast *node, t_info *info)
 	if (io_node->type == IN_REDIR)
 		info->stdin_fd = open_file_with_mode(args_node->data, READ);
 	else if (io_node->type == IN_HEREDOC)
-		return (here_doc_redir(args_node, info));
+		here_doc_redir(args_node, info);
 	else if (io_node->type == IN_HERESTR)
 	{
 		if (pipe(pipe_fd) == -1)
