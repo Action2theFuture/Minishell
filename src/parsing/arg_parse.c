@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 18:50:55 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/02 20:39:43 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/03 18:01:45 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,8 @@ static void	file_data(char *data, t_token **token)
 	ptr = data;
 	while (*token && (*token)->type == CMD)
 	{
-		if ((*token)->data[0] == '-' && ft_strlen((*token)->data) > 2)
+		if (ft_strlen((*token)->data) > 2 && (*token)->data[0] == '-' && \
+			(*token)->data[1] != '-')
 		{
 			split_flag(ptr, (*token)->data);
 			ptr += (ft_strlen((*token)->data) - 1) * 2 \
