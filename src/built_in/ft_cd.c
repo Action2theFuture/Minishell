@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cd.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rabouzia <rabouzia@student.42.fr>          +#+  +:+       +#+        */
+/*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/02 02:39:36 by rabouzia          #+#    #+#             */
-/*   Updated: 2024/07/02 20:40:33 by rabouzia         ###   ########.fr       */
+/*   Updated: 2024/07/03 09:28:20 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,24 +35,24 @@ int	ft_cd(const char *cmd, const char **args, t_env *list)
 	while(args[i])
 		i++;
 	if (!args[1])
-		return (change_dir("/home", list), 1);
+		return (change_dir("/home", list), SUCCESS);
 	if (i > 2)
 	{
 		ft_putstr_fd("kashell: ",2);
 		ft_putstr_fd("cd: ",2);
 		ft_putstr_fd(": too many arguments\n", 2);
-		return (1);
+		return (FAILURE);
 	}
 	if (chdir(args[1]) == -1 && i == 2)
 	{
 		ft_putstr_fd("cd: ",2);
 		ft_putstr_fd((char *)args[1], 2);
 		ft_putstr_fd(": No such file or directory\n", 2);
-		return (1);
+		return (FAILURE);
 	}
 	else
 		change_dir(args[1], list);
-	return (0);
+	return (SUCCESS);
 }
 
 // void	modify_pwd_in_env(t_env *env, char *str)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rabouzia <rabouzia@student.42.fr>          +#+  +:+       +#+        */
+/*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 23:38:01 by rabouzia          #+#    #+#             */
-/*   Updated: 2024/07/02 20:39:25 by rabouzia         ###   ########.fr       */
+/*   Updated: 2024/07/03 09:29:18 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,7 @@ int	ft_export(const char *cmd, const char **args, t_env *list)
 	tmp = list;
 	tmp2 = list;
 	if (!args[1] || !*args)
-		return (ft_export_show(list), 1);
+		return (ft_export_show(list), FAILURE);
 	i = 1;
 	while (args[i])
 	{
@@ -126,7 +126,7 @@ int	ft_export(const char *cmd, const char **args, t_env *list)
 		}
 		i++;
 	}
-	return (0);
+	return (SUCCESS);
 }
 
 t_env	*builtin_new_node(char *name, char *content)

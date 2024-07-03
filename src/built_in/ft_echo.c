@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 21:38:26 by rabouzia          #+#    #+#             */
-/*   Updated: 2024/07/01 11:34:42 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/03 09:31:12 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int	ft_echo(const char *cmd, const char **args, t_env *list)
 	(void)cmd;
 	(void)list;
 	if (!args || !*args)
-		return (write(1, "\n", 1), 0);
+		return (write(1, "\n", 1), FAILURE);
 	i = 1;
 	new_line = 0;
 	// if(ft_strncmp(args[0], "$?", 2) == 0)
@@ -59,7 +59,7 @@ int	ft_echo(const char *cmd, const char **args, t_env *list)
 	}
 	if (!new_line)
 		ft_putstr_fd("\n", 1);
-	return (1);
+	return (SUCCESS);
 }
 
 // void print_echo(t_cmd_list *list)

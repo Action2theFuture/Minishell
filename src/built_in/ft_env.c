@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_env.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ramzerk <ramzerk@student.42.fr>            +#+  +:+       +#+        */
+/*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 11:48:50 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/01 16:09:02 by ramzerk          ###   ########.fr       */
+/*   Updated: 2024/07/03 09:28:55 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,11 +48,10 @@ static int	check_in_env(const char *arg, t_env *list)
 int	ft_env(const char *cmd, const char **args, t_env *list)
 {
 	(void)cmd;
-	printf("args : %s\n", args[1]);
 	if (!args)
 	{
 		printf_env(list);
-		return (0);
+		return (FAILURE);
 	}
 	if (args[0])
 	{
@@ -64,7 +63,7 @@ int	ft_env(const char *cmd, const char **args, t_env *list)
 		else
 			return (check_in_env(args[0], list));
 	}
-	return (0);
+	return (SUCCESS);
 }
 
 // void	env_split(const char *str, char **name, char **content)
