@@ -6,7 +6,7 @@
 #    By: junsan <junsan@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    CreateCd: 2024/05/11 19:03:01 by junsan            #+#    #+#             #
-#    Updated: 2024/07/04 13:45:18 by junsan           ###   ########.fr        #
+#    Updated: 2024/07/04 14:22:54 by junsan           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,7 +40,7 @@ OBJ_DIR = obj
 
 SRC 	= minishell.c process_input.c
 INIT	= init_minishell.c env_init.c increment_shlvl.c env_utils.c
-PARSING	= parsing.c arg_parse.c parse_subshell.c									\
+PARSING	= parsing.c arg_parse.c parse_subshell.c arg_parse_2.c						\
 		parse_logical.c parse_pipe.c parse_phrase.c parse_redirection.c				\
 		parse_phrase_parts.c														\
 		/tokenize/tokenize.c /tokenize/handler_operators_and_spaces.c				\

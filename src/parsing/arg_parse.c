@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 18:50:55 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/04 13:57:42 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/04 14:20:46 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ char	*arg_parsing(t_token **token)
 	total_len = get_total_arg_list_size(&cur);
 	data = (char *)malloc(sizeof(char) * (total_len + 1));
 	if (!data)
-		return (NULL);
+		return (perror("malloc error"), NULL);
 	file_data(data, token);
 	return (data);
 }
