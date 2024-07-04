@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/11 19:22:19 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/04 13:49:49 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/04 14:22:21 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -284,6 +284,9 @@ bool					is_herestr_redirection(const char *data);
 // arg_parse.c
 bool					is_flag(const char *arg);
 char					*arg_parsing(t_token **token);
+
+// arg_parse_2.c
+char					*arg_parsing_2(t_token **token);
 
 // get_type.c
 t_type					get_type(const char *data);
