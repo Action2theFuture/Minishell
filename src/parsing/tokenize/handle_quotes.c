@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/13 19:44:46 by junsan            #+#    #+#             */
-/*   Updated: 2024/06/30 17:34:54 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/04 15:25:05 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,20 +14,30 @@
 
 static int	check_last_quote(const char *str)
 {
-	int	i;
-	int	cmd;
+	bool	in_single_quote;
+	bool	in_double_quote;
+	int		i;
+	int		last_quote_index;
 
-	i = -1;
-	cmd = 0;
+	in_single_quote = false;
+	in_double_quote = false;
+	last_quote_index = -1;
+	i = 0;
 	while (str[++i])
 	{
-		if (str[i] == '"' || str[i] == '\'')
+		if (str[i] == '\'' && !in_double_quote)
 		{
-			if (cmd < i)
-				cmd = i;
+			in_single_quote = !in_single_quote;
+			last_quote_index = i;
 		}
+		else if (str[i] == '"' && !in_single_quote)
+		{
+			in_double_quote = !in_double_quote;
+			last_quote_index = i;
+		}
+		i++;
 	}
-	return (cmd + 1);
+	return (last_quote_index + 1);
 }
 
 static int	check_more_str(const char *str)
