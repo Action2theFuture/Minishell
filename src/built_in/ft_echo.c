@@ -6,7 +6,7 @@
 /*   By: ramzerk <ramzerk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 21:38:26 by rabouzia          #+#    #+#             */
-/*   Updated: 2024/07/04 12:59:09 by ramzerk          ###   ########.fr       */
+/*   Updated: 2024/07/04 16:03:51 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,13 +35,11 @@ static bool	handle_flags(const char **args, int *i)
 {
 	bool	new_line;
 
-	(void)cmd;
-	(void)list;
 	if (!args || !*args)
 		return (write(1, "\n", 1), FAILURE);
-	i = 1;
+	*i = 1;
 	new_line = 0;
-	while (args[i] && good_flag(args[i]))
+	while (args[*i] && good_flag(args[*i]))
 	{
 		new_line = true;
 		(*i)++;
