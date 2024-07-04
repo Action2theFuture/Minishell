@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_echo.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ramzerk <ramzerk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 21:38:26 by rabouzia          #+#    #+#             */
-/*   Updated: 2024/07/03 09:31:12 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/04 12:59:09 by ramzerk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,9 +42,6 @@ int	ft_echo(const char *cmd, const char **args, t_env *list)
 		return (write(1, "\n", 1), FAILURE);
 	i = 1;
 	new_line = 0;
-	// if(ft_strncmp(args[0], "$?", 2) == 0)
-	// 	return(1);
-	// if(args[0][0] == "?")
 	while (args[i] && good_flag(args[i]))
 	{
 		new_line = 1;
