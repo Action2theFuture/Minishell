@@ -6,7 +6,7 @@
 /*   By: rabouzia <rabouzia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/11 19:22:19 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/02 20:41:13 by rabouzia         ###   ########.fr       */
+/*   Updated: 2024/07/04 13:49:49 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,7 +135,7 @@ typedef struct s_env
 
 typedef struct s_info
 {
-	bool				pipe_exists; // pipe exist or not
+	bool				pipe_exists;
 	bool				in_subshell;
 	char				*path;
 	int					pipe_cnt;
@@ -147,7 +147,7 @@ typedef struct s_info
 	int					prev_pipe[2];
 	int					tmp_fd;
 	int					exit_status;
-	int					status; // can proceed by logical
+	int					status;
 	t_env				*env;
 }						t_info;
 
@@ -242,6 +242,16 @@ bool					parse_pipe(t_token **token, t_ast **node);
 // parse_phrase.c
 bool					parse_phrase(t_token **token, t_ast **node);
 
+// parse_phrase_part.c
+bool					parse_cmd(t_token **token, t_ast **node);
+bool					parse_redirection_part(\
+		t_token **token, t_ast **phrase_node, t_ast **node);
+bool					parse_cmd_part(\
+		t_token **token, t_ast **phrase_node, t_ast **node);
+bool					parse_phrase_part(\
+		t_token **token, t_ast **node, \
+		bool (*parse_func)(t_token **, t_ast **, t_ast **));
+
 // parse_redirection.c
 bool					parse_redirection(t_token **token, t_ast **node);
 bool					parse_io_redirection(t_token **token, t_ast **node);
@@ -317,6 +327,7 @@ bool					check_subshell_closed(t_token *head);
 // valid_token_err.c
 bool					check_redir_err(t_token *head);
 bool					check_operator_before_after_err(t_token *head);
+bool					check_subshell_err(t_token *head);
 
 // valid_token_err_2.c
 bool					check_logical_err(t_token *head);
@@ -377,6 +388,9 @@ char					*find_cmd_in_path(const char *cmd, t_env *env);
 // get_absolute_path.c
 char					*get_absolute_path(const char *path);
 
+// get_bin_path.c
+char					*get_bin_path(const char *cmd);
+
 // stdio_redirector.c
 int						backup_stdio(t_info *info);
 int						restore_stdio(t_info *info);
@@ -393,7 +407,7 @@ t_file_list				*get_entry_list(t_file_list *file_list, DIR *dir);
 
 // list_to_array.c
 char					**list_to_array(t_env *env);
-void					clear_arr(int len, char **arr);
+void					clear_arr(char **arr);
 
 // cmd.c
 int						dispatch_cmd(t_ast *node, t_info *info);
@@ -405,9 +419,11 @@ int						launch_process(char *cmd, char **args, t_info *info);
 int						handle_io_redirection(t_ast *node, t_info *info);
 
 // redir_utils.c
-int						here_doc(int infile, char *limiter);
 int						open_file_with_mode(char *file, int mode);
 void					cleanup_tmp_file(void);
+
+// here_doc.c
+int						here_doc(int infile, char *limiter, t_info *info);
 
 // ------------------------ utils -----------------------------//
 // string_utils.c
@@ -422,11 +438,14 @@ char					*trim_whitespace(const char *str);
 char					*ft_strndup(const char *str, size_t n);
 bool					is_operator(const char *cmd);
 
-	// quotes_str.c
+// quotes_str.c
 void					remove_quotes(char *str);
 void					remove_single_quotes(char *str);
 void					remove_double_quotes(char *str);
 void					remove_empty_quotes(char *str);
+
+// subshell_and_quote_str.c
+bool					are_parentheses_balanced(const char *input);
 
 // error_utils.c
 int						fd_log_error(char *cmd, char *arg, char *error);

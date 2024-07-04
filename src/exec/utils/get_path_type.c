@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/22 19:37:41 by junsan            #+#    #+#             */
-/*   Updated: 2024/06/23 22:09:27 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/02 09:59:19 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,11 @@ static char	*get_path_in_env(t_env *env)
 {
 	while (env)
 	{
-		if (ft_strncmp(env->name, "PATH", 4) == 0 && ft_strlen(env->name) == 4)
-			break ;
+		if (ft_strlen(env->name) == 4 && ft_strncmp(env->name, "PATH", 4) == 0)
+			return (env->content);
 		env = env->next;
 	}
-	return (env->content);
+	return (NULL);
 }
 
 static t_path_type	check_command(const char *path, t_info *info)
@@ -41,19 +41,22 @@ static t_path_type	check_command(const char *path, t_info *info)
 	char	cmd[MAX_PATH_LENGTH];
 
 	cmd_path = get_path_in_env(info->env);
-	while (*cmd_path)
+	if (cmd_path)
 	{
-		end = ft_strchr(cmd_path, ':');
-		if (!end)
-			end = cmd_path + ft_strlen(cmd_path);
-		ft_strlcpy(cmd, cmd_path, end - cmd_path + 1);
-		ft_strlcat(cmd, "/", sizeof(cmd));
-		ft_strlcat(cmd, path, sizeof(cmd));
-		if (access(cmd, X_OK) == 0)
-			return (PATH_COMMAND);
-		if (*end == '\0')
-			break ;
-		cmd_path = end + 1;
+		while (*cmd_path)
+		{
+			end = ft_strchr(cmd_path, ':');
+			if (!end)
+				end = cmd_path + ft_strlen(cmd_path);
+			ft_strlcpy(cmd, cmd_path, end - cmd_path + 1);
+			ft_strlcat(cmd, "/", sizeof(cmd));
+			ft_strlcat(cmd, path, sizeof(cmd));
+			if (access(cmd, X_OK) == 0)
+				return (PATH_COMMAND);
+			if (*end == '\0')
+				break ;
+			cmd_path = end + 1;
+		}
 	}
 	return (PATH_INVALID);
 }

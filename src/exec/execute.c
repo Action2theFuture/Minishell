@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 18:34:10 by junsan            #+#    #+#             */
-/*   Updated: 2024/06/30 12:26:28 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/03 23:02:04 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,8 @@ static void	categorize_tree(t_ast *node, t_info *info)
 		init_info(&subshell_info);
 		subshell_info.in_subshell = true;
 		traverse_tree(node->right, &subshell_info);
+		info = &subshell_info;
+		info->in_subshell = false;
 	}
 }
 
@@ -58,13 +60,13 @@ static void	cnt_pipe(t_ast *node, t_info *info)
 	}
 }
 
+// printf("status : %d, exit status : %d\n", info->status, info->exit_status);
 static void	process_logical_node(t_ast *node, t_info *info)
 {
 	int	status;
 
 	traverse_tree(node->right, info);
 	status = info->exit_status;
-	// printf("status : %d, exit status : %d\n", info->status, info->exit_status);
 	if ((ft_strncmp(node->data, "&&", 2) == 0 && status == SUCCESS) || \
 		(ft_strncmp(node->data, "||", 2) == 0 && status > 0))
 		traverse_tree(node->left, info);
@@ -81,10 +83,7 @@ static void	traverse_tree(t_ast *node, t_info *info)
 	{
 		traverse_tree(node->right, info);
 		if (node->type == PIPE && info->status == SUCCESS)
-		{
-			//print_tree(node, 10);
 			traverse_tree(node->left, info);
-		}
 	}
 	if (node->type != PIPE && node->type != LOGICAL)
 	{

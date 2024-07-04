@@ -31,9 +31,8 @@ int	good_flag(const char *str)
 	return (1);
 }
 
-int	ft_echo(const char *cmd, const char **args, t_env *list)
+static bool	handle_flags(const char **args, int *i)
 {
-	int		i;
 	bool	new_line;
 
 	(void)cmd;
@@ -44,9 +43,14 @@ int	ft_echo(const char *cmd, const char **args, t_env *list)
 	new_line = 0;
 	while (args[i] && good_flag(args[i]))
 	{
-		new_line = 1;
-		i++;
+		new_line = true;
+		(*i)++;
 	}
+	return (new_line);
+}
+
+static int	print_args(const char **args, int i)
+{
 	while (args[i])
 	{
 		ft_putstr_fd((char *)args[i], 1);
@@ -54,9 +58,30 @@ int	ft_echo(const char *cmd, const char **args, t_env *list)
 			ft_putstr_fd(" ", 1);
 		i++;
 	}
+	return (0);
+}
+
+int	ft_echo(const char *cmd, const char **args, t_env *list)
+{
+	int		i;
+	bool	new_line;
+
+	(void)cmd;
+	(void)list;
+	if (!args || !*args)
+	{
+		ft_putstr_fd("\n", 1);
+		return (0);
+	}
+	i = 1;
+	new_line = handle_flags(args, &i);
+	// if(ft_strncmp(args[0], "$?", 2) == 0)
+	// 	return(1);
+	// if(args[0][0] == "?")
+	print_args(args, i);
 	if (!new_line)
 		ft_putstr_fd("\n", 1);
-	return (SUCCESS);
+	return (0);
 }
 
 // void print_echo(t_cmd_list *list)

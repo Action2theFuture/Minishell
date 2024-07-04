@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/26 12:05:45 by junsan            #+#    #+#             */
-/*   Updated: 2024/06/27 16:33:49 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/01 22:52:57 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,10 @@ void	free_tree(t_ast *root)
 {
 	if (root == NULL)
 		return ;
-	free_tree(root->left);
-	free_tree(root->right);
+	if (root->right)
+		free_tree(root->right);
+	if (root->left)
+		free_tree(root->left);
 	if (root->data)
 		free(root->data);
 	free(root);

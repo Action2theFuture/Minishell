@@ -6,13 +6,13 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/26 11:49:26 by junsan            #+#    #+#             */
-/*   Updated: 2024/06/26 12:31:50 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/03 20:46:39 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static const char	*get_type_str_redir(int type)
+char	*get_type_str_redir(int type)
 {
 	if (type == IN_REDIR)
 		return ("IN_REDIR");
@@ -29,7 +29,7 @@ static const char	*get_type_str_redir(int type)
 	return ("UNKNOWN");
 }
 
-static const char	*get_type_str(int type)
+char	*get_type_str(int type)
 {
 	if (type == LOGICAL)
 		return ("LOGICAL");

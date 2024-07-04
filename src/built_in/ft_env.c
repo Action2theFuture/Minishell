@@ -26,6 +26,8 @@ void	printf_env(t_env *list)
 		cur = cur->next;
 	}
 }
+
+// status_exit == 0 SUCCESS status_exit == 1 FAILURE
 static int	check_in_env(const char *arg, t_env *list)
 {
 	t_env	*cur;
@@ -37,31 +39,35 @@ static int	check_in_env(const char *arg, t_env *list)
 		{
 			ft_putstr_fd(cur->content, 1);
 			printf_env(list);
-			return (0);
+			return (1);
 		}
 		cur = cur->next;
 	}
-	return (1);
+	return (0);
 }
 
 // UnCompleted
 int	ft_env(const char *cmd, const char **args, t_env *list)
 {
+	int	i;
+
 	(void)cmd;
-	if (!args)
+	i = 0;
+	if (args[1] == NULL)
 	{
 		printf_env(list);
 		return (FAILURE);
 	}
-	if (args[0])
+	else
 	{
-		if (sizeof(args) > 2)
+		while (args[++i])
 		{
-			ft_putstr_fd("ignoring non-option arguments", STDOUT_FILENO);
-			printf_env(list);
+			if (!check_in_env(args[i], list))
+			{
+				ft_putstr_fd("ignoring non-option arguments\n", STDOUT_FILENO);
+				return (1);
+			}
 		}
-		else
-			return (check_in_env(args[0], list));
 	}
 	return (SUCCESS);
 }

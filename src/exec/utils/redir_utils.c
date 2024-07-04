@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 18:20:15 by junsan            #+#    #+#             */
-/*   Updated: 2024/06/23 10:35:47 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/04 13:41:28 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,33 +23,6 @@ void	cleanup_tmp_file(void)
 		if (unlink(HEREDOC_TMP) == -1)
 			fd_log_error(NULL, NULL, strerror(errno));
 	}
-}
-
-int	here_doc(int infile, char *limiter)
-{
-	char	*line;
-
-	while (1)
-	{
-		line = readline("heredoc> ");
-		if (line == NULL)
-			break ;
-		if (ft_strncmp(line, limiter, ft_strlen(limiter)) == 0)
-		{
-			free(line);
-			line = NULL;
-			break ;
-		}
-		write(infile, line, ft_strlen(line));
-		write(infile, "\n", 1);
-		free(line);
-		line = NULL;
-	}
-	close(infile);
-	infile = open(HEREDOC_TMP, O_RDONLY, 0644);
-	if (infile == -1)
-		return (FAILURE);
-	return (SUCCESS);
 }
 
 int	open_file_with_mode(char *file, int mode)

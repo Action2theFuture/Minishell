@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/23 17:08:10 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/01 11:21:04 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/04 12:09:42 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,9 @@ static void	prepare_and_execute(\
 	int		built_in;
 	int		(*arr_built_in[8])(const char *, const char **, t_env *);
 
-	if (ft_strncmp(cmd, "true", 4) == 0 && ft_strlen(cmd) == 4)
+	if (ft_strlen(cmd) == 4 && ft_strncmp(cmd, "true", 4) == 0)
 		exit(SUCCESS);
-	else if (ft_strncmp(cmd, "false", 5) == 0 && ft_strlen(cmd) == 5)
+	else if (ft_strlen(cmd) == 5 && ft_strncmp(cmd, "false", 5) == 0)
 		exit(FAILURE);
 	init_builtin(arr_built_in);
 	built_in = handler_builtin(cmd);
@@ -30,7 +30,7 @@ static void	prepare_and_execute(\
 	else if (args[0][0] == '.' && args[0][1] == '/'
 		&& execve(args[0], args, env) == -1)
 		exit(125 + execve_log_error(args[0], errno));
-	if (info->path)
+	else if (info->path)
 	{
 		execve(info->path, args, env);
 		free(info->path);
@@ -42,6 +42,7 @@ static void	prepare_and_execute(\
 static int	exec_child_task(char *cmd, char **env, char **args, t_info *info)
 {
 	replace_env_vars_in_args(args, info);
+	cmd = args[0];
 	if (info->prev_pipe[0] != -1)
 	{
 		close(info->prev_pipe[1]);
@@ -95,15 +96,12 @@ int	launch_process(char *cmd, char **args, t_info *info)
 		return (fd_log_error("fork error", NULL, NULL));
 	env = (char **)list_to_array(info->env);
 	if (env == NULL)
-	{
-		perror("Empty env");
-		exit(EXIT_FAILURE);
-	}
+		return (perror("Empty env"), 1);
 	if (pid == 0)
 		exec_child_task(cmd, env, args, info);
 	monitor_child_task(cmd, pid, info);
 	if (env)
-		clear_arr((int) sizeof(env), env);
+		clear_arr(env);
 	if (info->pipe_exists)
 	{
 		close(info->pipe[1]);

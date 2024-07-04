@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   arg_parse.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rabouzia <rabouzia@student.42.fr>          +#+  +:+       +#+        */
+/*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 18:50:55 by junsan            #+#    #+#             */
-/*   Updated: 2024/06/30 21:39:30 by rabouzia         ###   ########.fr       */
+/*   Updated: 2024/07/04 13:57:42 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static size_t	arg_len(const char *arg)
 
 	len = ft_strlen(arg);
 	if (arg[0] == '-' && ft_strlen(arg) > 2)
-		return ((len - 1 * 2) + len - 2);
+		return (((len - 1) * 2) + len - 2);
 	return (len);
 }
 
@@ -67,6 +67,7 @@ static void	split_flag(char *dest, const char *src)
 	*dest = '\0';
 }
 
+// remove_double_quotes((*token)->data); under first condition
 static void	file_data(char *data, t_token **token)
 {
 	char	*ptr;
@@ -74,8 +75,8 @@ static void	file_data(char *data, t_token **token)
 	ptr = data;
 	while (*token && (*token)->type == CMD)
 	{
-		// remove_double_quotes((*token)->data);
-		if ((*token)->data[0] == '-' && ft_strlen((*token)->data) > 2)
+		if (ft_strlen((*token)->data) > 2 && (*token)->data[0] == '-' && \
+			(*token)->data[1] != '-')
 		{
 			split_flag(ptr, (*token)->data);
 			ptr += (ft_strlen((*token)->data) - 1) * 2 \
@@ -103,7 +104,6 @@ char	*arg_parsing(t_token **token)
 	char	*data;
 
 	cur = *token;
-	// printf("token data : %s\n", cur->data);
 	total_len = get_total_arg_list_size(&cur);
 	data = (char *)malloc(sizeof(char) * (total_len + 1));
 	if (!data)

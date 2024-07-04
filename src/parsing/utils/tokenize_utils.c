@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/26 10:41:06 by junsan            #+#    #+#             */
-/*   Updated: 2024/06/27 08:57:57 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/02 11:37:33 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,11 +32,10 @@ static t_token	*new_token(const char *start, size_t len)
 	data = (char *)malloc(sizeof(char) * (len + 1));
 	if (!data)
 		return (NULL);
-	data = ft_memcpy(data, start, len);
-	data[len] = '\0';
+	ft_strlcpy(data, start, len + 1);
 	new_node = (t_token *)malloc(sizeof(t_token));
 	if (!new_node)
-		return (NULL);
+		return (free(data), NULL);
 	remove_control_characters(data);
 	new_node->data = data;
 	new_node->next = NULL;
@@ -44,15 +43,13 @@ static t_token	*new_token(const char *start, size_t len)
 	return (new_node);
 }
 
-void	add_token(t_token **head, const char *start, size_t len)
+static void	insert_token_at_end(t_token **head, t_token *new_node)
 {
 	t_token	*cur;
-	t_token	*new_node;
 	int		i;
 
-	if (start == NULL || is_all_whitespace(start))
-		return ;
-	new_node = new_token(start, len);
+	cur = *head;
+	i = 1;
 	if (*head == NULL)
 	{
 		new_node->num = 1;
@@ -71,6 +68,18 @@ void	add_token(t_token **head, const char *start, size_t len)
 		cur->next = new_node;
 		new_node->num = i + 1;
 	}
+}
+
+void	add_token(t_token **head, const char *start, size_t len)
+{
+	t_token	*new_node;
+
+	if (start == NULL || is_all_whitespace(start))
+		return ;
+	new_node = new_token(start, len);
+	if (!new_node)
+		return ;
+	insert_token_at_end(head, new_node);
 }
 /*
 static size_t	token_size(t_token *token)

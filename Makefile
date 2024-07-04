@@ -6,7 +6,7 @@
 #    By: junsan <junsan@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    CreateCd: 2024/05/11 19:03:01 by junsan            #+#    #+#             #
-#    Updated: 2024/06/29 13:50:10 by junsan           ###   ########.fr        #
+#    Updated: 2024/07/04 13:45:18 by junsan           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -42,6 +42,7 @@ SRC 	= minishell.c process_input.c
 INIT	= init_minishell.c env_init.c increment_shlvl.c env_utils.c
 PARSING	= parsing.c arg_parse.c parse_subshell.c									\
 		parse_logical.c parse_pipe.c parse_phrase.c parse_redirection.c				\
+		parse_phrase_parts.c														\
 		/tokenize/tokenize.c /tokenize/handler_operators_and_spaces.c				\
 		/tokenize/handle_quotes.c /tokenize/handle_subshell.c						\
 		/utils/parsing_utils.c /utils/tokenize_utils.c /utils/tokenize_utils_2.c	\
@@ -50,7 +51,8 @@ PARSING	= parsing.c arg_parse.c parse_subshell.c									\
 		/utils/parsing_quotes_in_cmd.c												\
 		/utils/validation/valid_token.c /utils/validation/valid_token_utils.c		\
 		/utils/validation/valid_token_err.c /utils/validation/valid_token_err_2.c
-UTILS	= string_utils.c string_utils_2.c quotes_str.c error_utils.c
+UTILS	= string_utils.c string_utils_2.c quotes_str.c error_utils.c 				\
+		subshell_and_quote_str.c
 SIGNAL	= handler_signal.c
 EXECUTE = execute.c redir.c get_file_list.c execute_process.c cmd.c	launch_process.c\
 		/utils/redir_utils.c /utils/info_utils.c /utils/get_file_list_utils.c		\
@@ -58,7 +60,7 @@ EXECUTE = execute.c redir.c get_file_list.c execute_process.c cmd.c	launch_proce
 		/utils/get_absolute_path.c /utils/var_expansion_with_args.c					\
 		/utils/get_path_type.c /utils/find_cmd_in_path.c /utils/replace_env_vars.c	\
 		/utils/replace_env_vars_utils.c /utils/handler_replace_env_vars.c 			\
-		/utils/quotes_utils.c
+		/utils/quotes_utils.c /utils/get_bin_path.c /utils/here_doc.c
 BUILT_IN = built_in.c file_dir_operations.c	ft_cd.c  ft_env.c ft_export.c ft_unset.c\
 		ft_echo.c ft_exit.c ft_pwd.c
 PRINT	= prints.c prints_2.c
@@ -86,9 +88,7 @@ vpath %.c ./src/
 all: $(NAME)
 
 $(NAME) : $(LIBFT) $(OBJS)
-	#@$(CC) $(CFLAGS) -o $@ $(OBJS) $(LIBFT) $(LD_FLAGS) > /dev/null 2>&1 & COMPILER_PID=$$!; \
-	
-	$(CC) $(CFLAGS) -o $@ $(OBJS) $(LIBFT) $(LD_FLAGS)
+	@$(CC) $(CFLAGS) -o $@ $(OBJS) $(LIBFT) $(LD_FLAGS) > /dev/null 2>&1 & COMPILER_PID=$$!; \
 	./$(SPINNER_SCRIPT) $$COMPILER_PID; \
 	wait $$COMPILER_PID
 	@echo "$(COLOR_GREEN)Compilation completed successfully! 🎉$(COLOR_RESET)"
@@ -100,7 +100,7 @@ OBJ_FILES_SPINNER_PID=
 $(OBJ_DIR)/%.o: %.c
 	@mkdir -p $(@D)
 	#@$(CC) $(CFLAGS) $(IFLAGS) -c $< -o $@ > /dev/null 2>&1
-	@$(CC) $(CFLAGS) $(IFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) $(IFLAGS) -c $< -o $@
 
 $(LIBFT): 
 	@echo "$(COLOR_YELLOW)Compliling $(NAME)...$(COLOR_RESET)"

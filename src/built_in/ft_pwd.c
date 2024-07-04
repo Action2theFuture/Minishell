@@ -30,9 +30,10 @@ int	ft_pwd(const char *cmd, const char **args, t_env *list)
 		fd_log_error("pwd", NULL, strerror(errno));
 		return (FAILURE);
 	}
-	if (write(1, print, strlen(print)) == -1)
-		return (FAILURE);
-	if (write(1, "\n", 1) == -1)
-		return (0);
-	return (SUCCESS);
+
+	if (write(1, print, ft_strlen(print))== -1)
+		return (free(print), 1);
+	if (write(1, "\n", 1)== -1)
+		return (free(print), 0);
+	return (free(print), 0);
 }

@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 16:44:23 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/01 11:21:00 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/03 19:26:14 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,10 @@ void	process_phrase_node(t_ast *node, t_info *info)
 	if (redir_node)
 	{
 		if (redir_node->type == PHRASE && info->status == SUCCESS)
+		{
 			redir_node = redir_node->left;
+			info->in_subshell = false;
+		}
 		info->status = handle_io_redirection(redir_node->left, info);
 		if (redir_node->right && info->status == SUCCESS)
 			info ->status = handle_io_redirection(redir_node->right, info);

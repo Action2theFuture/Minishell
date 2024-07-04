@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/23 20:07:50 by junsan            #+#    #+#             */
-/*   Updated: 2024/06/28 17:26:40 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/03 20:38:47 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	valid_token(t_token *head)
 	if (!check_subshell_closed(head))
 		return (TOKEN_ERROR);
 	if (check_logical_err(head) || check_redir_err(head) || \
-		check_operator_before_after_err(head))
+		check_operator_before_after_err(head) || check_subshell_err(head))
 		return (TOKEN_ERROR);
 	return (-1);
 }
