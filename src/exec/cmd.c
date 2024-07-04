@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 17:58:55 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/04 15:12:54 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/05 10:25:02 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,7 @@ static int	execute_cmd(char **chunk, t_info *info)
 	int		built_in;
 	int		(*arr_built_in[8])(const char *, const char **, t_env *);
 
+	replace_env_vars_in_args(chunk, info);
 	init_builtin(arr_built_in);
 	built_in = handler_builtin(chunk[0]);
 	if (built_in == ENV || built_in == M_ECHO || built_in == NONE)

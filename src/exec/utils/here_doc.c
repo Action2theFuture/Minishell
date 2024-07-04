@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/04 13:40:54 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/04 13:46:08 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/05 10:17:36 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,9 +102,7 @@ static int	process_line_and_write(\
 int	here_doc(int infile, char *limiter, t_info *info)
 {
 	char	*line;
-	char	*env_var;
 
-	env_var = NULL;
 	while (1)
 	{
 		line = readline("heredoc> ");
@@ -112,7 +110,6 @@ int	here_doc(int infile, char *limiter, t_info *info)
 			!process_line_and_write(infile, line, limiter, info))
 			break ;
 		free(line);
-		env_var = NULL;
 		line = NULL;
 	}
 	close(infile);
