@@ -29,7 +29,7 @@ bool	parse_cmd(t_token **token, t_ast **node)
 		{
 			if (ft_strlen(cmd_node->left->data) == 4 && \
 					ft_strncmp(cmd_node->left->data, "find", 4) == 0)
-				arg_tokens = ft_strdup((*token)->data);
+				arg_tokens = arg_parsing_2(token);
 			else
 				arg_tokens = arg_parsing(token);
 			cmd_node->right = new_node(arg_tokens, ARGS);
