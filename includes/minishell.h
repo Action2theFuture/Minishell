@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rabouzia <rabouzia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/11 19:22:19 by junsan            #+#    #+#             */
 /*   Updated: 2024/07/04 14:22:21 by junsan           ###   ########.fr       */
@@ -489,6 +489,8 @@ int						ft_exit(const char *cmd, const char **args,
 							t_env *list);
 
 // ft_export.c
+void	env_split(const char *str, char **name, char **content);
+
 // void			ft_export_add(char *var, char **arg);
 // void			ft_export_show(t_env *env);
 int						ft_export(\
