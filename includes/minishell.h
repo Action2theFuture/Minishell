@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/11 19:22:19 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/04 13:44:55 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/04 13:49:49 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,7 +135,7 @@ typedef struct s_env
 
 typedef struct s_info
 {
-	bool				pipe_exists; // pipe exist or not
+	bool				pipe_exists;
 	bool				in_subshell;
 	char				*path;
 	int					pipe_cnt;
@@ -147,7 +147,7 @@ typedef struct s_info
 	int					prev_pipe[2];
 	int					tmp_fd;
 	int					exit_status;
-	int					status; // can proceed by logical
+	int					status;
 	t_env				*env;
 }						t_info;
 
