@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/11 19:22:19 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/03 22:57:53 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/04 13:44:55 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -419,9 +419,11 @@ int						launch_process(char *cmd, char **args, t_info *info);
 int						handle_io_redirection(t_ast *node, t_info *info);
 
 // redir_utils.c
-int						here_doc(int infile, char *limiter);
 int						open_file_with_mode(char *file, int mode);
 void					cleanup_tmp_file(void);
+
+// here_doc.c
+int						here_doc(int infile, char *limiter, t_info *info);
 
 // ------------------------ utils -----------------------------//
 // string_utils.c

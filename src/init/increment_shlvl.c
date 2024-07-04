@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/23 12:10:30 by junsan            #+#    #+#             */
-/*   Updated: 2024/06/23 13:42:55 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/04 11:08:53 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,10 @@ int	increment_shlvl(t_env *env)
 	if (env == NULL)
 		return (SUCCESS);
 	shlvl = ft_atoi(env->content);
+	free(env->content);
 	new_shlvl = ft_itoa(++shlvl);
 	if (new_shlvl == NULL)
 		return (FAILURE);
-	free(env->content);
 	env->content = new_shlvl;
 	return (SUCCESS);
 }
