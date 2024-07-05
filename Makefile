@@ -6,7 +6,7 @@
 #    By: junsan <junsan@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    CreateCd: 2024/05/11 19:03:01 by junsan            #+#    #+#             #
-#    Updated: 2024/07/04 14:22:54 by junsan           ###   ########.fr        #
+#    Updated: 2024/07/05 10:19:53 by junsan           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -88,7 +88,8 @@ vpath %.c ./src/
 all: $(NAME)
 
 $(NAME) : $(LIBFT) $(OBJS)
-	@$(CC) $(CFLAGS) -o $@ $(OBJS) $(LIBFT) $(LD_FLAGS) > /dev/null 2>&1 & COMPILER_PID=$$!; \
+	$(CC) $(CFLAGS) -o $@ $(OBJS) $(LIBFT) $(LD_FLAGS)
+	#$(CC) $(CFLAGS) -o $@ $(OBJS) $(LIBFT) $(LD_FLAGS) > /dev/null 2>&1 & COMPILER_PID=$$!; \
 	./$(SPINNER_SCRIPT) $$COMPILER_PID; \
 	wait $$COMPILER_PID
 	@echo "$(COLOR_GREEN)Compilation completed successfully! 🎉$(COLOR_RESET)"

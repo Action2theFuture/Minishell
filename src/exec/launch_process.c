@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/23 17:08:10 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/04 16:17:40 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/05 10:25:09 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,6 @@ static void	prepare_and_execute(\
 
 static int	exec_child_task(char *cmd, char **env, char **args, t_info *info)
 {
-	replace_env_vars_in_args(args, info);
 	cmd = args[0];
 	if (info->prev_pipe[0] != -1)
 	{
