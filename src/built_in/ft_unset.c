@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_unset.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rabouzia <rabouzia@student.42.fr>          +#+  +:+       +#+        */
+/*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 14:48:24 by junsan            #+#    #+#             */
-/*   Updated: 2024/06/29 17:45:44 by rabouzia         ###   ########.fr       */
+/*   Updated: 2024/07/03 09:29:34 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,11 +64,11 @@ int	ft_unset(const char *cmd, const char **args, t_env *list)
 	(void)cmd;
 	i = 0;
 	if (!args || !list)
-		return (0);
+		return (FAILURE);
 	while (args[i])
 	{
 		del_node(&list, args[i]);
 		i++;
 	}
-	return (1);
+	return (SUCCESS);
 }

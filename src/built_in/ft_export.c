@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 23:38:01 by rabouzia          #+#    #+#             */
-/*   Updated: 2024/07/01 10:43:47 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/03 09:29:18 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,69 +20,70 @@ int	check_first_arg(const char arg)
 		return (1);
 }
 
-void	swap_nodes(t_env *a, t_env *b)
-{
-	char	*tmp_name;
-	char	*tmp_content;
-
-	tmp_name = a->name;
-	tmp_content = a->content;
-	a->name = b->name;
-	a->content = b->content;
-	b->name = tmp_name;
-	b->content = tmp_content;
-}
-
-t_env	*sort_list(t_env *env)
-{
-	t_env	*head;
-	t_env	*current;
-	int		swapped;
-
-	head = ft_calloc(sizeof(t_env), 1);
-	head = env;
-	if (env == NULL)
-		return (NULL);
-	swapped = 1;
-	while (swapped)
-	{
-		swapped = 0;
-		current = head;
-		while (current->next != NULL)
-		{
-			if (ft_strncmp(current->name, current->next->name,
-					ft_strlen(current->name)) > 0)
-			{
-				swap_nodes(current, current->next);
-				swapped = 1;
-			}
-			current = current->next;
-		}
-	}
-	return (head);
-}
-
-void	ft_export_show(t_env *env)
-{
-	t_env	*tmp;
-
-	tmp = sort_list(env);
-	while (tmp)
-	{
-		printf("%s=%s\n", tmp->name, tmp->content);
-		tmp = tmp->next;
-	}
-}
-
-int	var_exist_already(const char *var, t_env *lst)
+t_env	*var_find_if_exist(const char *var, t_env *lst)
 {
 	while (lst)
 	{
-		if (ft_strncmp(var, lst->name, ft_strlen(var)))
-			return (1);
+		if (ft_strncmp(var, lst->name, ft_strlen(var)) == 0 )
+			return (lst);
 		lst = lst->next;
 	}
-	return (0);
+	return (NULL);
+}
+
+int	ft_strcmp(char *s1, char *s2)
+{
+	int i;
+
+	i = 0;
+	while (s1[i] == s2[i] && s1[i] != '\0' && s2[i] != '\0')
+		i++;
+	return (s1[i] - s2[i]);
+}
+
+t_env *find_next_lower(t_env *lst, char *prec)
+{
+    t_env *cur = lst;
+    t_env *next_lower = NULL;
+
+    while (cur)
+    {
+        if (ft_strcmp(cur->name, prec) > 0 && (next_lower == NULL || ft_strcmp(cur->name, next_lower->name) < 0))
+			next_lower = cur;
+		//printf("habibi %s\n", next_lower->name);
+        cur = cur->next;
+    }
+    return next_lower;
+}
+
+t_env *find_lowest(t_env *lst)
+{
+    t_env *cur = lst;
+    t_env *lowest = cur;
+
+    while (cur)
+    {
+        if (ft_strcmp(cur->name, lowest->name) < 0)
+            lowest = cur;
+        cur = cur->next;
+    }
+    return lowest;
+}
+
+void ft_export_show(t_env *env)
+{
+    t_env *cur = find_lowest(env);
+
+    while (cur)
+    {
+        if (!cur->content)
+            printf("export %s\n", cur->name);
+        else
+            printf("export %s=%s\n", cur->name, cur->content);
+		
+        cur = find_next_lower(env, cur->name);
+    	// printf("Dedbug %s\n", next_lower->name);
+    }
 }
 
 // modifier une variable si elle existe deja
@@ -92,32 +93,40 @@ int	ft_export(const char *cmd, const char **args, t_env *list)
 {
 	int		i;
 	t_env	*tmp;
+	t_env	*tmp2;
 	char	*name;
 	char	*content;
 
+	content = name = NULL;
 	(void)cmd;
 	tmp = list;
+	tmp2 = list;
 	if (!args[1] || !*args)
-		return (ft_export_show(list), 1);
+		return (ft_export_show(list), FAILURE);
 	i = 1;
 	while (args[i])
 	{
-		if (var_exist_already(args[i], list))
-		{	if (check_first_arg(args[i][0]))
+		env_split(args[i], &name, &content);
+		tmp2 = var_find_if_exist(name, tmp2);
+		if (tmp2)
+		{
+			free(tmp2->content);
+			tmp2->content = content;
+		}
+		else 
+		{	
+			if (check_first_arg(args[i][0]))
 			{
 				ft_putstr_fd("export: ", 2);
 				ft_putstr_fd((char *)args[i], 2);
 				ft_putstr_fd(": not a valid identifier\n", 2);
 			}
-		}
-		else
-		{
-			env_split(args[i], &name, &content);
-			add_builtin_node(&tmp, name, content);
+			else
+				add_builtin_node(&tmp, name, content);
 		}
 		i++;
 	}
-	return (0);
+	return (SUCCESS);
 }
 
 t_env	*builtin_new_node(char *name, char *content)
@@ -139,7 +148,7 @@ void	add_builtin_node(t_env **head, char *name, char *content)
 	t_env	*cur;
 
 	new_node = builtin_new_node(name, content);
-	if (!name || !content || !new_node)
+	if (!name || !new_node)
 		return ;
 	if (*head == NULL)
 		*head = new_node;

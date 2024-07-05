@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 12:05:58 by rabouzia          #+#    #+#             */
-/*   Updated: 2024/07/02 11:53:57 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/03 09:30:30 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,11 +43,11 @@ int	ft_exit(const char *cmd, const char **args, t_env *list)
 	while (args[num_args])
 		num_args++;
 	if (num_args == 1)
-		(ft_putstr_fd("exit\n", 2), exit(0));
+		(ft_putstr_fd("exit\n", 2), exit(EXIT_SUCCESS));
 	if (num_args > 2)
 	{
 		ft_putstr_fd("bash: exit: too many arguments\n", STDERR_FILENO);
-		return (1); // Return 1 to indicate error but not exit the shell
+		return (FAILURE); // Return 1 to indicate error but not exit the shell
 	}
 	if (args[1])
 	{
@@ -56,5 +56,5 @@ int	ft_exit(const char *cmd, const char **args, t_env *list)
 			exit(exit_code);
 		exit(ft_atoi(args[0]));
 	}
-	exit(0);
+	exit(EXIT_SUCCESS);
 }
