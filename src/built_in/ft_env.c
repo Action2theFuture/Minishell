@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_env.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ramzerk <ramzerk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 11:48:50 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/03 09:28:55 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/10 18:39:24 by ramzerk          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	printf_env(t_env *list)
 		if (!cur->content)
             continue;        
 		else
-            printf("export %s=%s\n", cur->name, cur->content);
+            printf("%s=%s\n", cur->name, cur->content);
 		cur = cur->next;
 	}
 }
