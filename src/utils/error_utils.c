@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/23 19:45:39 by junsan            #+#    #+#             */
-/*   Updated: 2024/06/23 21:39:17 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/11 08:46:56 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,15 +34,14 @@ int	fd_log_error(char *cmd, char *arg, char *error)
 int	execve_log_error(char *cmd, int error)
 {
 	ft_putstr_fd("kashell$> ", STDERR_FILENO);
-	if (cmd != NULL)
-	{
-		ft_putstr_fd(cmd, STDERR_FILENO);
-		ft_putstr_fd(": ", STDERR_FILENO);
-	}
+	ft_putstr_fd(cmd, STDERR_FILENO);
+	ft_putstr_fd(": ", STDERR_FILENO);
 	if (error == EACCES)
 		ft_putstr_fd("Permission denied.\n", STDERR_FILENO);
 	else if (error == ENOENT)
 		ft_putstr_fd("No such file or directory\n", STDERR_FILENO);
+	else if (error == EFAULT)
+		ft_putstr_fd("command not found\n", STDERR_FILENO);
 	else
 	{
 		ft_putstr_fd("An unknown error occurred ", STDERR_FILENO);

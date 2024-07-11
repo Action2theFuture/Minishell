@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/23 17:08:10 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/05 10:37:46 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/11 14:21:29 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,16 +27,16 @@ static void	prepare_and_execute(\
 	if (built_in != NONE)
 		exit(arr_built_in[built_in](\
 			(const char *)cmd, (const char **)args, info->env));
-	else if (args[0][0] == '.' && args[0][1] == '/'
-		&& execve(args[0], args, env) == -1)
-		exit(125 + execve_log_error(args[0], errno));
+	else if (ft_strlen(args[0]) > 2 && args[0][0] == '.' && args[0][1] == '/'
+		&& execve(cmd, args, env) == -1)
+		exit(125 + execve_log_error(cmd, errno));
 	else if (info->path)
 	{
 		execve(info->path, args, env);
 		free(info->path);
 	}
-	if (execve(args[0], args, env) == -1)
-		exit(126 + execve_log_error(args[0], errno));
+	if (execve(cmd, args, env) == -1)
+		exit(126 + execve_log_error(cmd, errno));
 }
 
 static int	exec_child_task(char *cmd, char **env, char **args, t_info *info)
@@ -47,14 +47,12 @@ static int	exec_child_task(char *cmd, char **env, char **args, t_info *info)
 		close(info->prev_pipe[1]);
 		if (dup2(info->prev_pipe[0], STDIN_FILENO) == -1)
 			return (fd_log_error("Dup pipe error 1", NULL, NULL));
-		close(info->prev_pipe[0]);
 	}
 	if (info->pipe_exists)
 	{
 		close(info->pipe[0]);
 		if (dup2(info->pipe[1], STDOUT_FILENO) == -1)
 			return (fd_log_error("Dup pipe error 2", NULL, NULL));
-		close(info->pipe[1]);
 	}
 	prepare_and_execute(cmd, args, info, env);
 	return (SUCCESS);
@@ -64,8 +62,8 @@ static int	monitor_child_task(char *cmd, pid_t pid, t_info *info)
 {
 	int	status;
 
-	if ((ft_strncmp(cmd, "./minishell", 11) == 0)
-		&& (ft_strlen(cmd) == ft_strlen("./minishell")))
+	if ((ft_strlen(cmd) == ft_strlen("./minishell")) && \
+		ft_strncmp(cmd, "./minishell", 11) == 0)
 		disable_interrupt_signals();
 	waitpid(pid, &status, 0);
 	if (WIFSIGNALED(status))

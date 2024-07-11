@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 08:33:49 by junsan            #+#    #+#             */
-/*   Updated: 2024/06/27 11:57:39 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/11 17:32:25 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,4 +72,25 @@ void	remove_single_quotes_from_args(char **args)
 		while (args[i][0] == '\'' && args[i][ft_strlen(args[i] - 1)] == '\'')
 			remove_single_quotes(args[i]);
 	}
+}
+
+bool	find_unquoted_dollar(const char *input)
+{
+	bool	in_single_quotes;
+	bool	in_double_quotes;
+	int		i;
+
+	in_single_quotes = false;
+	in_double_quotes = false;
+	i = -1;
+	while (input[++i] != '\0')
+	{
+		if (input[i] == '\'' && !in_double_quotes)
+			in_single_quotes = !in_single_quotes;
+		else if (input[i] == '"' && !in_single_quotes)
+			in_double_quotes = !in_double_quotes;
+		else if (input[i] == '$' && !in_single_quotes && !in_double_quotes)
+			return (true);
+	}
+	return (false);
 }
