@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/11 19:22:19 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/11 16:28:48 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/11 18:38:45 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,6 +160,18 @@ typedef struct s_info
 	t_env				*env;
 	t_quote_info		*quote_info;
 }						t_info;
+
+typedef struct s_handler_info
+{
+	char	*new_str;
+	size_t	new_str_len;
+	size_t	var_len;
+	int		i;
+	bool	in_single_quotes;
+	bool	in_double_quotes;
+	t_info	*info;
+	char	var[MAX_ARGS];
+}	t_handler_info;
 
 typedef struct s_token
 {
@@ -391,6 +403,12 @@ void					extract_var_name(\
 char					*process_replace_env_vars(char *arg, t_info *info);
 char					*process_replace_expansion_var(t_info *info);
 
+// init_utils_for_expansion.c
+void					init_env_var(\
+	const char *str, char *res, t_env_var *env_var, t_info *info);
+void					init_handler_info(\
+			t_handler_info *h_info, char *new_str, t_info *info);
+
 // handle_replace_env_vars.c
 void					handle_dollar_sign(t_env_var *env_var);
 
@@ -456,6 +474,7 @@ char					*trim_first_last(char *str);
 char					*trim_whitespace(const char *str);
 char					*ft_strndup(const char *str, size_t n);
 bool					is_operator(const char *cmd);
+bool					is_special_char(char c);
 
 // quotes_str.c
 void					remove_quotes(char *str);

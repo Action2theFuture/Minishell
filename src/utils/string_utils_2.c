@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   string_utils_2.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ramzerk <ramzerk@student.42.fr>            +#+  +:+       +#+        */
+/*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 15:29:43 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/04 16:25:18 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/11 18:39:38 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,4 +60,9 @@ bool	is_operator(const char *cmd)
 	return ((ft_strncmp(cmd, "|", 1) == 0 && ft_strlen(cmd) == 1) || \
 		(ft_strncmp(cmd, "&&", 2) == 0 && ft_strlen(cmd) == 2) || \
 		(ft_strncmp(cmd, "||", 2) == 0 && ft_strlen(cmd) == 2));
+}
+
+bool	is_special_char(char c)
+{
+	return (!(ft_isalnum(c) || c == '_'));
 }
