@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/11 19:22:19 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/09 19:07:57 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/11 16:28:48 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,6 +133,15 @@ typedef struct s_env
 	struct s_env		*next;
 }						t_env;
 
+typedef struct s_quote_info
+{
+	bool	in_single_quotes;
+	bool	in_double_quotes;
+	size_t	new_str_len;
+	size_t	tmp_str_len;
+	char	tmp_str[MAX_ARGS];
+}	t_quote_info;
+
 typedef struct s_info
 {
 	bool				pipe_exists;
@@ -149,6 +158,7 @@ typedef struct s_info
 	int					exit_status;
 	int					status;
 	t_env				*env;
+	t_quote_info		*quote_info;
 }						t_info;
 
 typedef struct s_token
@@ -358,11 +368,17 @@ char					**allocate_null_and_cmd_chunk(char **cmd, int cmd_cnt);
 void					remove_consecutive_double_quotes_from_args(char **args);
 void					remove_double_quotes_from_args(char **args);
 void					remove_single_quotes_from_args(char **args);
+bool					find_unquoted_dollar(const char *input);
 
 // var_expansion_with_args.c
-void					replace_env_vars_in_args(char **args, t_info *info);
+void					expand_and_strip_quotes_in_args(\
+		char **args, t_info *info);
 char					*process_replace_env_vars(char *arg, t_info *info);
 char					*process_replace_expansion_var(t_info *info);
+
+// process_expand_strip_quotes.c
+char					*process_expand_strip_quotes(\
+		char *new_str, const char *input, t_info *info);
 
 // replace_env_vars.c
 void					replace_env_vars(\
@@ -375,8 +391,12 @@ void					extract_var_name(\
 char					*process_replace_env_vars(char *arg, t_info *info);
 char					*process_replace_expansion_var(t_info *info);
 
-// hanlde_replace_env_vars.c
+// handle_replace_env_vars.c
 void					handle_dollar_sign(t_env_var *env_var);
+
+// handle_replace_env_vars_without_quotes.c
+char					*handler_dollar_sign_wihout_quotes(\
+		char *new_str, char *input, t_info *info);
 
 // get_path_type.c
 t_path_type				get_path_type(const char *path, t_info *info);

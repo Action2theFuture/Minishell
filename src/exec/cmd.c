@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 17:58:55 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/05 10:37:11 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/11 14:54:33 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,8 @@ static void	determine_and_set_path(const char *cmd, t_info *info)
 {
 	t_path_type	path_type;
 
+	if (cmd == NULL)
+		return ;
 	path_type = get_path_type(cmd, info);
 	if (path_type == PATH_RELATIVE)
 		info->path = get_absolute_path(cmd);
@@ -50,7 +52,7 @@ static void	determine_and_set_path(const char *cmd, t_info *info)
 }
 
 static char	**prepare_cmd(\
-			char **args, t_ast *cmd_node, t_ast *args_node, t_info *info)
+			char **args, t_ast *cmd_node, t_ast *args_node)
 {
 	char		**chunk;
 	char		**parsed_cmd;
@@ -58,7 +60,6 @@ static char	**prepare_cmd(\
 
 	args = NULL;
 	chunk = NULL;
-	determine_and_set_path(cmd_node->data, info);
 	cnt = 0;
 	parsed_cmd = parse_cmd_line_with_quotes(cmd_node->data, &cnt);
 	if (args_node)
@@ -80,7 +81,8 @@ static int	execute_cmd(char **chunk, t_info *info)
 	int		built_in;
 	int		(*arr_built_in[8])(const char *, const char **, t_env *);
 
-	replace_env_vars_in_args(chunk, info);
+	expand_and_strip_quotes_in_args(chunk, info);
+	determine_and_set_path(chunk[0], info);
 	init_builtin(arr_built_in);
 	built_in = handler_builtin(chunk[0]);
 	if (built_in == ENV || built_in == M_ECHO || built_in == NONE)
@@ -109,7 +111,7 @@ int	dispatch_cmd(t_ast	*node, t_info *info)
 	args_node = node->right;
 	info->path = NULL;
 	args = NULL;
-	chunk = prepare_cmd(args, cmd_node, args_node, info);
+	chunk = prepare_cmd(args, cmd_node, args_node);
 	status = execute_cmd(chunk, info);
 	info->pipe_exists = false;
 	if (args)
