@@ -6,76 +6,87 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/11 13:30:34 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/11 17:34:35 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/11 18:37:35 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static bool	is_special_char(char c)
-{
-	return (!(ft_isalnum(c) || c == '_'));
-}
-
-static void	handle_expansion_var(\
-				char *new_str, size_t *new_str_len, int *i, t_info *info)
+static void	handle_expansion_var(t_handler_info *h_info)
 {
 	char	*env_value;
 
-	env_value = process_replace_expansion_var(info);
-	ft_strlcat(new_str, env_value, MAX_ARGS);
-	*new_str_len += ft_strlen(env_value);
-	(*i)++;
+	env_value = process_replace_expansion_var(h_info->info);
+	ft_strlcat(h_info->new_str, env_value, MAX_ARGS);
+	h_info->new_str_len += ft_strlen(env_value);
+	h_info->i++;
 }
 
-static void	handle_normal_var(\
-			char *new_str, char	*var, size_t *new_str_len, t_info *info)
+static void	handle_normal_var(t_handler_info *h_info)
 {
 	char	*env_value;
 
-	env_value = process_replace_env_vars(var, info);
-	ft_strlcat(new_str, env_value, MAX_ARGS);
-	*new_str_len += ft_strlen(env_value);
+	env_value = process_replace_env_vars(h_info->var, h_info->info);
+	ft_strlcat(h_info->new_str, env_value, MAX_ARGS);
+	h_info->new_str_len += ft_strlen(env_value);
 }
 
 static void	extract_var_name_from_input(\
-		char *var, size_t *var_len, const char *input, int *i)
+					t_handler_info *h_info, const char *input)
 {
-	*var_len = 0;
-	while (*var_len < MAX_ARGS - 1 && input[*i] && !is_special_char(input[*i]))
+	h_info->var_len = 0;
+	while (h_info->var_len < MAX_ARGS - 1 && \
+		input[h_info->i] && !is_special_char(input[h_info->i]))
 	{
-		var[(*var_len)++] = input[*i];
-		(*i)++;
+		h_info->var[h_info->var_len++] = input[h_info->i];
+		h_info->i++;
 	}
-	var[*var_len] = '\0';
+	h_info->var[h_info->var_len] = '\0';
+}
+
+static bool	handle_quotes_from_input(t_handler_info *h_info, const char *input)
+{
+	if (input[h_info->i] == '\'' && !(h_info->in_double_quotes))
+	{
+		h_info->in_single_quotes = !(h_info->in_single_quotes);
+		h_info->i++;
+		return (true);
+	}
+	else if (input[h_info->i] == '"' && !(h_info->in_single_quotes))
+	{
+		h_info->in_double_quotes = !(h_info->in_double_quotes);
+		h_info->i++;
+		return (true);
+	}
+	return (false);
 }
 
 char	*handler_dollar_sign_wihout_quotes(\
 		char *new_str, char *input, t_info *info)
 {
-	size_t	new_str_len;
-	size_t	var_len;
-	char	var[MAX_ARGS];
-	int		i;
+	t_handler_info	h_info;
 
-	i = 0;
-	new_str[0] = '\0';
-	var_len = 0;
-	new_str_len = 0;
-	while (input[i])
+	init_handler_info(&h_info, new_str, info);
+	h_info.new_str[0] = '\0';
+	while (input[h_info.i])
 	{
-		if (input[i] == '$')
+		if (input[h_info.i] == '$' && input[h_info.i + 1])
 		{
-			if (input[++i] == '?')
-				handle_expansion_var(new_str, &new_str_len, &i, info);
+			if (input[++h_info.i] == '?')
+				handle_expansion_var(&h_info);
 			else
 			{
-				extract_var_name_from_input(var, &var_len, input, &i);
-				handle_normal_var(new_str, var, &new_str_len, info);
+				extract_var_name_from_input(&h_info, input);
+				handle_normal_var(&h_info);
 			}
 		}
 		else
-			new_str[new_str_len++] = input[i++];
+		{
+			if (handle_quotes_from_input(&h_info, input))
+				continue ;
+			h_info.new_str[h_info.new_str_len++] = input[h_info.i++];
+			h_info.new_str[h_info.new_str_len] = '\0';
+		}
 	}
-	return (new_str[new_str_len] = '\0', new_str);
+	return (h_info.new_str[h_info.new_str_len] = '\0', h_info.new_str);
 }
