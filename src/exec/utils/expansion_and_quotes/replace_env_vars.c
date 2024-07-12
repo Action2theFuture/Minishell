@@ -6,23 +6,11 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/28 15:08:22 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/11 13:25:01 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/11 18:37:24 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-static void	init_env_var(\
-	const char *str, char *res, t_env_var *env_var, t_info *info)
-{
-	env_var->is_value_expansion = false;
-	env_var->str = str;
-	env_var->res = res;
-	env_var->info = info;
-	env_var->i = 0;
-	env_var->j = 0;
-	env_var->in_double_quotes = 0;
-}
 
 static void	remove_outer_double_quotes(t_env_var *env_var)
 {
