@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 13:14:06 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/12 13:38:44 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/12 14:32:48 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,4 @@ int						ft_pwd(const char *cmd, const char **args, t_env *list);
 // ft_unset.c
 int						ft_unset(const char *cmd, const char **args,
 							t_env *list);
-
-// subshell_utils.c
-char					*remove_nested_subshell(t_token **token);
 #endif // BUILTIN_H
