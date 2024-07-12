@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/11 19:22:19 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/11 18:38:45 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/12 22:59:04 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -497,14 +497,24 @@ void					init_builtin(int (*func[])(const char *, const char **,
 								t_env *));
 int						handler_builtin(const char *cmd);
 
-// file_dir_operations.c
-int						change_dir(const char *path, t_env *lst);
-bool					get_cur_dir(void);
-bool					file_exist(const char *filename);
-void					list_dir(const char *dirname);
+// cd_utlls.c
+void					swap_pwd_oldpwd(t_env *env);
+void					update_pwd_oldpwd(t_env *env, const char *new_pwd);
+int						chdir_to_home(t_env *env);
+int						init_oldpwd_node(t_env *lst);
+int						change_dir(const char *path, t_env *env);
+
+// handle_pwd_oldpwd.c
+void					swap_pwd_oldpwd(t_env *env);
+void					update_pwd_oldpwd(t_env *env, const char *new_pwd);
+void					init_pwd_oldpwd_nodes(\
+		t_env *head, t_env *old_pwd, t_env *pwd);
+int						init_oldpwd_node(t_env *lst);
+void					add_pwd_oldpwd(\
+		t_env *head, const char *name, const char *content);
 
 // ft_cd.c
-void					ist_swap(t_env *a);
+void					lst_swap(t_env *a);
 int						ft_cd(const char *cmd, const char **args, t_env *list);
 
 // ft_echo.c

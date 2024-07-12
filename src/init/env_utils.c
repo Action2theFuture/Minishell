@@ -6,11 +6,29 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/23 18:04:20 by junsan            #+#    #+#             */
-/*   Updated: 2024/06/23 18:04:32 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/12 22:55:11 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static void	clear_pwd_oldpwd(t_env *head)
+{
+	if (head->pwd)
+	{
+		free(head->pwd->name);
+		if (head->pwd->content)
+			free(head->pwd->content);
+		free(head->pwd);
+	}
+	if (head->old_pwd)
+	{
+		free(head->old_pwd->name);
+		if (head->old_pwd->content)
+			free(head->old_pwd->content);
+		free(head->old_pwd);
+	}
+}
 
 void	clear_env(t_env *head)
 {
@@ -18,6 +36,7 @@ void	clear_env(t_env *head)
 
 	if (head == NULL)
 		return ;
+	clear_pwd_oldpwd(head);
 	while (head)
 	{
 		cur = head->next;

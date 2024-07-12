@@ -1,49 +1,71 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   file_dir_operations.c                              :+:      :+:    :+:   */
+/*   cd_utils.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 10:29:42 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/12 09:51:11 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/12 23:01:29 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	init_oldpwd_node(t_env *lst)
+int	chdir_to_home(t_env *env)
 {
-	t_env	*tmp;
+	char	*home_path;
 
-	tmp = lst;
-	if (!tmp)
-		return (0);
-	while (tmp)
+	while (env)
 	{
-		if (ft_strncmp(tmp->name, "OLDPWD", 6) == 0)
+		if (ft_strncmp(env->name, "HOME", 4) == 0)
 		{
-			tmp->old_pwd = tmp;
-			return (1);
+			home_path = env->content;
+			break ;
 		}
-		tmp = tmp->next;
+		env = env->next;
 	}
-	return (0);
+	if (chdir(home_path) == -1)
+	{
+		ft_putstr_fd("cd : HOME not set\n", 2);
+		return (FAILURE);
+	}
+	update_pwd_oldpwd(env, home_path);
+	return (SUCCESS);
 }
 
-int	change_dir(const char *path, t_env *lst)
+static void	print_no_such_file_or_directory_error(char *arg)
 {
-	(void) lst;
-	init_oldpwd_node(lst);
+	ft_putstr_fd("cd: ", 2);
+	ft_putstr_fd(arg, 2);
+	ft_putstr_fd(": No such file or directory\n", 2);
+}
+
+int	change_dir(const char *path, t_env *env)
+{
+	char	*new_pwd;
+
 	if (!path || *path == '\0')
 		return (0);
 	if (ft_strncmp(path, "-", 1) == 0)
-		chdir(lst->old_pwd->content);
-	else if (chdir(path) == -1)
+	{
+		if (env->old_pwd && env->old_pwd->content)
+		{
+			if (chdir(env->old_pwd->content) == -1)
+				return (0);
+			return (swap_pwd_oldpwd(env), 1);
+		}
+		else
+			return (ft_putstr_fd("cd : OLDPWD not set\n", 2), 0);
+	}
+	if (chdir(path) == -1)
+		return (print_no_such_file_or_directory_error(path), 0);
+	new_pwd = getcwd(NULL, 0);
+	if (!new_pwd)
 		return (0);
-	else
-		return (1);
-	return (0);
+	update_pwd_oldpwd(env, new_pwd);
+	free(new_pwd);
+	return (1);
 }
 
 // bool	get_cur_dir(void)
