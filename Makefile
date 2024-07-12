@@ -71,7 +71,8 @@ EXECUTE = execute.c redir.c get_file_list.c execute_process.c cmd.c	launch_proce
 		/utils/expansion_and_quotes/expand_wildcard_utils.c
 BUILT_IN = built_in.c ft_cd.c  ft_env.c ft_export.c ft_unset.c						\
 		ft_echo.c ft_exit.c ft_pwd.c												\
-		utils/file_dir_operations.c utils/ft_export_utils.c utils/ft_export_utils_2.c
+		utils/cd_utils.c utils/ft_export_utils.c utils/ft_export_utils_2.c			\
+		utils/handle_pwd_oldpwd.c
 PRINT	= prints.c prints_2.c
 
 SRCS := $(addprefix $(SRC_DIR)/, $(SRC))
