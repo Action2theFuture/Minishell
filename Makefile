@@ -6,7 +6,7 @@
 #    By: junsan <junsan@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    CreateCd: 2024/05/11 19:03:01 by junsan            #+#    #+#             #
-#    Updated: 2024/07/12 15:40:34 by junsan           ###   ########.fr        #
+#    Updated: 2024/07/12 20:45:13 by junsan           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -67,7 +67,8 @@ EXECUTE = execute.c redir.c get_file_list.c execute_process.c cmd.c	launch_proce
 		/utils/expansion_and_quotes/process_expand_strip_quotes.c					\
 		/utils/expansion_and_quotes/handler_replace_env_vars_without_quotes.c		\
 		/utils/expansion_and_quotes/init_utils_for_expansion.c						\
-		/utils/expansion_and_quotes/expand_wildcard.c
+		/utils/expansion_and_quotes/expand_wildcard.c								\
+		/utils/expansion_and_quotes/expand_wildcard_utils.c
 BUILT_IN = built_in.c ft_cd.c  ft_env.c ft_export.c ft_unset.c						\
 		ft_echo.c ft_exit.c ft_pwd.c												\
 		utils/file_dir_operations.c utils/ft_export_utils.c utils/ft_export_utils_2.c

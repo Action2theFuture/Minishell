@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 13:12:49 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/12 16:22:38 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/12 20:46:14 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,8 @@ void					init_env_var(\
 	const char *str, char *res, t_env_var *env_var, t_info *info);
 void					init_handler_info(\
 			t_handler_info *h_info, char *new_str, t_info *info);
+void					init_visited_paths(t_visited_paths *visited);
+void					free_visited_paths(t_visited_paths *visited);
 
 // handle_replace_env_vars.c
 void					handle_dollar_sign(t_env_var *env_var);
@@ -117,5 +119,14 @@ void					cleanup_tmp_file(void);
 int						here_doc(int infile, char *limiter, t_info *info);
 
 // expand_wildcard.c
-void					expand_wildcard(char ***args);
+bool					expand_wildcard(char ***args);
+
+// expand_wildcard_utils.c
+char					**reallocate_matches(\
+		char **matches, int *capacity, int required_capacity);
+bool					is_path_visited(\
+		const char *path, t_visited_paths *visited);
+void					mark_path_visited(\
+		const char *path, t_visited_paths *visited);
+int						count_new_args(char **args, int match_cnt);
 #endif // EXECUTE_H
