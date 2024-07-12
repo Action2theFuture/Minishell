@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 17:58:55 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/11 14:54:33 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/12 19:07:11 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ static char	**prepare_cmd(\
 	{
 		args = ft_split(args_node->data, ARR_SEP);
 		chunk = prepend_cmd_and_add_spaces(parsed_cmd, args, cnt);
+		expand_wildcard(&chunk);
 		clear_arr(args);
 	}
 	else
