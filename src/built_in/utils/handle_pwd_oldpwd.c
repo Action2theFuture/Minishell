@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 22:55:56 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/12 23:00:41 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/12 23:15:50 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,27 @@ void	swap_pwd_oldpwd(t_env *env)
 
 void	update_pwd_oldpwd(t_env *env, const char *new_pwd)
 {
-	if (env->old_pwd->content)
-		free(env->old_pwd->content);
-	env->old_pwd->content = env->pwd->content;
-	env->pwd->content = ft_strdup(new_pwd);
+	t_env	*head;
+
+	head = env;
+	if (head->old_pwd->content)
+		free(head->old_pwd->content);
+	head->old_pwd->content = head->pwd->content;
+	head->pwd->content = ft_strdup(new_pwd);
+	while (env)
+	{
+		if (ft_strncmp(env->name, "OLDPWD", 6) == 0)
+		{
+			free(env->content);
+			env->content = ft_strdup(head->old_pwd->content);
+		}
+		else if (ft_strncmp(env->name, "PWD", 3) == 0)
+		{
+			free(env->content);
+			env->content = ft_strdup(head->pwd->content);
+		}
+		env = env->next;
+	}
 }
 
 void	init_pwd_oldpwd_nodes(t_env *head, t_env *old_pwd, t_env *pwd)
