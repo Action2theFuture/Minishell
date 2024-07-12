@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 10:29:42 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/12 23:01:29 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/12 23:11:46 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ int	change_dir(const char *path, t_env *env)
 			return (ft_putstr_fd("cd : OLDPWD not set\n", 2), 0);
 	}
 	if (chdir(path) == -1)
-		return (print_no_such_file_or_directory_error(path), 0);
+		return (print_no_such_file_or_directory_error((char *)path), 0);
 	new_pwd = getcwd(NULL, 0);
 	if (!new_pwd)
 		return (0);
