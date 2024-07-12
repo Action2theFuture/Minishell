@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/11 13:30:34 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/11 18:37:35 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/12 11:59:07 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ static void	handle_expansion_var(t_handler_info *h_info)
 
 	env_value = process_replace_expansion_var(h_info->info);
 	ft_strlcat(h_info->new_str, env_value, MAX_ARGS);
+	free(env_value);
 	h_info->new_str_len += ft_strlen(env_value);
 	h_info->i++;
 }
@@ -28,6 +29,7 @@ static void	handle_normal_var(t_handler_info *h_info)
 
 	env_value = process_replace_env_vars(h_info->var, h_info->info);
 	ft_strlcat(h_info->new_str, env_value, MAX_ARGS);
+	free(env_value);
 	h_info->new_str_len += ft_strlen(env_value);
 }
 
