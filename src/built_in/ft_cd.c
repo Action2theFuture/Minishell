@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/02 02:39:36 by rabouzia          #+#    #+#             */
-/*   Updated: 2024/07/03 09:28:20 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/12 09:53:10 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,29 +23,26 @@ void	lst_swap(t_env *a)
 	a->old_pwd = tmp;
 }
 
-
 int	ft_cd(const char *cmd, const char **args, t_env *list)
 {
+	int	i;
+
+	i = 0;
 	(void)cmd;
-	// printf("cmd in cd: %s\n", cmd);
-	// cd src 23d2 wd -> too many args
-	// create fct search in env to do cd (alone)
-	// cd -
-	int i = 0;
-	while(args[i])
+	while (args[i])
 		i++;
 	if (!args[1])
 		return (change_dir("/home", list), SUCCESS);
 	if (i > 2)
 	{
-		ft_putstr_fd("kashell: ",2);
-		ft_putstr_fd("cd: ",2);
+		ft_putstr_fd("kashell: ", 2);
+		ft_putstr_fd("cd: ", 2);
 		ft_putstr_fd(": too many arguments\n", 2);
 		return (FAILURE);
 	}
 	if (chdir(args[1]) == -1 && i == 2)
 	{
-		ft_putstr_fd("cd: ",2);
+		ft_putstr_fd("cd: ", 2);
 		ft_putstr_fd((char *)args[1], 2);
 		ft_putstr_fd(": No such file or directory\n", 2);
 		return (FAILURE);

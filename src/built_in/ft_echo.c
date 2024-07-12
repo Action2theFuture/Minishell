@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_echo.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ramzerk <ramzerk@student.42.fr>            +#+  +:+       +#+        */
+/*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 21:38:26 by rabouzia          #+#    #+#             */
-/*   Updated: 2024/07/04 16:10:14 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/12 09:51:29 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,9 +73,6 @@ int	ft_echo(const char *cmd, const char **args, t_env *list)
 	}
 	i = 1;
 	new_line = handle_flags(args, &i);
-	// if(ft_strncmp(args[0], "$?", 2) == 0)
-	// 	return(1);
-	// if(args[0][0] == "?")
 	print_args(args, i);
 	if (!new_line)
 		ft_putstr_fd("\n", 1);

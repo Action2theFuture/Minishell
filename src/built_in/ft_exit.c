@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 12:05:58 by rabouzia          #+#    #+#             */
-/*   Updated: 2024/07/03 09:30:30 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/12 10:04:08 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static int	validate_exit_args(const char **args)
 			ft_putstr_fd("kashell$> exit: ", STDERR_FILENO);
 			ft_putstr_fd((char *)args[0], STDERR_FILENO);
 			ft_putstr_fd(": numeric argument required\n", STDERR_FILENO);
-			return (255); // Exit with status 255
+			return (255);
 		}
 		i++;
 	}
@@ -47,7 +47,7 @@ int	ft_exit(const char *cmd, const char **args, t_env *list)
 	if (num_args > 2)
 	{
 		ft_putstr_fd("bash: exit: too many arguments\n", STDERR_FILENO);
-		return (FAILURE); // Return 1 to indicate error but not exit the shell
+		return (FAILURE);
 	}
 	if (args[1])
 	{
