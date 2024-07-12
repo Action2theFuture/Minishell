@@ -3,31 +3,32 @@
 /*                                                        :::      ::::::::   */
 /*   file_dir_operations.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ramzerk <ramzerk@student.42.fr>            +#+  +:+       +#+        */
+/*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 10:29:42 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/04 13:07:34 by ramzerk          ###   ########.fr       */
+/*   Updated: 2024/07/12 09:51:11 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int init_oldpwd_node(t_env *lst)
+int	init_oldpwd_node(t_env *lst)
 {
-	t_env *tmp;
+	t_env	*tmp;
+
 	tmp = lst;
 	if (!tmp)
-		return 0;
-	while(tmp)
+		return (0);
+	while (tmp)
 	{
-		if (ft_strncmp(tmp->name, "OLDPWD",6) == 0)
+		if (ft_strncmp(tmp->name, "OLDPWD", 6) == 0)
 		{
 			tmp->old_pwd = tmp;
-			return 1;
+			return (1);
 		}
-		tmp=tmp->next;
+		tmp = tmp->next;
 	}
-	return 0;
+	return (0);
 }
 
 int	change_dir(const char *path, t_env *lst)
@@ -44,7 +45,6 @@ int	change_dir(const char *path, t_env *lst)
 		return (1);
 	return (0);
 }
-
 
 // bool	get_cur_dir(void)
 // {

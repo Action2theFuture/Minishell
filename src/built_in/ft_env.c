@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_env.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ramzerk <ramzerk@student.42.fr>            +#+  +:+       +#+        */
+/*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 11:48:50 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/10 18:39:24 by ramzerk          ###   ########.fr       */
+/*   Updated: 2024/07/12 10:18:03 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,12 @@ void	printf_env(t_env *list)
 	while (cur)
 	{
 		if (!cur->content)
-            continue;        
+		{
+			cur = cur->next;
+			continue ;
+		}
 		else
-            printf("%s=%s\n", cur->name, cur->content);
+			printf("%s=%s\n", cur->name, cur->content);
 		cur = cur->next;
 	}
 }
@@ -35,7 +38,7 @@ static int	check_in_env(const char *arg, t_env *list)
 	cur = list;
 	while (cur)
 	{
-		if (ft_strncmp(arg, cur->name, ft_strlen(cur->name)) == 0)
+		if ((ft_strncmp(arg, cur->name, ft_strlen(cur->name)) == 0))
 		{
 			ft_putstr_fd(cur->content, 1);
 			printf_env(list);
@@ -56,7 +59,7 @@ int	ft_env(const char *cmd, const char **args, t_env *list)
 	if (args[1] == NULL)
 	{
 		printf_env(list);
-		return (FAILURE);
+		return (SUCCESS);
 	}
 	else
 	{
@@ -65,7 +68,7 @@ int	ft_env(const char *cmd, const char **args, t_env *list)
 			if (!check_in_env(args[i], list))
 			{
 				ft_putstr_fd("ignoring non-option arguments\n", STDOUT_FILENO);
-				return (1);
+				return (FAILURE);
 			}
 		}
 	}

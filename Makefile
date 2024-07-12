@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: ramzerk <ramzerk@student.42.fr>            +#+  +:+       +#+         #
+#    By: junsan <junsan@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/11 19:03:00 by  junsan           #+#    #+#              #
-#    Updated: 2024/07/10 18:40:13 by ramzerk          ###   ########.fr        #
+#    Updated: 2024/07/12 10:34:13 by junsan           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -61,8 +61,10 @@ EXECUTE = execute.c redir.c get_file_list.c execute_process.c cmd.c	launch_proce
 		/utils/get_path_type.c /utils/find_cmd_in_path.c /utils/replace_env_vars.c	\
 		/utils/replace_env_vars_utils.c /utils/handler_replace_env_vars.c 			\
 		/utils/quotes_utils.c /utils/get_bin_path.c /utils/here_doc.c
-BUILT_IN = built_in.c file_dir_operations.c	ft_cd.c  ft_env.c ft_export.c ft_unset.c\
-		ft_echo.c ft_exit.c ft_pwd.c
+BUILT_IN = built_in.c ft_cd.c  ft_env.c ft_export.c ft_unset.c						\
+		ft_echo.c ft_exit.c ft_pwd.c												\
+		utils/file_dir_operations.c utils/ft_export_utils.c							\
+		utils/ft_export_utils_2.c
 PRINT	= prints.c prints_2.c
 
 SRCS := $(addprefix $(SRC_DIR)/, $(SRC))
@@ -100,8 +102,8 @@ OBJ_FILES_SPINNER_PID=
 
 $(OBJ_DIR)/%.o: %.c
 	@mkdir -p $(@D)
-	@$(CC) $(CFLAGS) $(IFLAGS) -c $< -o $@ > /dev/null 2>&1
-	@$(CC) $(CFLAGS) $(IFLAGS) -c $< -o $@
+	#@$(CC) $(CFLAGS) $(IFLAGS) -c $< -o $@ > /dev/null 2>&1
+	$(CC) $(CFLAGS) $(IFLAGS) -c $< -o $@
 
 $(LIBFT): 
 	@echo "$(COLOR_YELLOW)Compliling $(NAME)...$(COLOR_RESET)"
