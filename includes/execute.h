@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 13:12:49 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/12 13:24:31 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/12 16:22:38 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,4 +115,7 @@ void					cleanup_tmp_file(void);
 
 // here_doc.c
 int						here_doc(int infile, char *limiter, t_info *info);
+
+// expand_wildcard.c
+void					expand_wildcard(char ***args);
 #endif // EXECUTE_H
