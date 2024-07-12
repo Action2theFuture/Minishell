@@ -6,21 +6,53 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 15:29:01 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/12 17:32:05 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/12 20:46:33 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	process_dir_entry(\
-	const char *base_path, struct dirent *entry, int *cnt, char **matches);
+static void	expand_wildcard_recursive(\
+	const char *base_path, t_expand_info *e_info, int depth);
+
+static bool	process_dir_entry(\
+	const char *base_path, struct dirent *entry, \
+	t_expand_info *e_info, int depth)
+{
+	struct stat	info;
+	char		path[MAX_ARGS];
+
+	if (entry->d_name[0] == BASE_PATH)
+		return (false);
+	ft_strlcpy(path, base_path, MAX_ARGS);
+	ft_strlcat(path, "/", MAX_ARGS);
+	ft_strlcat(path, entry->d_name, MAX_ARGS);
+	if (stat(path, &info) != 0)
+		return (perror("stat error"), false);
+	if (S_ISDIR(info.st_mode))
+	{
+		if (!is_path_visited(path, e_info->visited))
+			(mark_path_visited(path, e_info->visited), \
+			expand_wildcard_recursive(path, e_info, depth));
+	}
+	else
+	{
+		if (e_info->cnt >= *e_info->capacity)
+			e_info->matches = reallocate_matches(\
+					e_info->matches, e_info->capacity, e_info->cnt + 1);
+		e_info->matches[e_info->cnt++] = ft_strdup(path);
+	}
+	return (true);
+}
 
 static void	expand_wildcard_recursive(\
-			const char *base_path, int *cnt, char **matches)
+	const char *base_path, t_expand_info *e_info, int depth)
 {
 	DIR				*dir;
 	struct dirent	*entry;
 
+	if (depth > MAX_RECURSION_DEPTH)
+		return ;
 	dir = opendir(base_path);
 	if (!dir)
 	{
@@ -30,53 +62,11 @@ static void	expand_wildcard_recursive(\
 	entry = readdir(dir);
 	while (entry != NULL)
 	{
-		process_dir_entry(base_path, entry, cnt, matches);
+		process_dir_entry(base_path, entry, e_info, depth + 1);
 		entry = readdir(dir);
 	}
 	if (closedir(dir) == -1)
 		perror("close dir");
-}
-
-static void	process_dir_entry(\
-	const char *base_path, struct dirent *entry, int *cnt, char **matches)
-{
-	struct stat	info;
-	char		path[MAX_ARGS];
-
-	if (entry->d_name[0] == '.')
-		return ;
-	ft_strlcpy(path, base_path, MAX_ARGS);
-	ft_strlcat(path, "/", MAX_ARGS);
-	ft_strlcat(path, entry->d_name, MAX_ARGS);
-	if (stat(path, &info) != 0)
-	{
-		perror("stat error");
-		return ;
-	}
-	if (S_ISDIR(info.st_mode))
-		expand_wildcard_recursive(path, cnt, matches);
-	else
-	{
-		if (*cnt < MAX_ARGS)
-			matches[(*cnt)++] = strdup(path);
-	}
-}
-
-static int	count_new_args(char **args, int match_cnt)
-{
-	int	cnt;
-	int	i;
-
-	cnt = 0;
-	i = -1;
-	while (args[++i])
-	{
-		if (ft_strlen(args[i]) == 1 && ft_strncmp(args[i], "*", 1) == 0)
-			cnt += match_cnt;
-		else
-			cnt++;
-	}
-	return (cnt);
 }
 
 static void	populate_new_args(\
@@ -102,30 +92,28 @@ static void	populate_new_args(\
 	new_args[new_idx] = NULL;
 }
 
-void	expand_wildcard(char ***args)
+bool	expand_wildcard(char ***args)
 {
-	char	**new_args;
-	char	**matches;
-	int		match_cnt;
-	int		new_arg_cnt;
+	t_visited_paths	visited;
+	t_expand_info	e_info;
+	char			**new_args;
+	int				new_arg_cnt;
+	int				capacity;
 
-	match_cnt = 0;
-	matches = (char **)malloc(sizeof(char *) * MAX_ARGS);
-	if (!matches)
-	{
-		perror("malloc error");
-		return ;
-	}
-	expand_wildcard_recursive(".", &match_cnt, matches);
-	new_arg_cnt = count_new_args(*args, match_cnt);
+	capacity = INITIAL_CAPACITY;
+	init_visited_paths(&visited);
+	e_info.matches = (char **)malloc(sizeof(char *) * capacity);
+	if (!e_info.matches)
+		return (perror("malloc error"), false);
+	e_info.cnt = 0;
+	e_info.capacity = &capacity;
+	e_info.visited = &visited;
+	expand_wildcard_recursive(".", &e_info, 0);
+	new_arg_cnt = count_new_args(*args, e_info.cnt);
 	new_args = (char **)malloc(sizeof(char *) * (new_arg_cnt + 1));
 	if (!new_args)
-	{
-		perror("malloc error");
-		free_args(matches);
-		return ;
-	}
-	(populate_new_args(new_args, *args, matches, match_cnt), \
-		free(matches), free_args(*args));
-	*args = new_args;
+		return ((perror("malloc error"), free_args(e_info.matches)), false);
+	(populate_new_args(new_args, *args, e_info.matches, e_info.cnt), \
+		free(e_info.matches), free_visited_paths(&visited), free_args(*args));
+	return (*args = new_args, true);
 }

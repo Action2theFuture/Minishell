@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 13:25:12 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/12 13:26:31 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/12 20:39:37 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,14 @@
 # define MAX_ARGS 100
 # define MEMORY_CAPACITY 256
 # define HISTSIZE 500
+# define MAX_RECURSION_DEPTH 2
+# define INITIAL_CAPACITY 100
 # define DELIMS "|&<>"
 # define SHELL_METACHARS "\"\'()&|<>"
 # define ARR_SEP ';'
 # define ASCII_ART_PATH "assets/ascii_art_doh"
 # define HEREDOC_TMP "heredoc_tmp"
+# define BASE_PATH '.'
 
 typedef enum tree_direction
 {
@@ -197,4 +200,19 @@ typedef struct s_env_var
 	size_t		i;
 	size_t		j;
 }	t_env_var;
+
+typedef struct s_visited_paths
+{
+	char	**paths;
+	int		count;
+	int		capacity;
+}	t_visited_paths;
+
+typedef struct s_expand_info
+{
+	char			**matches;
+	int				cnt;
+	int				*capacity;
+	t_visited_paths	*visited;
+}	t_expand_info;
 #endif // MINISHELL_TYPES_H
