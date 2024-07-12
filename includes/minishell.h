@@ -517,20 +517,26 @@ void					add_builtin_node(t_env **head, char *name,
 void					printf_env(t_env *list);
 int						ft_env(const char *cmd, const char **args, t_env *list);
 
-// void	env_split(const char *str, char **name, char **content);
-
 // ft_exit.c
 int						ft_exit(const char *cmd, const char **args,
 							t_env *list);
 
 // ft_export.c
-void					env_split(const char *str, char **name, char **content);
-
-// void			ft_export_add(char *var, char **arg);
-// void			ft_export_show(t_env *env);
 int						ft_export(\
 		const char *cmd, const char **args, t_env *list);
-// t_env			*sort_list(t_env *env);
+
+// ft_export_utils.c
+int						check_first_arg(const char arg);
+int						ft_strcmp(char *s1, char *s2);
+t_env					*find_next_lower(t_env *lst, char *prec);
+t_env					*find_lowest(t_env *lst);
+bool					change_var_if_exist(\
+		const char *name, const char *content, t_env *lst);
+
+// ft_export_utils_2.c
+t_env					*builtin_new_node(char *name, char *content);
+void					add_builtin_node(\
+		t_env **head, char *name, char *content);
 
 // ft_pwd.c
 int						ft_pwd(const char *cmd, const char **args, t_env *list);

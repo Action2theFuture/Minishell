@@ -94,8 +94,8 @@ vpath %.c ./src/
 all: $(NAME)
 
 $(NAME) : $(LIBFT) $(OBJS)
-	$(CC) $(CFLAGS) -o $@ $(OBJS) $(LIBFT) $(LD_FLAGS)
-	#$(CC) $(CFLAGS) -o $@ $(OBJS) $(LIBFT) $(LD_FLAGS) > /dev/null 2>&1 & COMPILER_PID=$$!; \
+	@$(CC) $(CFLAGS) -o $@ $(OBJS) $(LIBFT) $(LD_FLAGS)
+	@#$(CC) $(CFLAGS) -o $@ $(OBJS) $(LIBFT) $(LD_FLAGS) > /dev/null 2>&1 & COMPILER_PID=$$!; \
 	./$(SPINNER_SCRIPT) $$COMPILER_PID; \
 	wait $$COMPILER_PID
 	@echo "$(COLOR_GREEN)Compilation completed successfully! 🎉$(COLOR_RESET)"
