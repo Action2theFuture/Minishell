@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 15:29:01 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/12 20:46:33 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/13 10:52:35 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ static void	populate_new_args(\
 		{
 			j = -1;
 			while (++j < match_cnt)
-				new_args[new_idx++] = matches[j];
+				new_args[new_idx++] = ft_strdup(matches[j]);
 		}
 		else
 			new_args[new_idx++] = ft_strdup(args[i]);
@@ -102,7 +102,7 @@ bool	expand_wildcard(char ***args)
 
 	capacity = INITIAL_CAPACITY;
 	init_visited_paths(&visited);
-	e_info.matches = (char **)malloc(sizeof(char *) * capacity);
+	e_info.matches = ft_calloc(sizeof(char *), capacity);
 	if (!e_info.matches)
 		return (perror("malloc error"), false);
 	e_info.cnt = 0;
@@ -114,6 +114,6 @@ bool	expand_wildcard(char ***args)
 	if (!new_args)
 		return ((perror("malloc error"), free_args(e_info.matches)), false);
 	(populate_new_args(new_args, *args, e_info.matches, e_info.cnt), \
-		free(e_info.matches), free_visited_paths(&visited), free_args(*args));
-	return (*args = new_args, true);
+	free_visited_paths(&visited), free_args(e_info.matches));
+	return (free_args(*args), *args = new_args, true);
 }

@@ -6,11 +6,35 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/23 18:04:20 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/12 22:55:11 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/13 11:10:01 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	env_split(const char *str, char **name, char **content)
+{
+	size_t	i;
+
+	if (!str)
+		return ;
+	i = 0;
+	while (str[i] && str[i] != '=')
+		i++;
+	if (str[i] != '=')
+	{
+		*name = (char *)str;
+		*content = NULL;
+		return ;
+	}
+	*name = ft_strndup(str, i);
+	*content = ft_strndup(str + i + 1, ft_strlen(str) - i - 1);
+	if (*content == NULL)
+	{
+		free(*name);
+		*name = NULL;
+	}
+}
 
 static void	clear_pwd_oldpwd(t_env *head)
 {
