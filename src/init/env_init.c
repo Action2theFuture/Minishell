@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 11:37:49 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/16 00:11:47 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/16 00:19:18 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,15 +64,15 @@ static void	add_env_minimum_required_env(t_env **head)
 			perror("getcwd error");
 			return ;
 		}
-		add_env_node(*head, "PWD", cur_dir);
+		add_env_by_name(*head, "PWD", cur_dir);
 		free(cur_dir);
 	}
 	if (!is_check_key("OLDPWD", cur))
-		add_env_node(*head, "OLDPWD", NULL);
+		add_env_by_name(*head, "OLDPWD", NULL);
 	if (!is_check_key("SHLVL", cur))
-		add_env_node(*head, "SHLVL", "1");
+		add_env_by_name(*head, "SHLVL", "1");
 	if (!is_check_key("_", cur))
-		add_env_node(*head, "_", "/usr/bin/env");
+		add_env_by_name(*head, "_", "/usr/bin/env");
 }
 
 static void	initialize_default_env(t_env **head)
@@ -88,9 +88,9 @@ static void	initialize_default_env(t_env **head)
 	*head = new_env("PWD", cur_dir);
 	free(cur_dir);
 	init_pwd_oldpwd(*head);
-	add_env_node(*head, "OLDPWD", NULL);
-	add_env_node(*head, "SHLVL", "1");
-	add_env_node(*head, "_", "/usr/bin/env");
+	add_env_by_name(*head, "OLDPWD", NULL);
+	add_env_by_name(*head, "SHLVL", "1");
+	add_env_by_name(*head, "_", "/usr/bin/env");
 }
 
 t_env	*env_init(char **envp)

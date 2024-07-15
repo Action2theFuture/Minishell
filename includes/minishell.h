@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/11 19:22:19 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/16 00:12:13 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/16 00:18:49 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ bool					is_check_key(const char *name, t_env *env);
 
 // env_utils_2.c
 void					add_env(t_env **head, const char *str);
-void					add_env_node(\
+void					add_env_by_name(\
 		t_env *head, const char *name, const char *content);
 
 // increment_shlvl.c
