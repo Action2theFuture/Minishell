@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/11 19:22:19 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/12 13:36:54 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/16 00:12:13 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,14 +52,21 @@ void					process_input(char *input, t_env *env,
 void					init_minishell(char **envp, t_env **env);
 
 // env_init.c
-void					add_env(t_env **head, const char *str);
+t_env					*new_env(const char *name, const char *content);
 t_env					*env_init(char **envp);
-void					env_split(const char *str, char **name, char **content);
 char					*valid_required_env_vars(void);
+void					*init_pwd_oldpwd(t_env *head);
 
 // env_utils.c
+void					env_split(const char *str, char **name, char **content);
 size_t					env_size(t_env *head);
 void					clear_env(t_env *head);
+bool					is_check_key(const char *name, t_env *env);
+
+// env_utils_2.c
+void					add_env(t_env **head, const char *str);
+void					add_env_node(\
+		t_env *head, const char *name, const char *content);
 
 // increment_shlvl.c
 int						increment_shlvl(t_env *env);

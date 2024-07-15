@@ -6,7 +6,7 @@
 #    By: junsan <junsan@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    CreateCd: 2024/05/11 19:03:01 by junsan            #+#    #+#             #
-#    Updated: 2024/07/15 15:55:05 by junsan           ###   ########.fr        #
+#    Updated: 2024/07/15 23:55:07 by junsan           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -39,7 +39,7 @@ PRINT_DIR = $(SRC_DIR)/print
 OBJ_DIR = obj
 
 SRC 	= minishell.c process_input.c
-INIT	= init_minishell.c env_init.c increment_shlvl.c env_utils.c
+INIT	= init_minishell.c env_init.c increment_shlvl.c env_utils.c env_utils_2.c
 PARSING	= parsing.c arg_parse.c parse_subshell.c									\
 		parse_logical.c parse_pipe.c parse_phrase.c parse_redirection.c				\
 		parse_phrase_parts.c														\
@@ -109,7 +109,8 @@ OBJ_FILES_SPINNER_PID=
 
 $(OBJ_DIR)/%.o: %.c
 	@mkdir -p $(@D)
-	@$(CC) $(CFLAGS) $(IFLAGS) -c $< -o $@ > /dev/null 2>&1
+	#@$(CC) $(CFLAGS) $(IFLAGS) -c $< -o $@ > /dev/null 2>&1
+	@$(CC) $(CFLAGS) $(IFLAGS) -c $< -o $@
 
 $(LIBFT): 
 	@echo "$(COLOR_YELLOW)Compliling $(NAME)...$(COLOR_RESET)"
