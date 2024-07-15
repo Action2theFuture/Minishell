@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 22:55:56 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/13 11:31:26 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/15 21:18:59 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,26 +23,28 @@ void	swap_pwd_oldpwd(t_env *env)
 
 void	update_pwd_oldpwd(t_env *env, const char *new_pwd)
 {
-	t_env	*head;
+	t_env	*cur;
 
-	head = env;
-	if (head->old_pwd->content)
-		free(head->old_pwd->content);
-	head->old_pwd->content = head->pwd->content;
-	head->pwd->content = ft_strdup(new_pwd);
-	while (env)
+	cur = env;
+	if (env->old_pwd->content)
+		free(env->old_pwd->content);
+	env->old_pwd->content = env->pwd->content;
+	env->pwd->content = (char *)new_pwd;
+	while (cur)
 	{
-		if (ft_strncmp(env->name, "OLDPWD", 6) == 0)
+		if (ft_strncmp(cur->name, "OLDPWD", 6) == 0)
 		{
-			free(env->content);
-			env->content = ft_strdup(head->old_pwd->content);
+			if (cur->content)
+				free(cur->content);
+			cur->content = ft_strdup(env->old_pwd->content);
 		}
-		else if (ft_strncmp(env->name, "PWD", 3) == 0)
+		else if (ft_strncmp(cur->name, "PWD", 3) == 0)
 		{
-			free(env->content);
-			env->content = ft_strdup(head->pwd->content);
+			if (cur->content)
+				free(cur->content);
+			cur->content = ft_strdup(env->pwd->content);
 		}
-		env = env->next;
+		cur = cur->next;
 	}
 }
 
@@ -87,16 +89,22 @@ void	add_pwd_oldpwd(t_env *head, const char *name, const char *content)
 	{
 		if (content)
 		{
-			free(head->old_pwd->content);
+			if (head->old_pwd->content)
+				free(head->old_pwd->content);
 			head->old_pwd->content = ft_strdup(content);
 		}
+		else
+			head->old_pwd->content = NULL;
 	}
-	else if (ft_strncmp(name, "PWD", 3) == 0)
+	if (ft_strncmp(name, "PWD", 3) == 0)
 	{
 		if (content)
 		{
-			free(head->pwd->content);
+			if (head->pwd->content)
+				free(head->pwd->content);
 			head->pwd->content = ft_strdup(content);
 		}
+		else
+			head->pwd->content = NULL;
 	}
 }
