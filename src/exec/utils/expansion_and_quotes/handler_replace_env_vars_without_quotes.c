@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/11 13:30:34 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/12 19:10:19 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/12 11:59:07 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,9 @@ static void	handle_expansion_var(t_handler_info *h_info)
 
 	env_value = process_replace_expansion_var(h_info->info);
 	ft_strlcat(h_info->new_str, env_value, MAX_ARGS);
+	free(env_value);
 	h_info->new_str_len += ft_strlen(env_value);
 	h_info->i++;
-	free(env_value);
 }
 
 static void	handle_normal_var(t_handler_info *h_info)
@@ -29,8 +29,8 @@ static void	handle_normal_var(t_handler_info *h_info)
 
 	env_value = process_replace_env_vars(h_info->var, h_info->info);
 	ft_strlcat(h_info->new_str, env_value, MAX_ARGS);
-	h_info->new_str_len += ft_strlen(env_value);
 	free(env_value);
+	h_info->new_str_len += ft_strlen(env_value);
 }
 
 static void	extract_var_name_from_input(\
@@ -39,7 +39,10 @@ static void	extract_var_name_from_input(\
 	h_info->var_len = 0;
 	while (h_info->var_len < MAX_ARGS - 1 && \
 		input[h_info->i] && !is_special_char(input[h_info->i]))
-		h_info->var[h_info->var_len++] = input[h_info->i++];
+	{
+		h_info->var[h_info->var_len++] = input[h_info->i];
+		h_info->i++;
+	}
 	h_info->var[h_info->var_len] = '\0';
 }
 
@@ -84,6 +87,7 @@ char	*handler_dollar_sign_wihout_quotes(\
 			if (handle_quotes_from_input(&h_info, input))
 				continue ;
 			h_info.new_str[h_info.new_str_len++] = input[h_info.i++];
+			h_info.new_str[h_info.new_str_len] = '\0';
 		}
 	}
 	return (h_info.new_str[h_info.new_str_len] = '\0', h_info.new_str);

@@ -6,11 +6,35 @@
 /*   By: ramzerk <ramzerk@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 11:37:49 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/13 11:31:08 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/04 16:23:28 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	env_split(const char *str, char **name, char **content)
+{
+	size_t	i;
+
+	if (!str)
+		return ;
+	i = 0;
+	while (str[i] && str[i] != '=')
+		i++;
+	if (str[i] != '=')
+	{
+		*name = (char *)str;
+		*content = NULL;
+		return ;
+	}
+	*name = ft_strndup(str, i);
+	*content = ft_strndup(str + i + 1, ft_strlen(str) - i - 1);
+	if (*content == NULL)
+	{
+		free(*name);
+		*name = NULL;
+	}
+}
 
 static t_env	*new_env(const char *name, const char *content)
 {
@@ -23,25 +47,6 @@ static t_env	*new_env(const char *name, const char *content)
 	new_node->content = ft_strdup(content);
 	new_node->next = NULL;
 	return (new_node);
-}
-
-static void	*init_pwd_oldpwd(t_env *head)
-{
-	if (!head)
-		return (NULL);
-	head->pwd = (t_env *)malloc(sizeof(t_env));
-	if (!head->pwd)
-		return (free(head), NULL);
-	head->old_pwd = (t_env *)malloc(sizeof(t_env));
-	if (!head->old_pwd)
-		return (free(head), free(head->pwd), NULL);
-	head->pwd->name = ft_strdup("PWD");
-	head->pwd->content = NULL;
-	head->pwd->next = NULL;
-	head->old_pwd->name = ft_strdup("OLDPWD");
-	head->old_pwd->content = NULL;
-	head->old_pwd->next = NULL;
-	return (NULL);
 }
 
 void	add_env(t_env **head, const char *str)
@@ -60,10 +65,7 @@ void	add_env(t_env **head, const char *str)
 	if (!name || !content || !new_node)
 		return ;
 	if (*head == NULL)
-	{
 		*head = new_node;
-		init_pwd_oldpwd(*head);
-	}
 	else
 	{
 		cur = *head;

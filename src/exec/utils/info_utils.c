@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   info_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rabouzia <rabouzia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/16 19:56:30 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/11 09:33:06 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/12 16:43:32 by rabouzia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ void	init_info(t_info *info)
 	info->pipe_cnt = -1;
 	info->in_subshell = false;
 	info->path = NULL;
+	info->lst_pid = NULL;
 }
 
 void	clear_info(t_info *info)
@@ -35,6 +36,14 @@ void	clear_info(t_info *info)
 		close(info->stdout_fd);
 	if (info->tmp_fd != -1)
 		close(info->tmp_fd);
+	if (info->pipe[0] != -1)
+		close(info->pipe[0]);
+	if (info->pipe[1] != -1)
+		close(info->pipe[1]);
+	if (info->prev_pipe[0] != -1)
+		close(info->prev_pipe[0]);
+	if (info->prev_pipe[1] != -1)
+		close(info->prev_pipe[1]);
 	close(info->origin_stdin_fd);
 	close(info->origin_stdout_fd);
 }

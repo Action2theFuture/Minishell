@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell_types.h                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rabouzia <rabouzia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 13:25:12 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/12 20:39:37 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/12 15:32:49 by rabouzia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,14 +17,11 @@
 # define MAX_ARGS 100
 # define MEMORY_CAPACITY 256
 # define HISTSIZE 500
-# define MAX_RECURSION_DEPTH 2
-# define INITIAL_CAPACITY 100
 # define DELIMS "|&<>"
 # define SHELL_METACHARS "\"\'()&|<>"
 # define ARR_SEP ';'
 # define ASCII_ART_PATH "assets/ascii_art_doh"
 # define HEREDOC_TMP "heredoc_tmp"
-# define BASE_PATH '.'
 
 typedef enum tree_direction
 {
@@ -115,12 +112,18 @@ typedef struct s_env
 
 typedef struct s_quote_info
 {
-	bool	in_single_quotes;
-	bool	in_double_quotes;
-	size_t	new_str_len;
-	size_t	tmp_str_len;
-	char	tmp_str[MAX_ARGS];
-}	t_quote_info;
+	bool				in_single_quotes;
+	bool				in_double_quotes;
+	size_t				new_str_len;
+	size_t				tmp_str_len;
+	char				tmp_str[MAX_ARGS];
+}						t_quote_info;
+
+typedef struct s_lst_pid
+{
+	pid_t				pid;
+	struct s_lst_pid	*next;
+}						t_lst_pid;
 
 typedef struct s_info
 {
@@ -137,21 +140,23 @@ typedef struct s_info
 	int					tmp_fd;
 	int					exit_status;
 	int					status;
+	t_lst_pid			*lst_pid;
 	t_env				*env;
 	t_quote_info		*quote_info;
 }						t_info;
 
+
 typedef struct s_handler_info
 {
-	char	*new_str;
-	size_t	new_str_len;
-	size_t	var_len;
-	int		i;
-	bool	in_single_quotes;
-	bool	in_double_quotes;
-	t_info	*info;
-	char	var[MAX_ARGS];
-}	t_handler_info;
+	char				*new_str;
+	size_t				new_str_len;
+	size_t				var_len;
+	int					i;
+	bool				in_single_quotes;
+	bool				in_double_quotes;
+	t_info				*info;
+	char				var[MAX_ARGS];
+}						t_handler_info;
 
 typedef struct s_token
 {
@@ -192,27 +197,12 @@ typedef struct s_file_list
 
 typedef struct s_env_var
 {
-	const char	*str;
-	bool		is_value_expansion;
-	bool		in_double_quotes;
-	char		*res;
-	t_info		*info;
-	size_t		i;
-	size_t		j;
-}	t_env_var;
-
-typedef struct s_visited_paths
-{
-	char	**paths;
-	int		count;
-	int		capacity;
-}	t_visited_paths;
-
-typedef struct s_expand_info
-{
-	char			**matches;
-	int				cnt;
-	int				*capacity;
-	t_visited_paths	*visited;
-}	t_expand_info;
+	const char			*str;
+	bool				is_value_expansion;
+	bool				in_double_quotes;
+	char				*res;
+	t_info				*info;
+	size_t				i;
+	size_t				j;
+}						t_env_var;
 #endif // MINISHELL_TYPES_H

@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/19 14:48:46 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/13 10:04:19 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/02 11:12:52 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,12 +58,9 @@ void	free_args(char **args)
 	int	i;
 
 	i = -1;
-	if (args)
-	{
-		while (args[++i])
-			free(args[i]);
-		free(args);
-	}
+	while (args[++i])
+		free(args[i]);
+	free(args);
 }
 
 char	**allocate_null_and_cmd_chunk(char **cmd, int cmd_cnt)

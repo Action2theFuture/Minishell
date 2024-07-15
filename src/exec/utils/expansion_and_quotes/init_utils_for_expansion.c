@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/11 18:36:39 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/12 20:14:28 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/11 18:37:15 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,21 +34,4 @@ void	init_handler_info(\
 	h_info->in_single_quotes = false;
 	h_info->in_single_quotes = false;
 	h_info->info = info;
-}
-
-void	init_visited_paths(t_visited_paths *visited)
-{
-	visited->capacity = INITIAL_CAPACITY;
-	visited->paths = (char **)malloc(sizeof(char *) * visited->capacity);
-	visited->count = 0;
-}
-
-void	free_visited_paths(t_visited_paths *visited)
-{
-	int	i;
-
-	i = -1;
-	while (++i < visited->count)
-		free(visited->paths[i]);
-	free(visited->paths);
 }

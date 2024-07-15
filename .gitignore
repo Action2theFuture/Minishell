@@ -63,3 +63,7 @@ dkms.conf
 minishell
 
 *.sh
+
+test
+out
+

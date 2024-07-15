@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 23:38:01 by rabouzia          #+#    #+#             */
-/*   Updated: 2024/07/15 15:46:59 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/12 10:55:57 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,14 +16,14 @@ static void	ft_export_show(t_env *env)
 {
 	t_env	*cur;
 
-	cur = env;
+	cur = find_lowest(env);
 	while (cur)
 	{
 		if (!cur->content)
 			printf("export %s\n", cur->name);
 		else
 			printf("export %s=%s\n", cur->name, cur->content);
-		cur = cur->next;
+		cur = find_next_lower(env, cur->name);
 	}
 }
 
@@ -37,27 +37,26 @@ static void	handle_invalid_identifier(const char *arg)
 int	ft_export(const char *cmd, const char **args, t_env *list)
 {
 	int		i;
+	t_env	*tmp;
 	char	*name;
 	char	*content;
 
 	(void)cmd;
 	content = NULL;
 	name = NULL;
-	if (!args[1])
-		return (ft_export_show(list), SUCCESS);
+	tmp = list;
+	if (!args[1] || !*args)
+		return (ft_export_show(list), FAILURE);
 	i = 0;
 	while (args[++i])
 	{
-		if (ft_strchr(args[i], '='))
-			env_split(args[i], &name, &content);
-		else
-			name = ft_strdup((char *)args[i]);
+		env_split(args[i], &name, &content);
 		if (!change_var_if_exist(name, content, list))
 		{
 			if (check_first_arg(args[i][0]))
 				handle_invalid_identifier(args[i]);
 			else
-				add_builtin_node(&list, name, content);
+				add_builtin_node(&tmp, name, content);
 		}
 	}
 	return (SUCCESS);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rabouzia <rabouzia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 18:34:10 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/11 14:17:39 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/13 00:57:39 by rabouzia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,13 +26,13 @@ static void	categorize_tree(t_ast *node, t_info *info)
 	}
 	else
 		info->pipe_exists = false;
-	if (node->type == PHRASE && info->status == SUCCESS && \
-		(node->left && node->left->type == PHRASE))
+	if (node->type == PHRASE && info->status == SUCCESS && (node->left
+			&& node->left->type == PHRASE))
 		subshell_info.in_subshell = false;
 	if (node->type == PHRASE && info->status == SUCCESS)
 		process_phrase_node(node, info);
-	if (node->type == SUBSHELL && ft_strncmp(node->data, "(", 1) == 0 \
-			&& info->status == SUCCESS)
+	if (node->type == SUBSHELL && ft_strncmp(node->data, "(", 1) == 0
+		&& info->status == SUCCESS)
 	{
 		init_info(&subshell_info);
 		subshell_info.in_subshell = true;
@@ -59,16 +59,41 @@ static void	cnt_pipe(t_ast *node, t_info *info)
 		info->pipe_cnt = cnt;
 	}
 }
+int	wait_lstpid(t_info *info)
+{
+	int			status;
+	int			code;
+	t_lst_pid	*temp;
+
+	code = 0;
+	while (info->lst_pid)
+	{
+		waitpid(info->lst_pid->pid, &status, 0);
+		if (WIFSIGNALED(status))
+		{
+			if (WTERMSIG(status) == SIGQUIT)
+				ft_putstr_fd("Quit (core dumped)", 2);
+			code = status;
+		}
+		else if (WIFEXITED(status))
+			code = WEXITSTATUS(status);
+		temp = info->lst_pid;
+		info->lst_pid = info->lst_pid->next;
+		free(temp);
+	}
+	return (code);
+}
 
 // printf("status : %d, exit status : %d\n", info->status, info->exit_status);
 static void	process_logical_node(t_ast *node, t_info *info)
 {
 	int	status;
 
+	// TODO:  parcourir la liste chainee pour recuperer le dernier code de status et le stocker dans status
 	traverse_tree(node->right, info);
-	status = info->exit_status;
-	if ((ft_strncmp(node->data, "&&", 2) == 0 && status == SUCCESS) || \
-		(ft_strncmp(node->data, "||", 2) == 0 && status > 0))
+	status = wait_lstpid(info);
+	if ((ft_strncmp(node->data, "&&", 2) == 0 && status == SUCCESS)
+		|| (ft_strncmp(node->data, "||", 2) == 0 && status > 0))
 		traverse_tree(node->left, info);
 }
 
@@ -108,6 +133,7 @@ void	execute(t_ast *root, t_env *env, int *exit_status)
 	traverse_tree(root, &info);
 	if (restore_stdio(&info) == FAILURE)
 		fd_log_error(NULL, NULL, strerror(errno));
+	info.status = wait_lstpid(&info);
 	if (info.status != SUCCESS)
 		*exit_status = info.status;
 	else
@@ -115,3 +141,6 @@ void	execute(t_ast *root, t_env *env, int *exit_status)
 	cleanup_tmp_file();
 	clear_info(&info);
 }
+
+
+

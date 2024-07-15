@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redir.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rabouzia <rabouzia@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 12:01:59 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/12 14:44:21 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/12 16:40:43 by rabouzia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ static int	here_doc_redir(t_ast *node, t_info *info)
 	here_doc(info->stdin_fd, node->data, info);
 	if (dup2(info->tmp_fd, STDOUT_FILENO) == -1)
 		return (fd_log_error("Dup error!", NULL, NULL));
+	
 	return (SUCCESS);
 }
 
@@ -44,8 +45,8 @@ static int	input_redir(t_ast *node, t_info *info)
 	{
 		if (pipe(pipe_fd) == -1)
 			return (fd_log_error(NULL, args_node->data, strerror(errno)));
-		if (write(pipe_fd[1], \
-			args_node->data, ft_strlen(args_node->data)) == -1)
+		if (write(pipe_fd[1], args_node->data, ft_strlen(args_node->data)) ==
+			-1)
 			return (fd_log_error(NULL, args_node->data, strerror(errno)));
 		close(pipe_fd[1]);
 		info->stdin_fd = pipe_fd[0];
@@ -90,8 +91,8 @@ static int	handle_ft_redirection(t_ast *node, t_info *info)
 
 	io_node = node->left;
 	arg_node = node->right;
-	if (io_node->type == IN_REDIR || io_node->type == IN_HEREDOC || \
-		io_node->type == IN_HERESTR)
+	if (io_node->type == IN_REDIR || io_node->type == IN_HEREDOC
+		|| io_node->type == IN_HERESTR)
 	{
 		if (io_node->type == IN_REDIR && (access(arg_node->data, F_OK) == -1))
 			return (fd_log_error(NULL, arg_node->data, strerror(errno)), 127);
