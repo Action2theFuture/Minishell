@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/15 23:01:48 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/16 00:11:31 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/16 00:18:30 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	add_env(t_env **head, const char *str)
 	}
 }
 
-void	add_env_node(t_env *head, const char *name, const char *content)
+void	add_env_by_name(t_env *head, const char *name, const char *content)
 {
 	t_env	*new_node;
 	t_env	*cur;
