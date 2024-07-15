@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 10:29:42 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/15 21:15:48 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/15 22:22:52 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ int	change_dir(const char *path, t_env *env)
 	if (!new_pwd)
 		return (0);
 	update_pwd_oldpwd(env, new_pwd);
+	free(new_pwd);
 	return (1);
 }
 

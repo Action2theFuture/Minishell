@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 22:55:56 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/15 21:18:59 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/15 22:22:42 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	update_pwd_oldpwd(t_env *env, const char *new_pwd)
 	if (env->old_pwd->content)
 		free(env->old_pwd->content);
 	env->old_pwd->content = env->pwd->content;
-	env->pwd->content = (char *)new_pwd;
+	env->pwd->content = ft_strdup((char *)new_pwd);
 	while (cur)
 	{
 		if (ft_strncmp(cur->name, "OLDPWD", 6) == 0)

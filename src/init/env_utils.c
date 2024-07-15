@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/23 18:04:20 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/15 20:26:04 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/15 22:37:25 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,4 +85,15 @@ size_t	env_size(t_env *head)
 		cur = cur->next;
 	}
 	return (size);
+}
+
+bool	is_check_key(const char *name, t_env *env)
+{
+	while (env)
+	{
+		if (ft_strncmp(env->name, name, ft_strlen(name) == 0))
+			return (true);
+		env = env->next;
+	}
+	return (false);
 }
