@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 15:29:01 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/16 14:09:53 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/16 15:18:06 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,17 +17,24 @@ static bool	process_dir_entry(\
 {
 	struct stat	info;
 	char		path[MAX_ARGS];
+	char		**new_matches;
 
+	new_matches = NULL;
 	if (entry->d_name[0] == BASE_PATH)
-		return (false);
+		return (true);
 	ft_strlcpy(path, entry->d_name, MAX_ARGS);
 	if (stat(path, &info) != 0)
 		return (perror("stat error"), false);
 	if (match_pattern(pattern, path))
 	{
-		if (e_info->cnt >= *e_info->capacity)
-			e_info->matches = reallocate_matches(\
-					e_info->matches, e_info->capacity, e_info->cnt + 1);
+		if (e_info->cnt >= e_info->capacity)
+		{
+			new_matches = reallocate_matches(\
+					e_info->matches, &e_info->capacity, e_info->cnt + 1);
+			if (!new_matches)
+				return (perror("reallocte error"), false);
+			e_info->matches = new_matches;
+		}
 		e_info->matches[e_info->cnt++] = ft_strdup(path);
 	}
 	return (true);
@@ -50,7 +57,8 @@ static void	expand_wildcard_in_cur_dir(\
 	entry = readdir(dir);
 	while (entry != NULL)
 	{
-		process_dir_entry(pattern, entry, e_info);
+		if (!process_dir_entry(pattern, entry, e_info))
+			break ;
 		entry = readdir(dir);
 	}
 	if (closedir(dir) == -1)

@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 13:25:12 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/16 13:32:30 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/16 15:03:53 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -212,7 +212,7 @@ typedef struct s_expand_info
 {
 	char					**matches;
 	int						cnt;
-	int						*capacity;
+	int						capacity;
 	struct s_expand_info	*next;
 }	t_expand_info;
 #endif // MINISHELL_TYPES_H
