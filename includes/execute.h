@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 13:12:49 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/12 20:46:14 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/16 13:41:54 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ void					init_handler_info(\
 			t_handler_info *h_info, char *new_str, t_info *info);
 void					init_visited_paths(t_visited_paths *visited);
 void					free_visited_paths(t_visited_paths *visited);
+t_expand_info			*new_expand_info(void);
 
 // handle_replace_env_vars.c
 void					handle_dollar_sign(t_env_var *env_var);
@@ -128,5 +129,8 @@ bool					is_path_visited(\
 		const char *path, t_visited_paths *visited);
 void					mark_path_visited(\
 		const char *path, t_visited_paths *visited);
-int						count_new_args(char **args, int match_cnt);
+bool					match_pattern(const char *pattern, const char *str);
+void					clear_visited_paths(t_visited_paths *visited);
+// expand_wildcard_utils_2.c
+void					clear_expand_info(t_expand_info *head);
 #endif // EXECUTE_H

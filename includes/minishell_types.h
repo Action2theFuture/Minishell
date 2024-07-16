@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 13:25:12 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/16 00:12:04 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/16 13:32:30 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 # define MAX_ARGS 100
 # define MEMORY_CAPACITY 256
 # define HISTSIZE 500
-# define MAX_RECURSION_DEPTH 2
+# define MAX_RECURSION_DEPTH 1
 # define INITIAL_CAPACITY 100
 # define DELIMS "|&<>"
 # define SHELL_METACHARS "\"\'()&|<>"
@@ -210,9 +210,9 @@ typedef struct s_visited_paths
 
 typedef struct s_expand_info
 {
-	char			**matches;
-	int				cnt;
-	int				*capacity;
-	t_visited_paths	*visited;
+	char					**matches;
+	int						cnt;
+	int						*capacity;
+	struct s_expand_info	*next;
 }	t_expand_info;
 #endif // MINISHELL_TYPES_H

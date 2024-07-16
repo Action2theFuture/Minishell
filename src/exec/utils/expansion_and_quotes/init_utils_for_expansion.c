@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/11 18:36:39 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/12 20:14:28 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/16 13:41:38 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void	init_visited_paths(t_visited_paths *visited)
 	visited->count = 0;
 }
 
-void	free_visited_paths(t_visited_paths *visited)
+void	clear_visited_paths(t_visited_paths *visited)
 {
 	int	i;
 
@@ -51,4 +51,22 @@ void	free_visited_paths(t_visited_paths *visited)
 	while (++i < visited->count)
 		free(visited->paths[i]);
 	free(visited->paths);
+}
+
+t_expand_info	*new_expand_info(void)
+{
+	t_expand_info	*e_info;
+	int				capacity;
+
+	capacity = INITIAL_CAPACITY;
+	e_info = (t_expand_info *)malloc(sizeof(t_expand_info));
+	if (!e_info)
+		return (perror("malloc error"), NULL);
+	e_info->cnt = 0;
+	e_info->capacity = &capacity;
+	e_info->matches = ft_calloc(sizeof(char *), capacity);
+	if (!e_info->matches)
+		return (free(e_info), perror("malloc error"), NULL);
+	e_info->next = NULL;
+	return (e_info);
 }
