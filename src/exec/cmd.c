@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 17:58:55 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/16 10:29:50 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/16 14:03:53 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,6 @@ static char	**prepare_cmd(\
 	{
 		args = ft_split(args_node->data, ARR_SEP);
 		chunk = prepend_cmd_and_add_spaces(parsed_cmd, args, cnt);
-		expand_wildcard(&chunk);
 		clear_arr(args);
 	}
 	else
@@ -82,6 +81,7 @@ static int	execute_cmd(char **chunk, t_info *info)
 	int		built_in;
 	int		(*arr_built_in[8])(const char *, const char **, t_env *);
 
+	expand_wildcard(&chunk);
 	expand_and_strip_quotes_in_args(chunk, info);
 	determine_and_set_path(chunk[0], info);
 	init_builtin(arr_built_in);

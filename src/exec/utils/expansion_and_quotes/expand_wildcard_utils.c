@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 20:42:07 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/13 10:51:20 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/16 13:15:12 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,19 +65,30 @@ void	mark_path_visited(const char *path, t_visited_paths *visited)
 	visited->count++;
 }
 
-int	count_new_args(char **args, int match_cnt)
+bool	match_pattern(const char *pattern, const char *str)
 {
-	int	cnt;
-	int	i;
-
-	cnt = 0;
-	i = 0;
-	while (args[++i])
+	while (*pattern)
 	{
-		if (ft_strlen(args[i]) == 1 && ft_strncmp(args[i], "*", 1) == 0)
-			cnt += match_cnt;
+		if (*pattern == '*')
+		{
+			pattern++;
+			if (*pattern == '\0')
+				return (true);
+			while (*str)
+			{
+				if (match_pattern(pattern, str))
+					return (true);
+				str++;
+			}
+			return (false);
+		}
+		else if (*pattern == *str)
+		{
+			pattern++;
+			str++;
+		}
 		else
-			cnt++;
+			return (false);
 	}
-	return (cnt + 1);
+	return (*str == '\0');
 }
