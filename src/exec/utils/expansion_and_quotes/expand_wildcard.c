@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 15:29:01 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/16 13:42:49 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/16 14:09:53 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,8 @@ static int	count_new_args(char **args, t_expand_info *e_info)
 			cnt++;
 			continue ;
 		}
-		if (ft_strchr(args[i], '*'))
+		if (ft_strchr(args[i], '*') && \
+			!(ft_strchr(args[i], '\"') || ft_strchr(args[i], '\'')))
 		{
 			expand_wildcard_in_cur_dir(args[i], e_info);
 			cnt += e_info->cnt;
@@ -100,7 +101,8 @@ static void	populate_new_args(\
 			new_args[new_idx++] = ft_strdup(args[i]);
 			continue ;
 		}
-		if (ft_strchr(args[i], '*'))
+		if (ft_strchr(args[i], '*') && \
+			!(ft_strchr(args[i], '\"') || ft_strchr(args[i], '\'')))
 		{
 			j = -1;
 			while (++j < e_info->cnt)
