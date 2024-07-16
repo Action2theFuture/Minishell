@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 17:58:55 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/12 19:07:11 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/16 10:29:50 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,11 +86,11 @@ static int	execute_cmd(char **chunk, t_info *info)
 	determine_and_set_path(chunk[0], info);
 	init_builtin(arr_built_in);
 	built_in = handler_builtin(chunk[0]);
-	if (built_in == ENV || built_in == M_ECHO || built_in == NONE)
-		status = launch_process(chunk[0], chunk, info);
-	else
+	if (built_in != NONE && info->pipe_exists < 1)
 		status = arr_built_in[built_in](\
-			(const char *)chunk[0], (const char **)chunk, info->env);
+		(const char *)chunk[0], (const char **)chunk, info->env);
+	else
+		status = launch_process(chunk[0], chunk, info);
 	i = -1;
 	while (chunk[++i])
 		free(chunk[i]);

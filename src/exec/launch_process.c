@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/23 17:08:10 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/16 08:32:16 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/16 10:05:43 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,10 +31,7 @@ static void	prepare_and_execute(\
 		&& execve(cmd, args, env) == -1)
 		exit(125 + execve_log_error(cmd, errno));
 	else if (info->path)
-	{
-		execve(info->path, args, env);
-		free(info->path);
-	}
+		(execve(info->path, args, env), free(info->path));
 	if (execve(cmd, args, env) == -1)
 		exit(126 + execve_log_error(cmd, errno));
 }
@@ -75,6 +72,8 @@ static int	monitor_child_task(char *cmd, pid_t pid, t_info *info)
 	else if (WIFEXITED(status))
 		info->exit_status = WEXITSTATUS(status);
 	set_signal_handler();
+	if (info->prev_pipe[0] != -1)
+		(close(info->prev_pipe[0]), close(info->prev_pipe[1]));
 	return (SUCCESS);
 }
 
@@ -101,7 +100,5 @@ int	launch_process(char *cmd, char **args, t_info *info)
 		info->prev_pipe[1] = info->pipe[1];
 		info->pipe_cnt--;
 	}
-	if (info->prev_pipe[0] != -1)
-		(close(info->prev_pipe[0]), close(info->prev_pipe[1]));
 	return (info->exit_status);
 }
