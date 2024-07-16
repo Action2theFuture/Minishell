@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/11 18:36:39 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/16 13:41:38 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/16 15:04:02 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ t_expand_info	*new_expand_info(void)
 	if (!e_info)
 		return (perror("malloc error"), NULL);
 	e_info->cnt = 0;
-	e_info->capacity = &capacity;
+	e_info->capacity = capacity;
 	e_info->matches = ft_calloc(sizeof(char *), capacity);
 	if (!e_info->matches)
 		return (free(e_info), perror("malloc error"), NULL);

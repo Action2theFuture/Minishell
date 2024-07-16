@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 20:42:07 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/16 13:15:12 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/16 15:05:17 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,15 +24,16 @@ char	**reallocate_matches(\
 		new_capacity *= 2;
 	new_matches = (char **)malloc(sizeof(char *) * new_capacity);
 	if (!new_matches)
-		return (perror("malloc error"), free(matches), NULL);
-	ft_bzero(new_matches + *capacity, \
-		sizeof(char *) * (new_capacity - *capacity));
+		return (perror("malloc error"), NULL);
 	i = -1;
 	while (++i < *capacity)
 	{
 		if (matches[i])
 			new_matches[i] = matches[i];
 	}
+	i = *capacity;
+	while (++i < new_capacity)
+		new_matches[i] = NULL;
 	free(matches);
 	*capacity = new_capacity;
 	return (new_matches);
