@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/23 18:04:20 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/16 13:50:00 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/16 15:26:44 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ bool	is_check_key(const char *name, t_env *env)
 {
 	while (env)
 	{
-		if (ft_strncmp(env->name, name, ft_strlen(name) == 0))
+		if (ft_strncmp(env->name, name, ft_strlen(name)) == 0)
 			return (true);
 		env = env->next;
 	}
