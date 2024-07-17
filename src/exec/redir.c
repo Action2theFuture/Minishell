@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 12:01:59 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/16 10:23:10 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/17 10:19:30 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,14 +71,17 @@ static int	output_redir(t_ast *node, t_info *info)
 			return (fd_log_error(NULL, args_node->data, strerror(errno)));
 		if (dup2(info->stdout_fd, STDOUT_FILENO) == -1)
 			return (fd_log_error("Dup error!", NULL, NULL));
+		close(info->stdout_fd);
 	}
 	else if (io_node->type == OUT_APPEND)
 	{
+		printf("arg data : %s\n", args_node->data);
 		info->stdout_fd = open_file_with_mode(args_node->data, APPEND);
 		if (info->stdout_fd == -1)
 			return (fd_log_error(NULL, args_node->data, strerror(errno)));
 		if (dup2(info->stdout_fd, STDOUT_FILENO) == -1)
 			return (fd_log_error("Dup error!", NULL, NULL));
+		close(info->stdout_fd);
 	}
 	return (SUCCESS);
 }

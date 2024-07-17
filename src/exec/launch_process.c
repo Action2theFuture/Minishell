@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/23 17:08:10 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/16 10:05:43 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/17 11:17:20 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,8 @@ static int	exec_child_task(char *cmd, char **env, char **args, t_info *info)
 	return (SUCCESS);
 }
 
+// if (info->prev_pipe[0] != -1)
+	// (close(info->prev_pipe[0]), close(info->prev_pipe[1]));
 static int	monitor_child_task(char *cmd, pid_t pid, t_info *info)
 {
 	int	status;
@@ -72,8 +74,6 @@ static int	monitor_child_task(char *cmd, pid_t pid, t_info *info)
 	else if (WIFEXITED(status))
 		info->exit_status = WEXITSTATUS(status);
 	set_signal_handler();
-	if (info->prev_pipe[0] != -1)
-		(close(info->prev_pipe[0]), close(info->prev_pipe[1]));
 	return (SUCCESS);
 }
 

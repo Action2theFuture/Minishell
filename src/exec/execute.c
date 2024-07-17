@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 18:34:10 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/16 08:54:50 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/17 09:41:01 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,11 +76,11 @@ static void	traverse_tree(t_ast *node, t_info *info)
 {
 	if (node == NULL)
 		return ;
-	cnt_pipe(node, info);
 	if (node->type == LOGICAL)
 		process_logical_node(node, info);
 	if (node->type == PIPE)
 	{
+		cnt_pipe(node, info);
 		traverse_tree(node->right, info);
 		if (node->type == PIPE && info->status == SUCCESS)
 			traverse_tree(node->left, info);
