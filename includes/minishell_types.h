@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 13:25:12 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/16 15:03:53 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/18 14:05:05 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,19 +126,22 @@ typedef struct s_info
 {
 	bool				pipe_exists;
 	bool				in_subshell;
+	bool				redirecting;
 	char				*path;
 	int					pipe_cnt;
 	int					stdin_fd;
 	int					stdout_fd;
 	int					origin_stdin_fd;
 	int					origin_stdout_fd;
+	int					stdin_backup;
+	int					stdout_backup;
 	int					pipe[2];
 	int					prev_pipe[2];
 	int					tmp_fd;
 	int					exit_status;
 	int					status;
-	t_env				*env;
-	t_quote_info		*quote_info;
+	struct s_env		*env;
+	struct s_quote_info	*quote_info;
 }						t_info;
 
 typedef struct s_handler_info

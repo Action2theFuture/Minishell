@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/11 12:57:33 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/16 13:58:23 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/18 14:59:01 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,11 +54,21 @@ static void	process_double_quote(\
 	quote_info->in_double_quotes = !quote_info->in_double_quotes;
 }
 
+static void	process_regular_char(\
+		const char input_char, char *new_str, t_quote_info *quote_info)
+{
+	char	tmp[2];
+
+	tmp[0] = input_char;
+	tmp[1] = '\0';
+	ft_strlcat(new_str, tmp, MAX_ARGS);
+	quote_info->new_str_len++;
+}
+
 char	*process_expand_strip_quotes(\
 				char *new_str, const char *input, t_info *info)
 {
 	t_quote_info	*quote_info;
-	char			tmp[2];
 	int				i;
 
 	new_str[0] = '\0';
@@ -71,14 +81,12 @@ char	*process_expand_strip_quotes(\
 		else if (input[i] == '"' && !quote_info->in_single_quotes)
 			process_double_quote(input, &i, new_str, info);
 		else if (quote_info->in_single_quotes || quote_info->in_double_quotes)
-			quote_info->tmp_str[quote_info->tmp_str_len++] = input[i];
-		else
 		{
-			tmp[0] = input[i];
-			tmp[1] = '\0';
-			ft_strlcat(new_str, tmp, MAX_ARGS);
-			quote_info->new_str_len++;
+			quote_info->tmp_str[quote_info->tmp_str_len++] = input[i];
+			quote_info->tmp_str[quote_info->tmp_str_len] = '\0';
 		}
+		else
+			process_regular_char(input[i], new_str, quote_info);
 	}
 	return (new_str);
 }

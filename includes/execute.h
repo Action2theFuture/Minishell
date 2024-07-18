@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 13:12:49 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/16 15:05:25 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/18 14:08:53 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,10 @@ void					process_io_redirection_node(t_ast *node, t_info *info);
 void					process_phrase_node(t_ast *node, t_info *info);
 
 // info_utils.c
-void					init_info(t_info *info);
+void					init_info(t_info *info, t_env *env);
 void					clear_info(t_info *info);
+void					reset_consts_fd(t_info *info);
+
 // args_utils.c
 void					free_args(char **args);
 void					replace_env_vars_in_args(char **args, t_info *info);

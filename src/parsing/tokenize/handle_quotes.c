@@ -6,11 +6,26 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/13 19:44:46 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/09 16:14:19 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/17 11:14:32 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static bool	is_in_quote(char c, bool *in_single_quote, bool *in_double_quote)
+{
+	if (c == '\'' && !(*in_double_quote))
+	{
+		*in_single_quote = !(*in_single_quote);
+		return (true);
+	}
+	else if (c == '"' && !(*in_single_quote))
+	{
+		*in_double_quote = !(*in_double_quote);
+		return (true);
+	}
+	return (false);
+}
 
 static int	check_last_quote(const char *str)
 {
@@ -22,38 +37,23 @@ static int	check_last_quote(const char *str)
 	in_single_quote = false;
 	in_double_quote = false;
 	last_quote_index = -1;
-	i = 0;
+	i = -1;
 	while (str[i])
 	{
-		if (str[i] == '\'' && !in_double_quote)
-		{
-			in_single_quote = !in_single_quote;
+		if (is_in_quote(str[i], &in_single_quote, &in_double_quote))
 			last_quote_index = i;
-		}
-		else if (str[i] == '"' && !in_single_quote)
-		{
-			in_double_quote = !in_double_quote;
-			last_quote_index = i;
-		}
+		if ((!in_single_quote && !in_double_quote) && \
+			ft_strchr(SHELL_METACHARS, str[i]))
+			break ;
 		i++;
 	}
-	return (last_quote_index + 1);
-}
-
-static int	check_more_str(const char *str)
-{
-	int	i;
-
-	i = 0;
-	while (str[i])
-	{
-		if (!ft_isspace(*str) && \
-			!ft_strchr(SHELL_METACHARS, *str))
-			i++;
-		else
-			break ;
-	}
-	return (i);
+	if (in_double_quote || in_single_quote)
+		return (last_quote_index);
+	if (last_quote_index == -1)
+		return (0);
+	if (str[last_quote_index] != '\0')
+		return (last_quote_index + 1);
+	return (last_quote_index);
 }
 
 void	handle_quotes(\
@@ -63,7 +63,6 @@ void	handle_quotes(\
 
 	*start = *input;
 	cmd = check_last_quote(*input);
-	cmd += check_more_str(*input + cmd);
 	add_token(list, *input, cmd);
 	*input += cmd;
 	*start = *input + 1;
