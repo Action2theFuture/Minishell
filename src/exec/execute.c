@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 18:34:10 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/18 14:09:17 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/18 15:12:49 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ void	execute(t_ast *root, t_env *env, int *exit_status)
 	t_info	info;
 
 	init_info(&info, env);
-	if (*exit_status != 0)
+	if (exit_status != 0)
 		info.exit_status = *exit_status;
 	if (backup_stdio(&info) == FAILURE)
 		fd_log_error(NULL, NULL, strerror(errno));

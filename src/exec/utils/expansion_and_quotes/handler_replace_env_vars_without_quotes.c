@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/11 13:30:34 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/12 19:10:19 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/18 15:16:46 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,13 @@ static void	handle_expansion_var(t_handler_info *h_info)
 	char	*env_value;
 
 	env_value = process_replace_expansion_var(h_info->info);
-	ft_strlcat(h_info->new_str, env_value, MAX_ARGS);
-	h_info->new_str_len += ft_strlen(env_value);
+	if (env_value)
+	{
+		ft_strlcat(h_info->new_str, env_value, MAX_ARGS);
+		h_info->new_str_len += ft_strlen(env_value);
+		free(env_value);
+	}
 	h_info->i++;
-	free(env_value);
 }
 
 static void	handle_normal_var(t_handler_info *h_info)
@@ -28,9 +31,12 @@ static void	handle_normal_var(t_handler_info *h_info)
 	char	*env_value;
 
 	env_value = process_replace_env_vars(h_info->var, h_info->info);
-	ft_strlcat(h_info->new_str, env_value, MAX_ARGS);
-	h_info->new_str_len += ft_strlen(env_value);
-	free(env_value);
+	if (env_value)
+	{
+		ft_strlcat(h_info->new_str, env_value, MAX_ARGS);
+		h_info->new_str_len += ft_strlen(env_value);
+		free(env_value);
+	}
 }
 
 static void	extract_var_name_from_input(\
