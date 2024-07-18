@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/23 17:08:10 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/17 11:17:20 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/18 11:13:22 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,10 @@ static void	prepare_and_execute(\
 		&& execve(cmd, args, env) == -1)
 		exit(125 + execve_log_error(cmd, errno));
 	else if (info->path)
-		(execve(info->path, args, env), free(info->path));
+	{
+		execve(info->path, args, env);
+		free(info->path);
+	}
 	if (execve(cmd, args, env) == -1)
 		exit(126 + execve_log_error(cmd, errno));
 }
@@ -41,22 +44,22 @@ static int	exec_child_task(char *cmd, char **env, char **args, t_info *info)
 	cmd = args[0];
 	if (info->prev_pipe[0] != -1)
 	{
-		close(info->prev_pipe[1]);
 		if (dup2(info->prev_pipe[0], STDIN_FILENO) == -1)
-			return (fd_log_error("Dup pipe error 1", NULL, NULL));
+			exit(fd_log_error("Dup pipe error 1", NULL, NULL));
+		close(info->prev_pipe[0]);
+		close(info->prev_pipe[1]);
 	}
 	if (info->pipe_exists)
 	{
-		close(info->pipe[0]);
 		if (dup2(info->pipe[1], STDOUT_FILENO) == -1)
-			return (fd_log_error("Dup pipe error 2", NULL, NULL));
+			exit(fd_log_error("Dup pipe error 2", NULL, NULL));
+		close(info->pipe[0]);
+		close(info->pipe[1]);
 	}
 	prepare_and_execute(cmd, args, info, env);
-	return (SUCCESS);
+	exit(EXIT_SUCCESS);
 }
 
-// if (info->prev_pipe[0] != -1)
-	// (close(info->prev_pipe[0]), close(info->prev_pipe[1]));
 static int	monitor_child_task(char *cmd, pid_t pid, t_info *info)
 {
 	int	status;
@@ -77,6 +80,31 @@ static int	monitor_child_task(char *cmd, pid_t pid, t_info *info)
 	return (SUCCESS);
 }
 
+static void	handle_pipe(t_info *info)
+{
+	if (info->pipe_exists)
+	{
+		close(info->pipe[1]);
+		if (info->prev_pipe[0] != -1)
+			close(info->prev_pipe[0]);
+		info->prev_pipe[0] = info->pipe[0];
+		info->prev_pipe[1] = info->pipe[1];
+		info->pipe_cnt--;
+		if (info->pipe_cnt == 0)
+			info->pipe_cnt = -1;
+	}
+	else
+	{
+		(close(info->prev_pipe[0]), close(info->prev_pipe[1]), \
+		close(info->pipe[0]), close(info->pipe[1]));
+		info->pipe[0] = dup(STDIN_FILENO);
+		info->pipe[1] = dup(STDOUT_FILENO);
+		info->prev_pipe[0] = -1;
+		info->prev_pipe[1] = -1;
+		reset_consts_fd(info);
+	}
+}
+
 int	launch_process(char *cmd, char **args, t_info *info)
 {
 	pid_t	pid;
@@ -89,16 +117,10 @@ int	launch_process(char *cmd, char **args, t_info *info)
 	if (env == NULL)
 		return (perror("Empty env"), 1);
 	if (pid == 0)
-		exec_child_task(cmd, env, args, info);
+		(exec_child_task(cmd, env, args, info), exit(EXIT_FAILURE));
 	monitor_child_task(cmd, pid, info);
 	if (env)
 		clear_arr(env);
-	if (info->pipe_exists)
-	{
-		close(info->pipe[1]);
-		info->prev_pipe[0] = info->pipe[0];
-		info->prev_pipe[1] = info->pipe[1];
-		info->pipe_cnt--;
-	}
+	handle_pipe(info);
 	return (info->exit_status);
 }
