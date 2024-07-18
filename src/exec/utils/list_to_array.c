@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/19 12:42:24 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/02 11:39:35 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/18 14:51:47 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,40 +22,58 @@ static void	clear_arr_in_middle(int idx, char **arr)
 	free(arr);
 }
 
-static char	**convert_list_to_array(t_env *cur, char **arr)
+static char	*conver_env_item_to_str(t_env *cur)
 {
 	size_t	name_len;
 	size_t	content_len;
 	size_t	total_len;
+	char	*str;
+
+	name_len = ft_strlen(cur->name);
+	content_len = ft_strlen(cur->content);
+	total_len = name_len + content_len + 2;
+	str = (char *)malloc(sizeof(char) * total_len);
+	if (str == NULL)
+		return (perror("malloc error"), NULL);
+	ft_strlcpy(str, cur->name, name_len + 1);
+	ft_strlcat(str, "=", total_len);
+	ft_strlcat(str, cur->content, total_len);
+	return (str);
+}
+
+static char	**convert_list_to_array(t_env *cur, char **arr)
+{
 	int		idx;
 
 	idx = 0;
+	if (!cur)
+		return (NULL);
 	while (cur)
 	{
-		name_len = ft_strlen(cur->name);
-		content_len = ft_strlen(cur->content);
-		total_len = name_len + content_len + 2;
-		arr[idx] = (char *)malloc(sizeof(char) * total_len);
+		if (cur->content == NULL)
+		{
+			cur = cur->next;
+			idx++;
+			continue ;
+		}
+		arr[idx] = conver_env_item_to_str(cur);
 		if (arr[idx] == NULL)
-			return (perror("malloc"), \
-					clear_arr_in_middle(idx, arr), NULL);
-		ft_strlcpy(arr[idx], cur->name, total_len);
-		ft_strlcat(arr[idx], "=", total_len);
-		ft_strlcat(arr[idx], cur->content, total_len);
+			return (clear_arr_in_middle(idx, arr), NULL);
 		cur = cur->next;
 		idx++;
 	}
-	arr[idx] = NULL;
-	return (arr);
+	return (arr[idx] = NULL, arr);
 }
 
 char	**list_to_array(t_env *env)
 {
 	char	**arr;
+	size_t	size;
 
 	if (env == NULL)
 		return (NULL);
-	arr = (char **)malloc(sizeof(char *) * (env_size(env) + 1));
+	size = env_size(env);
+	arr = (char **)malloc(sizeof(char *) * (size + 1));
 	if (arr == NULL)
 	{
 		perror("malloc");

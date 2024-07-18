@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/23 17:08:10 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/18 11:13:22 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/18 14:43:42 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,12 +95,12 @@ static void	handle_pipe(t_info *info)
 	}
 	else
 	{
-		(close(info->prev_pipe[0]), close(info->prev_pipe[1]), \
-		close(info->pipe[0]), close(info->pipe[1]));
+		if (info->prev_pipe[0] >= 0)
+			close(info->prev_pipe[0]);
+		if (info->prev_pipe[1] >= 0)
+			close(info->prev_pipe[1]);
 		info->pipe[0] = dup(STDIN_FILENO);
 		info->pipe[1] = dup(STDOUT_FILENO);
-		info->prev_pipe[0] = -1;
-		info->prev_pipe[1] = -1;
 		reset_consts_fd(info);
 	}
 }

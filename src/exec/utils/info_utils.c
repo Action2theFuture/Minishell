@@ -6,13 +6,13 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/16 19:56:30 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/18 11:12:32 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/18 14:08:41 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	init_info(t_info *info)
+void	init_info(t_info *info, t_env *env)
 {
 	info->status = SUCCESS;
 	info->exit_status = SUCCESS;
@@ -29,11 +29,13 @@ void	init_info(t_info *info)
 	info->in_subshell = false;
 	info->stdin_backup = dup(STDIN_FILENO);
 	if (info->stdin_backup == -1)
-		perror("dup stdin_backup errir");
+		perror("dup stdin_backup error");
 	info->stdout_backup = dup(STDOUT_FILENO);
 	if (info->stdout_backup == -1)
-		perror("dup stdout_backup errir");
+		perror("dup stdout_backup error");
 	info->path = NULL;
+	info->env = env;
+	info->quote_info = NULL;
 }
 
 void	reset_consts_fd(t_info *info)
@@ -62,8 +64,4 @@ void	clear_info(t_info *info)
 		close(info->origin_stdin_fd);
 	if (info->origin_stdout_fd != -1)
 		close(info->origin_stdout_fd);
-	if (info->stdin_fd != -1)
-		close(info->stdin_fd);
-	if (info->stdout_fd != -1)
-		close(info->stdout_fd);
 }

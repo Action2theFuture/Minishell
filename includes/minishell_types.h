@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 13:25:12 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/18 11:12:54 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/18 14:05:05 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,8 +140,8 @@ typedef struct s_info
 	int					tmp_fd;
 	int					exit_status;
 	int					status;
-	t_env				*env;
-	t_quote_info		*quote_info;
+	struct s_env		*env;
+	struct s_quote_info	*quote_info;
 }						t_info;
 
 typedef struct s_handler_info

@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 18:34:10 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/18 11:12:13 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/18 14:09:17 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,15 +26,15 @@ static void	categorize_tree(t_ast *node, t_info *info)
 	}
 	else
 		info->pipe_exists = false;
-	if (node->type == PHRASE && info->status == SUCCESS && \
-		(node->left && node->left->type == PHRASE))
-		subshell_info.in_subshell = false;
+	if (info->in_subshell == true && node->type == PHRASE && \
+		info->status == SUCCESS && (node->left && node->left->type == PHRASE))
+		info->in_subshell = false;
 	if (node->type == PHRASE && info->status == SUCCESS)
 		process_phrase_node(node, info);
 	if (node->type == SUBSHELL && ft_strncmp(node->data, "(", 1) == 0 \
 			&& info->status == SUCCESS)
 	{
-		init_info(&subshell_info);
+		init_info(&subshell_info, info->env);
 		subshell_info.in_subshell = true;
 		traverse_tree(node->right, &subshell_info);
 		info = &subshell_info;
@@ -99,10 +99,9 @@ void	execute(t_ast *root, t_env *env, int *exit_status)
 {
 	t_info	info;
 
-	init_info(&info);
-	if (exit_status != 0)
+	init_info(&info, env);
+	if (*exit_status != 0)
 		info.exit_status = *exit_status;
-	info.env = env;
 	if (backup_stdio(&info) == FAILURE)
 		fd_log_error(NULL, NULL, strerror(errno));
 	traverse_tree(root, &info);
