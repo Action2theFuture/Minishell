@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/19 12:42:24 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/18 14:51:47 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/18 15:54:20 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,6 @@ static char	**convert_list_to_array(t_env *cur, char **arr)
 		if (cur->content == NULL)
 		{
 			cur = cur->next;
-			idx++;
 			continue ;
 		}
 		arr[idx] = conver_env_item_to_str(cur);
@@ -82,7 +81,7 @@ char	**list_to_array(t_env *env)
 	return (convert_list_to_array(env, arr));
 }
 
-void	clear_arr(char **arr)
+void	clear_env_arr(char **arr)
 {
 	int	i;
 
@@ -90,4 +89,5 @@ void	clear_arr(char **arr)
 	while (arr[++i])
 		free(arr[i]);
 	free(arr);
+	arr = NULL;
 }
