@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/23 18:04:20 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/16 15:26:44 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/18 15:32:43 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,14 +40,16 @@ static void	clear_pwd_oldpwd(t_env *head)
 {
 	if (head->pwd)
 	{
-		free(head->pwd->name);
+		if (head->pwd->name)
+			free(head->pwd->name);
 		if (head->pwd->content)
 			free(head->pwd->content);
 		free(head->pwd);
 	}
 	if (head->old_pwd)
 	{
-		free(head->old_pwd->name);
+		if (head->old_pwd->name)
+			free(head->old_pwd->name);
 		if (head->old_pwd->content)
 			free(head->old_pwd->content);
 		free(head->old_pwd);

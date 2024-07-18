@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/23 17:08:10 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/18 14:43:42 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/18 15:54:43 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,7 @@ int	launch_process(char *cmd, char **args, t_info *info)
 		(exec_child_task(cmd, env, args, info), exit(EXIT_FAILURE));
 	monitor_child_task(cmd, pid, info);
 	if (env)
-		clear_arr(env);
+		clear_env_arr(env);
 	handle_pipe(info);
 	return (info->exit_status);
 }
