@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 13:25:12 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/19 13:21:06 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/19 17:41:14 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,13 @@
 # define ASCII_ART_PATH "assets/ascii_art_doh"
 # define HEREDOC_TMP "heredoc_tmp"
 # define BASE_PATH '.'
+
+typedef enum signal_type
+{
+	SIGNAL_HANDLER,
+	IGN,
+	DFL,
+}	t_signal_type;
 
 typedef enum pipe_loc
 {
@@ -134,14 +141,11 @@ typedef struct s_quote_info
 typedef struct s_info
 {
 	pid_t				pid;
+	bool				is_pipe;
 	bool				pipe_exists;
 	bool				in_subshell;
-	bool				redirecting;
 	char				*path;
 	int					child_pids[MAX_PIPES];
-	int					total_pipe_cnt;
-	int					pipe_cnt;
-	int					pipe_idx;
 	int					stdin_fd;
 	int					stdout_fd;
 	int					origin_stdin_fd;
@@ -149,7 +153,6 @@ typedef struct s_info
 	int					stdin_backup;
 	int					stdout_backup;
 	int					pipe[2];
-	int					prev_pipe[2];
 	int					tmp_pipe[3];
 	int					pipe_loc;
 	int					stdin_pipe;

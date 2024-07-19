@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 12:01:59 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/17 20:19:17 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/19 15:52:47 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,7 +119,7 @@ int	handle_io_redirection(t_ast *node, t_info *info)
 	{
 		status = handle_ft_redirection(node, info);
 		if (status > SUCCESS)
-			info->pipe_exists = false;
+			info->is_pipe = false;
 		if (!node->left->left)
 			break ;
 		node = node->left->left;

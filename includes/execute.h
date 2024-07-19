@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 13:12:49 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/19 09:17:49 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/19 21:30:16 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,15 +109,17 @@ void					clear_env_arr(char **arr);
 int						dispatch_cmd(t_ast *node, t_info *info);
 
 // launch_process_cmd.c
-void					execute_cmd(\
-				char *cmd, char **args, t_info *info, char **env);
 int						launch_process_cmd(\
 				char *cmd, char **args, t_info *info);
-int						wait_for_child_task(t_info *info);
 
 // launch_process_pipe.c
 int						launch_process_pipe(\
 				char *cmd, char **args, t_info *info);
+
+// execution_pipeline.c
+void					first_pipe(char *cmd, char **env, char **args, t_info *info);
+void					middle_pipe(char *cmd, char **env, char **args, t_info *info);
+void					last_pipe(char *cmd, char **env, char **args, t_info *info);
 
 // redir.c
 int						handle_io_redirection(t_ast *node, t_info *info);

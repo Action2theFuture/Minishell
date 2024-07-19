@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/11 19:14:21 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/05 10:22:19 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/19 16:11:57 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	main(int ac, char **av, char **envp)
 	env = NULL;
 	exit_status = 0;
 	init_minishell(envp, &env);
-	set_signal_handler();
+	set_signal_handler(SIGNAL_HANDLER);
 	while (1)
 	{
 		input = readline("kashell$> ");

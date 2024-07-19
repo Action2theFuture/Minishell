@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/16 19:56:30 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/19 08:27:18 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/19 15:48:52 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,17 +16,12 @@ void	init_info(t_info *info, t_env *env)
 {
 	info->status = SUCCESS;
 	info->exit_status = SUCCESS;
-	info->pipe_exists = false;
-	info->redirecting = false;
+	info->is_pipe = false;
 	info->stdin_fd = -1;
 	info->stdout_fd = -1;
 	info->origin_stdin_fd = -1;
 	info->origin_stdout_fd = -1;
 	info->tmp_fd = -1;
-	info->prev_pipe[0] = -1;
-	info->prev_pipe[1] = -1;
-	info->pipe_cnt = -1;
-	info->pipe_idx = 0;
 	info->in_subshell = false;
 	info->stdin_backup = dup(STDIN_FILENO);
 	if (info->stdin_backup == -1)
@@ -57,10 +52,6 @@ void	clear_info(t_info *info)
 		close(info->stdout_fd);
 	if (info->tmp_fd != -1)
 		close(info->tmp_fd);
-	if (info->prev_pipe[0] != -1)
-		close(info->prev_pipe[0]);
-	if (info->prev_pipe[1] != -1)
-		close(info->prev_pipe[1]);
 	if (info->origin_stdin_fd != -1)
 		close(info->origin_stdin_fd);
 	if (info->origin_stdout_fd != -1)

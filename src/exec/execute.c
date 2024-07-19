@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 18:34:10 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/19 15:19:55 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/19 21:13:34 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,12 +37,10 @@ static void	categorize_tree(t_ast *node, t_info *info)
 // The bottom left pipe node is the StartNode
 static void	process_pipe_node(t_ast *pipe_node, t_info *info)
 {
-	if (info->pipe_exists == false)
+	if (info->is_pipe == false)
 	{
 		info->stdin_pipe = -1;
-		info->pipe_exists = true;
-		if (pipe(info->pipe) == -1)
-			fd_log_error("pipe error", NULL, NULL);
+		info->is_pipe = true;
 		while (pipe_node && pipe_node->right && pipe_node->right->type == PIPE)
 			pipe_node = pipe_node->right;
 		info->pipe_loc = FIRST;
@@ -65,7 +63,7 @@ static void	process_pipe_node(t_ast *pipe_node, t_info *info)
 			info->pipe_loc = LAST;
 			process_phrase_node(pipe_node->left, info);
 		}
-		info->pipe_exists = false;
+		info->is_pipe = false;
 		info->pipe_loc = -1;
 	}
 }

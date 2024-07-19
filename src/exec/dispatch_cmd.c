@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 17:58:55 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/19 15:17:39 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/19 21:15:28 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,43 +77,27 @@ static char	**prepare_cmd(\
 	return (chunk);
 }
 
-static int	start_execute_cmd(char **chunk, t_info *info)
+static int	start_execute(char **chunk, t_info *info)
 {
 	int		status;
 	int		i;
 	int		built_in;
 	int		(*arr_built_in[8])(const char *, const char **, t_env *);
 
-	init_builtin(arr_built_in);
-	built_in = handler_builtin(chunk[0]);
-	if (built_in != NONE)
-		status = arr_built_in[built_in](\
-		(const char *)chunk[0], (const char **)chunk, info->env);
-	else
-		status = launch_process_cmd(chunk[0], chunk, info);
-	i = -1;
-	while (chunk[++i])
-		free(chunk[i]);
-	free(chunk);
-	if (info->path)
-		free(info->path);
-	return (status);
-}
-
-static int	start_execute_pipe(char **chunk, t_info *info)
-{
-	int		status;
-	int		i;
-	int		built_in;
-	int		(*arr_built_in[8])(const char *, const char **, t_env *);
-
-	init_builtin(arr_built_in);
-	built_in = handler_builtin(chunk[0]);
-	if (built_in != NONE)
-		status = arr_built_in[built_in](\
-		(const char *)chunk[0], (const char **)chunk, info->env);
-	else
+	if (info->is_pipe)
 		status = launch_process_pipe(chunk[0], chunk, info);
+	else
+	{
+		init_builtin(arr_built_in);
+		built_in = handler_builtin(chunk[0]);
+		if (built_in != NONE)
+		{
+			status = arr_built_in[built_in](\
+			(const char *)chunk[0], (const char **)chunk, info->env);
+		}
+		else
+			status = launch_process_cmd(chunk[0], chunk, info);
+	}
 	i = -1;
 	while (chunk[++i])
 		free(chunk[i]);
@@ -136,10 +120,7 @@ int	dispatch_cmd(t_ast	*node, t_info *info)
 	info->path = NULL;
 	args = NULL;
 	chunk = prepare_cmd(args, cmd_node, args_node, info);
-	if (info->pipe_exists)
-		status = start_execute_pipe(chunk, info);
-	else
-		status = start_execute_cmd(chunk, info);
+	status = start_execute(chunk, info);
 	if (args)
 		free_args(args);
 	return (status);

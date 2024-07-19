@@ -6,13 +6,13 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/23 17:08:10 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/19 12:25:42 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/19 20:45:11 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	execute_cmd(\
+static void	execute_cmd(\
 				char *cmd, char **args, t_info *info, char **env)
 {
 	int		built_in;
@@ -45,7 +45,7 @@ static int	monitor_child_task(char *cmd, pid_t pid, t_info *info)
 
 	if ((ft_strlen(cmd) == ft_strlen("./minishell")) && \
 		ft_strncmp(cmd, "./minishell", 11) == 0)
-		disable_interrupt_signals();
+		set_signal_handler(IGN);
 	waitpid(pid, &status, 0);
 	if (WIFSIGNALED(status))
 	{
@@ -55,7 +55,7 @@ static int	monitor_child_task(char *cmd, pid_t pid, t_info *info)
 	}
 	else if (WIFEXITED(status))
 		info->exit_status = WEXITSTATUS(status);
-	set_signal_handler();
+	set_signal_handler(SIGNAL_HANDLER);
 	return (SUCCESS);
 }
 
