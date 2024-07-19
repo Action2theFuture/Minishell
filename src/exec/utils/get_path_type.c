@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/22 19:37:41 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/18 14:52:13 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/19 21:41:03 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static char	*get_path_in_env(t_env *env)
 {
 	while (env)
 	{
-		if (env->name && env->name && \
+		if (env->name && env->content && \
 			ft_strlen(env->name) == 4 && ft_strncmp(env->name, "PATH", 4) == 0)
 			return (env->content);
 		env = env->next;

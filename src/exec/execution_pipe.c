@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 21:28:11 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/19 21:37:12 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/19 22:06:50 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,8 @@ void	first_pipe(char *cmd, char **env, char **args, t_info *info)
 	if (info->pid == 0)
 	{
 		dup2(info->tmp_pipe[2], STDOUT_FILENO);
-		close(info->tmp_pipe[0]);
+		if (info->tmp_pipe[0] != -1)
+			close(info->tmp_pipe[0]);
 		close(info->tmp_pipe[1]);
 		close(info->tmp_pipe[2]);
 		init_builtin(arr_built_in);
