@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/13 11:22:54 by junsan            #+#    #+#             */
-/*   Updated: 2024/06/26 10:43:24 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/19 13:54:28 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,9 @@ static const char	*get_type_str_redir(int type)
 
 static const char	*get_type_str(int type)
 {
-	if (type == LOGICAL)
+	if (type == ROOT)
+		return ("ROOT");
+	else if (type == LOGICAL)
 		return ("LOGICAL");
 	else if (type == PIPE)
 		return ("PIPE");
@@ -88,5 +90,7 @@ void	print_tree(t_ast *root, int depth)
 {
 	if (!root)
 		return ;
+	printf("start----------------------------------\n");
 	print_tree_util(root, 0, depth);
+	printf("end----------------------------------\n");
 }

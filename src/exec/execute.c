@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 18:34:10 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/18 15:51:12 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/19 15:19:55 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,14 +18,6 @@ static void	categorize_tree(t_ast *node, t_info *info)
 {
 	t_info	subshell_info;
 
-	if (info->pipe_cnt > 0)
-	{
-		if (pipe(info->pipe) == -1)
-			fd_log_error("pipe error", NULL, NULL);
-		info->pipe_exists = true;
-	}
-	else
-		info->pipe_exists = false;
 	if (info->in_subshell == true && node->type == PHRASE && \
 		info->status == SUCCESS && (node->left && node->left->type == PHRASE))
 		info->in_subshell = false;
@@ -42,21 +34,39 @@ static void	categorize_tree(t_ast *node, t_info *info)
 	}
 }
 
-static void	cnt_pipe(t_ast *node, t_info *info)
+// The bottom left pipe node is the StartNode
+static void	process_pipe_node(t_ast *pipe_node, t_info *info)
 {
-	t_ast	*cnt_node_for_pipe;
-	int		cnt;
-
-	if (node->type == PIPE && info->pipe_cnt == -1)
+	if (info->pipe_exists == false)
 	{
-		cnt_node_for_pipe = node;
-		cnt = 1;
-		while (cnt_node_for_pipe->right->type == PIPE)
+		info->stdin_pipe = -1;
+		info->pipe_exists = true;
+		if (pipe(info->pipe) == -1)
+			fd_log_error("pipe error", NULL, NULL);
+		while (pipe_node && pipe_node->right && pipe_node->right->type == PIPE)
+			pipe_node = pipe_node->right;
+		info->pipe_loc = FIRST;
+		process_phrase_node(pipe_node->right, info);
+		if (pipe_node->parent && pipe_node->parent->type == PIPE)
 		{
-			cnt++;
-			cnt_node_for_pipe = cnt_node_for_pipe->right;
+			info->pipe_loc = MIDDLE;
+			process_phrase_node(pipe_node->left, info);
+			pipe_node = pipe_node->parent;
+			while (pipe_node->parent && pipe_node->parent->type == PIPE)
+			{
+				process_phrase_node(pipe_node->left, info);
+				pipe_node = pipe_node->parent;
+			}
+			info->pipe_loc = LAST;
+			process_phrase_node(pipe_node->left, info);
 		}
-		info->pipe_cnt = cnt;
+		else
+		{
+			info->pipe_loc = LAST;
+			process_phrase_node(pipe_node->left, info);
+		}
+		info->pipe_exists = false;
+		info->pipe_loc = -1;
 	}
 }
 
@@ -79,12 +89,7 @@ static void	traverse_tree(t_ast *node, t_info *info)
 	if (node->type == LOGICAL)
 		process_logical_node(node, info);
 	if (node->type == PIPE)
-	{
-		cnt_pipe(node, info);
-		traverse_tree(node->right, info);
-		if (node->type == PIPE && info->status == SUCCESS)
-			traverse_tree(node->left, info);
-	}
+		process_pipe_node(node, info);
 	if (node->type != PIPE && node->type != LOGICAL)
 	{
 		categorize_tree(node, info);
