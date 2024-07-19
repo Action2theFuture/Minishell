@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 17:58:55 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/19 21:15:28 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/19 22:10:30 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,6 @@ static char	**prepare_cmd(\
 static int	start_execute(char **chunk, t_info *info)
 {
 	int		status;
-	int		i;
 	int		built_in;
 	int		(*arr_built_in[8])(const char *, const char **, t_env *);
 
@@ -98,10 +97,7 @@ static int	start_execute(char **chunk, t_info *info)
 		else
 			status = launch_process_cmd(chunk[0], chunk, info);
 	}
-	i = -1;
-	while (chunk[++i])
-		free(chunk[i]);
-	free(chunk);
+	free_args(chunk);
 	if (info->path)
 		free(info->path);
 	return (status);
