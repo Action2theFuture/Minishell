@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cmd.c                                              :+:      :+:    :+:   */
+/*   dispatch_cmd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 17:58:55 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/18 15:49:50 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/19 22:10:30 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ static void	determine_and_set_path(const char *cmd, t_info *info)
 }
 
 static char	**prepare_cmd(\
-			char **args, t_ast *cmd_node, t_ast *args_node)
+			char **args, t_ast *cmd_node, t_ast *args_node, t_info *info)
 {
 	char		**chunk;
 	char		**parsed_cmd;
@@ -71,30 +71,33 @@ static char	**prepare_cmd(\
 	else
 		chunk = allocate_null_and_cmd_chunk(parsed_cmd, cnt);
 	free_args(parsed_cmd);
-	return (chunk);
-}
-
-static int	execute_cmd(char **chunk, t_info *info)
-{
-	int		status;
-	int		i;
-	int		built_in;
-	int		(*arr_built_in[8])(const char *, const char **, t_env *);
-
 	expand_wildcard(&chunk);
 	expand_and_strip_quotes_in_args(chunk, info);
 	determine_and_set_path(chunk[0], info);
-	init_builtin(arr_built_in);
-	built_in = handler_builtin(chunk[0]);
-	if (built_in != NONE && info->pipe_exists < 1)
-		status = arr_built_in[built_in](\
-		(const char *)chunk[0], (const char **)chunk, info->env);
+	return (chunk);
+}
+
+static int	start_execute(char **chunk, t_info *info)
+{
+	int		status;
+	int		built_in;
+	int		(*arr_built_in[8])(const char *, const char **, t_env *);
+
+	if (info->is_pipe)
+		status = launch_process_pipe(chunk[0], chunk, info);
 	else
-		status = launch_process(chunk[0], chunk, info);
-	i = -1;
-	while (chunk[++i])
-		free(chunk[i]);
-	free(chunk);
+	{
+		init_builtin(arr_built_in);
+		built_in = handler_builtin(chunk[0]);
+		if (built_in != NONE)
+		{
+			status = arr_built_in[built_in](\
+			(const char *)chunk[0], (const char **)chunk, info->env);
+		}
+		else
+			status = launch_process_cmd(chunk[0], chunk, info);
+	}
+	free_args(chunk);
 	if (info->path)
 		free(info->path);
 	return (status);
@@ -112,9 +115,8 @@ int	dispatch_cmd(t_ast	*node, t_info *info)
 	args_node = node->right;
 	info->path = NULL;
 	args = NULL;
-	chunk = prepare_cmd(args, cmd_node, args_node);
-	status = execute_cmd(chunk, info);
-	info->pipe_exists = false;
+	chunk = prepare_cmd(args, cmd_node, args_node, info);
+	status = start_execute(chunk, info);
 	if (args)
 		free_args(args);
 	return (status);

@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 13:25:12 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/18 14:05:05 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/19 17:41:14 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # define MAX_ARGS 100
 # define MEMORY_CAPACITY 256
 # define HISTSIZE 500
+# define MAX_PIPES 64
 # define MAX_RECURSION_DEPTH 1
 # define INITIAL_CAPACITY 100
 # define DELIMS "|&<>"
@@ -25,6 +26,20 @@
 # define ASCII_ART_PATH "assets/ascii_art_doh"
 # define HEREDOC_TMP "heredoc_tmp"
 # define BASE_PATH '.'
+
+typedef enum signal_type
+{
+	SIGNAL_HANDLER,
+	IGN,
+	DFL,
+}	t_signal_type;
+
+typedef enum pipe_loc
+{
+	FIRST,
+	MIDDLE,
+	LAST,
+}	t_pipe_loc;
 
 typedef enum tree_direction
 {
@@ -60,6 +75,7 @@ typedef enum type_logical
 
 typedef enum type
 {
+	ROOT = -1,
 	SUBSHELL = 100,
 	ARGS = 22,
 	CMD = 20,
@@ -124,11 +140,12 @@ typedef struct s_quote_info
 
 typedef struct s_info
 {
+	pid_t				pid;
+	bool				is_pipe;
 	bool				pipe_exists;
 	bool				in_subshell;
-	bool				redirecting;
 	char				*path;
-	int					pipe_cnt;
+	int					child_pids[MAX_PIPES];
 	int					stdin_fd;
 	int					stdout_fd;
 	int					origin_stdin_fd;
@@ -136,7 +153,9 @@ typedef struct s_info
 	int					stdin_backup;
 	int					stdout_backup;
 	int					pipe[2];
-	int					prev_pipe[2];
+	int					tmp_pipe[3];
+	int					pipe_loc;
+	int					stdin_pipe;
 	int					tmp_fd;
 	int					exit_status;
 	int					status;

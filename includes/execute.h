@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 13:12:49 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/18 15:41:39 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/19 22:15:06 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,12 @@
 # include "minishell_types.h"
 // execute.c
 void					execute(t_ast *root, t_env *env, int *exit_status);
+void					traverse_tree(t_ast *node, t_info *info);
+
+// process_execute.c
+void					process_logical_node(t_ast *node, t_info *info);
+void					process_pipe_node(t_ast *pipe_node, t_info *info);
+void					categorize_tree(t_ast *node, t_info *info);
 
 // execute_process.c
 void					process_cmd_node(t_ast *node, t_info *info);
@@ -105,11 +111,24 @@ t_file_list				*get_entry_list(t_file_list *file_list, DIR *dir);
 char					**list_to_array(t_env *env);
 void					clear_env_arr(char **arr);
 
-// cmd.c
+// dispatch_cmd.c
 int						dispatch_cmd(t_ast *node, t_info *info);
 
-// launch_process.c
-int						launch_process(char *cmd, char **args, t_info *info);
+// launch_process_cmd.c
+int						launch_process_cmd(\
+				char *cmd, char **args, t_info *info);
+
+// launch_process_pipe.c
+int						launch_process_pipe(\
+				char *cmd, char **args, t_info *info);
+
+// execution_pipeline.c
+void					first_pipe(\
+		char *cmd, char **env, char **args, t_info *info);
+void					middle_pipe(\
+		char *cmd, char **env, char **args, t_info *info);
+void					last_pipe(\
+		char *cmd, char **env, char **args, t_info *info);
 
 // redir.c
 int						handle_io_redirection(t_ast *node, t_info *info);

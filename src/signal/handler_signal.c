@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 12:06:08 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/12 11:16:29 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/19 16:11:35 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,14 +49,21 @@ static void	signal_handler(int signo)
 		handler_sigquit(pid);
 }
 
-void	set_signal_handler(void)
+void	set_signal_handler(int sig_int)
 {
-	signal(SIGINT, signal_handler);
-	signal(SIGQUIT, signal_handler);
-}
-
-void	disable_interrupt_signals(void)
-{
-	signal(SIGINT, SIG_IGN);
-	signal(SIGQUIT, SIG_IGN);
+	if (sig_int == SIGNAL_HANDLER)
+	{
+		signal(SIGINT, signal_handler);
+		signal(SIGQUIT, signal_handler);
+	}
+	else if (sig_int == IGN)
+	{
+		signal(SIGINT, SIG_IGN);
+		signal(SIGQUIT, SIG_IGN);
+	}
+	else if (sig_int == DFL)
+	{
+		signal(SIGINT, SIG_DFL);
+		signal(SIGQUIT, SIG_DFL);
+	}
 }

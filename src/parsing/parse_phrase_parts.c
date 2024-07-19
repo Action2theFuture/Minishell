@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 22:46:47 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/11 10:42:50 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/19 10:07:58 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,6 +109,7 @@ bool	parse_phrase_part(\
 	t_ast	*phrase_node;
 
 	phrase_node = new_node(NULL, PHRASE);
+	phrase_node->parent = *node;
 	if (!phrase_node)
 		return (false);
 	return (parse_func(token, &phrase_node, node));
