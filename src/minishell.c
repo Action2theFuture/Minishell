@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/11 19:14:21 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/19 16:11:57 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/20 09:20:10 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,31 +19,63 @@ static void	exit_shell(void)
 	printf("exit\n");
 }
 
+static void	set_terminal_attributes(void)
+{
+	struct termios	term;
+
+	tcgetattr(STDIN_FILENO, &term);
+	term.c_lflag &= ~(ECHOCTL);
+	tcsetattr(STDIN_FILENO, TCSANOW, &term);
+}
+
+static char	*read_user_input(void)
+{
+	char	*input;
+
+	input = readline("kashell$> ");
+	if (!input)
+	{
+		exit_shell();
+		return (NULL);
+	}
+	if (!*input)
+	{
+		free(input);
+		return (NULL);
+	}
+	add_history(input);
+	return (input);
+}
+
+static void	shell_loop(t_env *env, int *exit_status)
+{
+	char	*input;
+
+	while (1)
+	{
+		input = read_user_input();
+		if (!input)
+			break ;
+		process_input(input, env, exit_status);
+	}
+}
+
 int	main(int ac, char **av, char **envp)
 {
-	static int	exit_status;
-	t_env		*env;
-	char		*input;
+	struct termios	term;
+	static int		exit_status;
+	t_env			*env;
 
 	(void)ac;
 	(void)av;
 	env = NULL;
 	exit_status = 0;
-	init_minishell(envp, &env);
+	tcgetattr(STDIN_FILENO, &term);
+	set_terminal_attributes();
 	set_signal_handler(SIGNAL_HANDLER);
-	while (1)
-	{
-		input = readline("kashell$> ");
-		if (!input)
-		{
-			exit_shell();
-			break ;
-		}
-		if (!*input)
-			continue ;
-		else
-			add_history(input);
-		process_input(input, env, &exit_status);
-	}
-	return (clear_env(env), 0);
+	init_minishell(envp, &env);
+	shell_loop(env, &exit_status);
+	clear_env(env);
+	tcsetattr(STDIN_FILENO, TCSANOW, &term);
+	return (EXIT_SUCCESS);
 }

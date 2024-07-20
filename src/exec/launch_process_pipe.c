@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 08:49:20 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/19 22:04:21 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/20 08:45:52 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,19 +14,21 @@
 
 static int	wait_for_child_task(t_info *info)
 {
-	int	status;
-	int	i;
+	int		status;
+	bool	printed_signal_msg;
 
-	i = 0;
+	printed_signal_msg = false;
 	set_signal_handler(IGN);
 	while (wait(&status) != -1)
 	{
 		if (WIFSIGNALED(status))
 		{
-			if (WTERMSIG(status) == SIGINT && i == 0)
+			if (WTERMSIG(status) == SIGINT && !printed_signal_msg)
+			{
 				ft_putstr_fd("^C\n", STDERR_FILENO);
+				printed_signal_msg = true;
+			}
 			info->exit_status = 128 + WTERMSIG(status);
-			i++;
 		}
 		else if (WIFEXITED(status))
 			info->exit_status = WEXITSTATUS(status);
