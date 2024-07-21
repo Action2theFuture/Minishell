@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 11:59:35 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/12 10:03:03 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/21 10:09:25 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	ft_pwd(const char *cmd, const char **args, t_env *list)
 	(void)list;
 	if (args[1])
 	{
-		printf("kashell: pwd: %s: invalid option\n", args[1]);
+		printf("minishell: pwd: %s: invalid option\n", args[1]);
 		printf("pwd: usage: pwd [-LP]\n");
 		return (FAILURE);
 	}
