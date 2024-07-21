@@ -6,7 +6,7 @@
 #    By: junsan <junsan@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    CreateCd: 2024/05/11 19:03:01 by junsan            #+#    #+#             #
-#    Updated: 2024/07/20 09:21:53 by junsan           ###   ########.fr        #
+#    Updated: 2024/07/21 10:11:26 by junsan           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -105,7 +105,7 @@ $(NAME) : $(LIBFT) $(OBJS)
 	./$(SPINNER_SCRIPT) $$COMPILER_PID; \
 	wait $$COMPILER_PID
 	@echo "$(COLOR_GREEN)Compilation completed successfully! 🎉$(COLOR_RESET)"
-	@echo "$(COLOR_CYAN)Welcome to Kashell$(COLOR_RESET)"
+	@echo "$(COLOR_CYAN)Welcome to minishell$(COLOR_RESET)"
 	@echo "$(COLOR_GREEN)Program Name : $(NAME)$(COLOR_RESET)"
 
 OBJ_FILES_SPINNER_PID=

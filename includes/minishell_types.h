@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 13:25:12 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/19 17:41:14 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/21 10:13:58 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@
 # define DELIMS "|&<>"
 # define SHELL_METACHARS "\"\'()&|<>"
 # define ARR_SEP ';'
-# define ASCII_ART_PATH "assets/ascii_art_doh"
+# define ASCII_ART_PATH "assets/ascii_art_colossal"
 # define HEREDOC_TMP "heredoc_tmp"
 # define BASE_PATH '.'
 

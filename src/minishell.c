@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/11 19:14:21 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/20 09:20:10 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/21 10:10:40 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ static char	*read_user_input(void)
 {
 	char	*input;
 
-	input = readline("kashell$> ");
+	input = readline("minishell$> ");
 	if (!input)
 	{
 		exit_shell();
@@ -51,7 +51,7 @@ static void	shell_loop(t_env *env, int *exit_status)
 {
 	char	*input;
 
-	while (1)
+	while ("minishell")
 	{
 		input = read_user_input();
 		if (!input)

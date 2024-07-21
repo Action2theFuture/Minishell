@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 18:24:08 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/20 09:20:00 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/21 10:10:20 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static void	show_ascii(void)
 	int		fd;
 
 	fd = open(ASCII_ART_PATH, O_RDONLY);
-	while ("kashell")
+	while ("minishell")
 	{
 		line = get_next_line(fd);
 		if (!line)
