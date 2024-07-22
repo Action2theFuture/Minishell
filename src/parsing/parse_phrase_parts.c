@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 22:46:47 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/19 10:07:58 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/22 09:58:09 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@ bool	parse_redirection_part(\
 	if (*token && (*token)->type == REDIRECTION)
 	{
 		parse_redirection(token, &left);
+		left->parent = *phrase_node;
 		(*phrase_node)->left = left;
 		if (!handle_redir_in_parse_redir_part(token, phrase_node, &left))
 			return (false);
@@ -88,6 +89,7 @@ bool	parse_redirection_part(\
 bool	parse_cmd_part(t_token **token, t_ast **phrase_node, t_ast **node)
 {
 	t_ast	*left;
+	char	*arg_tokens;
 
 	left = NULL;
 	if (!parse_cmd(token, node))
@@ -95,7 +97,18 @@ bool	parse_cmd_part(t_token **token, t_ast **phrase_node, t_ast **node)
 	if (*token && (*token)->type == REDIRECTION)
 	{
 		parse_redirection(token, &left);
+		left->parent = *phrase_node;
 		(*phrase_node)->left = left;
+	}
+	while (*token && (*token)->type == CMD)
+	{
+		arg_tokens = arg_parsing(token);
+		if ((*node)->right == NULL)
+			(*node)->right = new_node(arg_tokens, ARGS);
+		else
+			(*node)->right->data = append_with_semicolon(\
+										(*node)->right->data, (*token)->data);
+		free(arg_tokens);
 	}
 	(*phrase_node)->right = *node;
 	*node = *phrase_node;

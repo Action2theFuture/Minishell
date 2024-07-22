@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/23 17:08:10 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/20 08:28:50 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/22 09:10:35 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static void	execute_cmd(\
 	if (built_in != NONE)
 		exit(arr_built_in[built_in](\
 			(const char *)cmd, (const char **)args, info->env));
-	else if (ft_strlen(args[0]) > 2 && args[0][0] == '.' && args[0][1] == '/'
+	if (ft_strlen(args[0]) > 2 && args[0][0] == '.' && args[0][1] == '/'
 		&& execve(cmd, args, env) == -1)
 		exit(125 + execve_log_error(cmd, errno));
 	else if (info->path)
