@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/11 19:14:21 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/21 10:10:40 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/22 11:02:25 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,7 @@
 
 static void	exit_shell(void)
 {
-	printf("\033[1A");
-	printf("\033[10C");
-	printf("exit\n");
+	printf("\033[1A\033[12Cexit\n");
 }
 
 static void	set_terminal_attributes(void)
