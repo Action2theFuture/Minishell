@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 13:09:24 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/12 20:34:51 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/22 09:57:37 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,9 @@ t_ast					*new_node(const char *data, t_type type);
 t_ast					*attach_to_tree(t_ast *root, t_ast *node, int side);
 void					remove_outer_parentheses(char **str, t_ast **root);
 
-// parsing_utils_c.
+// parsing_utils_2.c
 void					add_parent(t_ast *node, t_ast *left, t_ast *right);
+char					*append_with_semicolon(char *original, char *to_append);
 
 // parsing.c
 bool					parsing_tree(t_token_list **tokens, t_ast **root);

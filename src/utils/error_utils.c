@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/23 19:45:39 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/11 08:46:56 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/22 08:40:40 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	fd_log_error(char *cmd, char *arg, char *error)
 {
-	ft_putstr_fd("kashell$> ", STDERR_FILENO);
+	ft_putstr_fd("minishell$> ", STDERR_FILENO);
 	if (cmd != NULL)
 	{
 		ft_putstr_fd(cmd, STDERR_FILENO);
@@ -33,7 +33,7 @@ int	fd_log_error(char *cmd, char *arg, char *error)
 
 int	execve_log_error(char *cmd, int error)
 {
-	ft_putstr_fd("kashell$> ", STDERR_FILENO);
+	ft_putstr_fd("minishell$> ", STDERR_FILENO);
 	ft_putstr_fd(cmd, STDERR_FILENO);
 	ft_putstr_fd(": ", STDERR_FILENO);
 	if (error == EACCES)
@@ -57,13 +57,13 @@ void	parse_log_error(int err, int *exit_status)
 	if (err == UNCLOSED_QUOTE)
 	{
 		*exit_status = 258;
-		ft_putstr_fd("kashell$> ", STDERR_FILENO);
+		ft_putstr_fd("minishell$> ", STDERR_FILENO);
 		ft_putstr_fd("Unclosed quote\n", STDERR_FILENO);
 	}
 	else if (err == TOKEN_ERROR)
 	{
 		*exit_status = 258;
-		ft_putstr_fd("kashell$> ", STDERR_FILENO);
+		ft_putstr_fd("minishell$> ", STDERR_FILENO);
 		ft_putstr_fd("error near unexpected token\n", STDERR_FILENO);
 	}
 	else if (err == PARSE_ERROR)
