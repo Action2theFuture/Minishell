@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/23 18:04:20 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/18 15:32:43 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/22 11:19:56 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,8 @@ void	clear_env(t_env *head)
 	{
 		cur = head->next;
 		free(head->name);
-		free(head->content);
+		if (head->content)
+			free(head->content);
 		free(head);
 		head = cur;
 	}
