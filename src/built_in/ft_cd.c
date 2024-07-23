@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/02 02:39:36 by rabouzia          #+#    #+#             */
-/*   Updated: 2024/07/12 23:01:48 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/23 21:53:15 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static int	count_args(const char **str)
 
 static void	print_too_many_arguments_error(void)
 {
-	ft_putstr_fd("kashell: ", 2);
+	ft_putstr_fd("minishell: ", 2);
 	ft_putstr_fd("cd: ", 2);
 	ft_putstr_fd(": too many arguments\n", 2);
 }
