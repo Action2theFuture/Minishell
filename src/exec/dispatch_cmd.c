@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 17:58:55 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/22 08:42:54 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/23 20:28:09 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,7 @@ static char	**prepend_cmd_and_add_spaces(char **cmd, char **args, int cmd_cnt)
 		new_args[i] = ft_strdup(cmd[i]);
 	i = -1;
 	while (++i < arg_cnt)
-	{
-		remove_empty_quotes(args[i]);
 		new_args[cmd_cnt + i] = ft_strdup(args[i]);
-	}
 	return (new_args[cmd_cnt + arg_cnt] = NULL, new_args);
 }
 
