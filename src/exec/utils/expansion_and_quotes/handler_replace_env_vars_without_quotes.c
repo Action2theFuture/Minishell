@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/11 13:30:34 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/18 15:16:46 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/24 23:21:00 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,8 @@ char	*handler_dollar_sign_wihout_quotes(\
 	h_info.new_str[0] = '\0';
 	while (input[h_info.i])
 	{
-		if (input[h_info.i] == '$' && input[h_info.i + 1])
+		if (!h_info.in_single_quotes && \
+			input[h_info.i] == '$' && input[h_info.i + 1])
 		{
 			if (input[++h_info.i] == '?')
 				handle_expansion_var(&h_info);
