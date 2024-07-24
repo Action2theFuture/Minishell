@@ -6,64 +6,66 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/13 19:44:46 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/17 11:14:32 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/24 23:06:59 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static bool	is_in_quote(char c, bool *in_single_quote, bool *in_double_quote)
+static void	update_quote_state(\
+			char c, bool *in_single_quote, bool *in_double_quote)
 {
 	if (c == '\'' && !(*in_double_quote))
-	{
 		*in_single_quote = !(*in_single_quote);
-		return (true);
-	}
 	else if (c == '"' && !(*in_single_quote))
-	{
 		*in_double_quote = !(*in_double_quote);
-		return (true);
-	}
-	return (false);
 }
 
-static int	check_last_quote(const char *str)
+static bool	are_quotes_balanced(const char *str, int *i)
 {
 	bool	in_single_quote;
 	bool	in_double_quote;
-	int		i;
-	int		last_quote_index;
+	int		first_char;
+	int		last_char;
 
 	in_single_quote = false;
 	in_double_quote = false;
-	last_quote_index = -1;
-	i = -1;
-	while (str[i])
+	first_char = str[0];
+	while (str[++(*i)])
 	{
-		if (is_in_quote(str[i], &in_single_quote, &in_double_quote))
-			last_quote_index = i;
-		if ((!in_single_quote && !in_double_quote) && \
-			ft_strchr(SHELL_METACHARS, str[i]))
+		update_quote_state(str[*i], &in_single_quote, &in_double_quote);
+		if (((!in_single_quote && !in_double_quote) && \
+			(ft_strchr(SHELL_OPERATORS, str[*i]) || ft_isspace(str[*i]))))
+		{
+			if (first_char == str[*i - 1])
+				return (*i -= 1, true);
 			break ;
-		i++;
+		}
 	}
-	if (in_double_quote || in_single_quote)
-		return (last_quote_index);
-	if (last_quote_index == -1)
-		return (0);
-	if (str[last_quote_index] != '\0')
-		return (last_quote_index + 1);
-	return (last_quote_index);
+	last_char = str[ft_strlen(str) - 1];
+	if (first_char == last_char)
+		return (*i = ft_strlen(str) - 1, true);
+	return (!in_single_quote && !in_double_quote);
 }
 
-void	handle_quotes(\
+int	handle_quotes(\
 	const char **input, const char **start, t_token **list)
 {
-	int	cmd;
+	int	i;
 
+	i = -1;
 	*start = *input;
-	cmd = check_last_quote(*input);
-	add_token(list, *input, cmd);
-	*input += cmd;
-	*start = *input + 1;
+	if (!are_quotes_balanced(*input, &i))
+		return (UNCLOSED_QUOTE);
+	if (i == -1)
+		*start = *input + 1;
+	else
+	{
+		if ((*input)[i] != '\0')
+			i++;
+		add_token(list, *input, i);
+		*input += i;
+		*start = *input + 1;
+	}
+	return (-1);
 }
