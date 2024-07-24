@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/25 22:45:45 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/22 09:20:40 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/24 23:06:25 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,16 @@ static void	parse_and_execute(\
 // print_token(*tokens);
 static void	tokenize_and_validate(char *input, t_token **tokens, int *err)
 {
-	tokenize(input, tokens);
+	int	err_in_tokenizing;
+
+	err_in_tokenizing = tokenize(input, tokens);
+	if (err_in_tokenizing != -1)
+	{
+		*err = err_in_tokenizing;
+		free_token(*tokens);
+		*tokens = NULL;
+		return ;
+	}
 	*err = valid_token(*tokens);
 	if (*err != -1)
 	{
