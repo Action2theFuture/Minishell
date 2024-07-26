@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/15 23:01:48 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/26 22:12:42 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/26 22:28:15 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ void	*init_pwd_oldpwd_under_score(t_env *head)
 	if (!head->old_pwd)
 		return (perror("malloc error"), \
 		free(head), free(head->pwd), free(cur_dir), NULL);
-	head->last_arg = initialize_env_var("_", INIT_UNDER_SCORE);
+	head->last_arg = initialize_env_var("_", ft_strdup(INIT_UNDER_SCORE));
 	if (!head->last_arg)
 		return (perror("malloc error"), \
 		free(head), free(head->pwd), free(head->old_pwd), free(cur_dir), NULL);
