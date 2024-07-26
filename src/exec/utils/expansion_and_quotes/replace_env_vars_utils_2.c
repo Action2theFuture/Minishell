@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/26 21:57:01 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/26 22:08:46 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/26 22:40:26 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,11 @@ void	handle_expansion_var_without_quotes(t_handler_info *h_info, char c)
 	}
 	else if (c == '_')
 	{
-		env_value = ft_strdup(h_info->info->env->last_arg->content);
-		if (!env_value)
+		env_value = NULL;
+		if (!h_info->info->env->last_arg->content)
 			env_value = ft_strdup(INIT_UNDER_SCORE);
+		else
+			env_value = ft_strdup(h_info->info->env->last_arg->content);
 		ft_strlcat(h_info->new_str, env_value, MAX_ARGS);
 		h_info->new_str_len += ft_strlen(env_value);
 		free(env_value);

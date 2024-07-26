@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 20:03:41 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/26 22:04:13 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/26 22:58:52 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,7 @@ static void	handle_expansion_var(t_env_var *env_var, char c)
 	}
 	else if (c == '_')
 	{
-		var_value = env_var->info->env->last_arg->content;
-		if (!var_value)
-			var_value = ft_strdup(INIT_UNDER_SCORE);
+		var_value = ft_strdup(env_var->info->env->last_arg->content);
 		copy_var_value(var_value, env_var->res, &(env_var->j));
 	}
 }
