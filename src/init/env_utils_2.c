@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/15 23:01:48 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/26 22:28:15 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/26 22:51:29 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ static t_env	*initialize_env_var(const char *name, const char *content)
 	new_env_var->name = ft_strdup(name);
 	new_env_var->content = NULL;
 	if (content)
-		new_env_var->content = (char *)content;
+		new_env_var->content = ft_strdup((char *)content);
 	new_env_var->next = NULL;
 	return (new_env_var);
 }
@@ -98,9 +98,10 @@ void	*init_pwd_oldpwd_under_score(t_env *head)
 	if (!head->old_pwd)
 		return (perror("malloc error"), \
 		free(head), free(head->pwd), free(cur_dir), NULL);
-	head->last_arg = initialize_env_var("_", ft_strdup(INIT_UNDER_SCORE));
+	head->last_arg = initialize_env_var("_", INIT_UNDER_SCORE);
 	if (!head->last_arg)
 		return (perror("malloc error"), \
 		free(head), free(head->pwd), free(head->old_pwd), free(cur_dir), NULL);
+	free(cur_dir);
 	return (NULL);
 }

@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/23 19:03:26 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/23 20:21:57 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/26 23:02:47 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static char	*expand_and_strip_quotes_in_str(const char *str, t_info *info)
 	t_quote_info	quote_info;
 	char			*res;
 
-	res = (char *)malloc(sizeof(char) * MAX_ARGS);
+	res = ft_calloc(sizeof(char), MAX_ARGS);
 	if (!res)
 		return (perror("malloc error"), NULL);
 	if (find_unquoted_dollar(str))
