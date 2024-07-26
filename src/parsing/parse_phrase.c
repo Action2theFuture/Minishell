@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/13 19:24:59 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/22 09:26:05 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/26 13:20:28 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ bool	parse_phrase(t_token **token, t_ast **node)
 	subshell_node = NULL;
 	if (*token && (*token)->type == SUBSHELL)
 		parse_subshell(token, &subshell_node);
+	if (subshell_node)
+		*node = subshell_node;
 	if (*token && (*token)->type == REDIRECTION)
 	{
 		if (!parse_phrase_part(\
@@ -29,11 +31,6 @@ bool	parse_phrase(t_token **token, t_ast **node)
 	{
 		if (!parse_phrase_part(token, node, parse_cmd_part))
 			return (false);
-	}
-	if (subshell_node)
-	{
-		attach_to_tree(subshell_node, *node, LEFT);
-		*node = subshell_node;
 	}
 	return (true);
 }
