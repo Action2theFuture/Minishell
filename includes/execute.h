@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 13:12:49 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/20 09:11:00 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/26 10:20:13 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ void					replace_env_vars(\
 // replace_env_vars_utils.c
 void					pass_double_quotes(t_env_var *env_var);
 void					extract_var_name(\
-		const char *str, size_t *i, char *var_name, int brace);
+		const char *str, size_t *i, char *var_name);
 char					*process_replace_env_vars(char *arg, t_info *info);
 char					*process_replace_expansion_var(t_info *info);
 

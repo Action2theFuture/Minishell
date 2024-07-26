@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 10:19:00 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/15 15:51:57 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/26 09:27:32 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ bool	change_var_if_exist(const char *name, const char *content, t_env *lst)
 		if (ft_strncmp(name, lst->name, ft_strlen(name)) == 0)
 		{
 			free((char *)name);
-			if (lst->content)
+			if (lst->content && content != NULL)
 				free(lst->content);
 			if (content)
 				lst->content = (char *)content;
