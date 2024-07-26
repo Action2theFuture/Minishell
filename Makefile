@@ -6,7 +6,7 @@
 #    By: junsan <junsan@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    CreateCd: 2024/05/11 19:03:01 by junsan            #+#    #+#             #
-#    Updated: 2024/07/24 23:06:39 by junsan           ###   ########.fr        #
+#    Updated: 2024/07/26 09:47:34 by junsan           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -52,7 +52,7 @@ PARSING	= parsing.c arg_parse.c parse_subshell.c									\
 		/utils/validation/valid_token.c /utils/validation/valid_token_utils.c		\
 		/utils/validation/valid_token_err.c /utils/validation/valid_token_err_2.c
 UTILS	= string_utils.c string_utils_2.c quotes_str.c error_utils.c 				\
-		subshell_and_quote_str.c
+		subshell_and_quote_str.c normalize_spaces.c
 SIGNAL	= handler_signal.c
 EXECUTE = execute.c redir.c get_file_list.c execute_process.c dispatch_cmd.c		\
 		launch_process_cmd.c launch_process_pipe.c execution_pipe.c					\
@@ -112,7 +112,8 @@ OBJ_FILES_SPINNER_PID=
 
 $(OBJ_DIR)/%.o: %.c
 	@mkdir -p $(@D)
-	@$(CC) $(CFLAGS) $(IFLAGS) -c $< -o $@ > /dev/null 2>&1
+	#@$(CC) $(CFLAGS) $(IFLAGS) -c $< -o $@ > /dev/null 2>&1
+	@$(CC) $(CFLAGS) $(IFLAGS) -c $< -o $@
 
 $(LIBFT): 
 	@echo "$(COLOR_YELLOW)Compliling $(NAME)...$(COLOR_RESET)"

@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 16:53:48 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/18 15:15:36 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/26 10:19:51 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@ char	*process_replace_env_vars(char *arg, t_info *info)
 {
 	t_env	*env;
 	char	*new_arg;
+	char	*trim_str;
+	char	*trim_space_in_each_str;
 
 	env = info->env;
 	new_arg = NULL;
@@ -28,6 +30,13 @@ char	*process_replace_env_vars(char *arg, t_info *info)
 	}
 	if (new_arg == NULL)
 		new_arg = "";
+	else
+	{
+		trim_str = ft_strtrim(new_arg, " \t\n");
+		trim_space_in_each_str = normalize_spaces(trim_str);
+		free(trim_str);
+		return (trim_space_in_each_str);
+	}
 	return (ft_strdup(new_arg));
 }
 
@@ -46,24 +55,14 @@ char	*process_replace_expansion_var(t_info *info)
 }
 
 void	extract_var_name(\
-			const char *str, size_t *i, char *var_name, int brace)
+			const char *str, size_t *i, char *var_name)
 {
 	size_t	var_start;
 
 	var_start = *i;
-	if (brace)
-	{
-		while (str[*i] != '}' && str[*i] != '\0')
-			(*i)++;
-	}
-	else
-	{
-		while (ft_isalnum(str[*i]) || str[*i] == '_')
-			(*i)++;
-	}
-	ft_strlcpy(var_name, str + var_start, *i - var_start + 1);
-	if (brace && str[*i] == '}')
+	while (ft_isalnum(str[*i]) || str[*i] == '_')
 		(*i)++;
+	ft_strlcpy(var_name, str + var_start, *i - var_start + 1);
 }
 
 void	pass_double_quotes(t_env_var *env_var)
