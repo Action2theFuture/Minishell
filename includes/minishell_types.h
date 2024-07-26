@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 13:25:12 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/26 10:18:33 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/26 21:41:45 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@
 # define ASCII_ART_PATH "assets/ascii_art_colossal"
 # define HEREDOC_TMP "heredoc_tmp"
 # define BASE_PATH '.'
+# define INIT_UNDER_SCORE "env"
 
 typedef enum signal_type
 {
@@ -128,6 +129,7 @@ typedef struct s_env
 	struct s_env		*pwd;
 	struct s_env		*old_pwd;
 	struct s_env		*next;
+	struct s_env		*last_arg;
 }						t_env;
 
 typedef struct s_quote_info

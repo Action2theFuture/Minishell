@@ -6,7 +6,7 @@
 #    By: junsan <junsan@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    CreateCd: 2024/05/11 19:03:01 by junsan            #+#    #+#             #
-#    Updated: 2024/07/26 19:27:50 by junsan           ###   ########.fr        #
+#    Updated: 2024/07/26 21:58:26 by junsan           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -65,7 +65,9 @@ EXECUTE = execute.c redir.c get_file_list.c execute_process.c dispatch_cmd.c		\
 		/utils/expansion_and_quotes/var_expansion_with_args.c						\
 		/utils/expansion_and_quotes/replace_env_vars.c								\
 		/utils/expansion_and_quotes/replace_env_vars_utils.c						\
+		/utils/expansion_and_quotes/replace_env_vars_utils_2.c						\
 		/utils/expansion_and_quotes/handler_replace_env_vars.c						\
+		/utils/expansion_and_quotes/handler_under_score.c							\
 		/utils/expansion_and_quotes/process_expand_strip_quotes.c					\
 		/utils/expansion_and_quotes/handler_replace_env_vars_without_quotes.c		\
 		/utils/expansion_and_quotes/init_utils_for_expansion.c						\
@@ -101,9 +103,10 @@ vpath %.c ./src/
 all: $(NAME)
 
 $(NAME) : $(LIBFT) $(OBJS)
-	@$(CC) $(CFLAGS) -o $@ $(OBJS) $(LIBFT) $(LD_FLAGS) > /dev/null 2>&1 & COMPILER_PID=$$!; \
-	./$(SPINNER_SCRIPT) $$COMPILER_PID; \
-	wait $$COMPILER_PID
+	#@$(CC) $(CFLAGS) -o $@ $(OBJS) $(LIBFT) $(LD_FLAGS) > /dev/null 2>&1 & COMPILER_PID=$$!; \
+	#./$(SPINNER_SCRIPT) $$COMPILER_PID; \
+	#wait $$COMPILER_PID
+	@$(CC) $(CFLAGS) -o $@ $(OBJS) $(LIBFT) $(LD_FLAGS)
 	@echo "$(COLOR_GREEN)Compilation completed successfully! 🎉$(COLOR_RESET)"
 	@echo "$(COLOR_CYAN)Welcome to minishell$(COLOR_RESET)"
 	@echo "$(COLOR_GREEN)Program Name : $(NAME)$(COLOR_RESET)"
@@ -112,7 +115,8 @@ OBJ_FILES_SPINNER_PID=
 
 $(OBJ_DIR)/%.o: %.c
 	@mkdir -p $(@D)
-	@$(CC) $(CFLAGS) $(IFLAGS) -c $< -o $@ > /dev/null 2>&1
+	#@$(CC) $(CFLAGS) $(IFLAGS) -c $< -o $@ > /dev/null 2>&1
+	@$(CC) $(CFLAGS) $(IFLAGS) -c $< -o $@
 
 $(LIBFT): 
 	@echo "$(COLOR_YELLOW)Compliling $(NAME)...$(COLOR_RESET)"

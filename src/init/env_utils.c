@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/23 18:04:20 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/22 11:19:56 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/26 20:52:02 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	env_split(const char *str, char **name, char **content)
 	}
 }
 
-static void	clear_pwd_oldpwd(t_env *head)
+static void	clear_pwd_oldpwd_under_score(t_env *head)
 {
 	if (head->pwd)
 	{
@@ -54,6 +54,14 @@ static void	clear_pwd_oldpwd(t_env *head)
 			free(head->old_pwd->content);
 		free(head->old_pwd);
 	}
+	if (head->last_arg)
+	{
+		if (head->last_arg->name)
+			free(head->last_arg->name);
+		if (head->last_arg->content)
+			free(head->last_arg->content);
+		free(head->last_arg);
+	}
 }
 
 void	clear_env(t_env *head)
@@ -62,7 +70,7 @@ void	clear_env(t_env *head)
 
 	if (head == NULL)
 		return ;
-	clear_pwd_oldpwd(head);
+	clear_pwd_oldpwd_under_score(head);
 	while (head)
 	{
 		cur = head->next;

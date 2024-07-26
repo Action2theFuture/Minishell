@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 17:58:55 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/23 20:28:09 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/26 20:54:46 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,7 @@ static char	**prepare_cmd(\
 	expand_wildcard(&chunk);
 	expand_and_strip_quotes_in_args(chunk, info);
 	determine_and_set_path(chunk[0], info);
+	fetch_last_arg(chunk, info);
 	return (chunk);
 }
 

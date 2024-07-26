@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/15 23:01:48 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/25 22:08:07 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/26 22:12:42 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static void	insert_env_node(t_env **head, t_env *new_node)
 
 	if (*head == NULL)
 	{
-		init_pwd_oldpwd(new_node);
+		init_pwd_oldpwd_under_score(new_node);
 		*head = new_node;
 	}
 	else
@@ -67,4 +67,40 @@ void	add_env_by_name(t_env *head, const char *name, const char *content)
 			cur = cur->next;
 		cur->next = new_node;
 	}
+}
+
+static t_env	*initialize_env_var(const char *name, const char *content)
+{
+	t_env	*new_env_var;
+
+	new_env_var = (t_env *)malloc(sizeof(t_env));
+	if (!new_env_var)
+		return (perror("malloc error"), NULL);
+	new_env_var->name = ft_strdup(name);
+	new_env_var->content = NULL;
+	if (content)
+		new_env_var->content = (char *)content;
+	new_env_var->next = NULL;
+	return (new_env_var);
+}
+
+void	*init_pwd_oldpwd_under_score(t_env *head)
+{
+	char	*cur_dir;
+
+	cur_dir = getcwd(NULL, 0);
+	if (!cur_dir)
+		return (perror("getcwd error"), NULL);
+	head->pwd = initialize_env_var("PWD", cur_dir);
+	if (!head->pwd)
+		return (perror("malloc error"), free(head), free(cur_dir), NULL);
+	head->old_pwd = initialize_env_var("OLDPWD", NULL);
+	if (!head->old_pwd)
+		return (perror("malloc error"), \
+		free(head), free(head->pwd), free(cur_dir), NULL);
+	head->last_arg = initialize_env_var("_", INIT_UNDER_SCORE);
+	if (!head->last_arg)
+		return (perror("malloc error"), \
+		free(head), free(head->pwd), free(head->old_pwd), free(cur_dir), NULL);
+	return (NULL);
 }
