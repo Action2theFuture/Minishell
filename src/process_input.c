@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/25 22:45:45 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/24 23:06:25 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/26 13:20:42 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,9 @@ static void	parse_and_execute(\
 		execute(root, env, exit_status);
 	else
 		*err = PARSE_ERROR;
-	free_tree(root);
 	free(token_list);
 	free_token(tokens);
+	free_tree(root);
 }
 
 // print_token(*tokens);
