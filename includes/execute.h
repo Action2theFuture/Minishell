@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 13:12:49 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/26 10:20:13 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/26 22:08:31 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,16 @@ void					extract_var_name(\
 char					*process_replace_env_vars(char *arg, t_info *info);
 char					*process_replace_expansion_var(t_info *info);
 
+// replace_env_vars_utils_2.c
+void					handle_expansion_var_without_quotes(\
+					t_handler_info *h_info, char c);
+void					handle_normal_var_without_quotes(\
+					t_handler_info *h_info);
+void					extract_var_name_from_input(\
+					t_handler_info *h_info, const char *input);
+bool					handle_quotes_from_input(\
+					t_handler_info *h_info, const char *input);
+
 // init_utils_for_expansion.c
 void					init_env_var(\
 	const char *str, char *res, t_env_var *env_var, t_info *info);
@@ -80,6 +90,9 @@ void					handle_dollar_sign(t_env_var *env_var);
 // handle_replace_env_vars_without_quotes.c
 char					*handler_dollar_sign_wihout_quotes(\
 		char *new_str, char *input, t_info *info);
+
+// handle_under_score.c
+void					fetch_last_arg(char **chunk, t_info *info);
 
 // get_path_type.c
 t_path_type				get_path_type(const char *path, t_info *info);

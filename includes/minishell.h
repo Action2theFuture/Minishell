@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/11 19:22:19 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/20 09:12:53 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/26 21:41:58 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,6 @@ void					init_minishell(char **envp, t_env **env);
 t_env					*new_env(const char *name, const char *content);
 t_env					*env_init(char **envp);
 char					*valid_required_env_vars(void);
-void					*init_pwd_oldpwd(t_env *head);
 
 // env_utils.c
 void					env_split(const char *str, char **name, char **content);
@@ -67,6 +66,7 @@ bool					is_check_key(const char *name, t_env *env);
 void					add_env(t_env **head, const char *str);
 void					add_env_by_name(\
 		t_env *head, const char *name, const char *content);
+void					*init_pwd_oldpwd_under_score(t_env *head);
 
 // increment_shlvl.c
 int						increment_shlvl(t_env *env);

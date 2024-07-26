@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 11:37:49 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/25 22:08:27 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/26 21:41:30 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,29 +25,6 @@ t_env	*new_env(const char *name, const char *content)
 		new_node->content = ft_strdup(content);
 	new_node->next = NULL;
 	return (new_node);
-}
-
-void	*init_pwd_oldpwd(t_env *head)
-{
-	char	*cur_dir;
-
-	cur_dir = getcwd(NULL, 0);
-	if (!cur_dir)
-		return (perror("getcwd error"), NULL);
-	head->pwd = (t_env *)malloc(sizeof(t_env));
-	if (!head->pwd)
-		return (perror("malloc error"), free(head), free(cur_dir), NULL);
-	head->old_pwd = (t_env *)malloc(sizeof(t_env));
-	if (!head->old_pwd)
-		return (perror("malloc error"), \
-		free(head), free(head->pwd), free(cur_dir), NULL);
-	head->pwd->name = ft_strdup("PWD");
-	head->pwd->content = cur_dir;
-	head->pwd->next = NULL;
-	head->old_pwd->name = ft_strdup("OLDPWD");
-	head->old_pwd->content = NULL;
-	head->old_pwd->next = NULL;
-	return (NULL);
 }
 
 static void	add_env_minimum_required_env(t_env **head)
@@ -72,7 +49,7 @@ static void	add_env_minimum_required_env(t_env **head)
 	if (!is_check_key("SHLVL", cur))
 		add_env_by_name(*head, "SHLVL", "1");
 	if (!is_check_key("_", cur))
-		add_env_by_name(*head, "_", "env");
+		add_env_by_name(*head, "_", INIT_UNDER_SCORE);
 }
 
 static void	initialize_default_env(t_env **head)
@@ -87,10 +64,10 @@ static void	initialize_default_env(t_env **head)
 	}
 	*head = new_env("PWD", cur_dir);
 	free(cur_dir);
-	init_pwd_oldpwd(*head);
+	init_pwd_oldpwd_under_score(*head);
 	add_env_by_name(*head, "OLDPWD", NULL);
 	add_env_by_name(*head, "SHLVL", "1");
-	add_env_by_name(*head, "_", "env");
+	add_env_by_name(*head, "_", INIT_UNDER_SCORE);
 }
 
 t_env	*env_init(char **envp)
