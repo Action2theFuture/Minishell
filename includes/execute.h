@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 13:12:49 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/26 22:08:31 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/27 21:25:46 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,6 @@ void					traverse_tree(t_ast *node, t_info *info);
 void					process_logical_node(t_ast *node, t_info *info);
 void					process_pipe_node(t_ast *pipe_node, t_info *info);
 void					categorize_tree(t_ast *node, t_info *info);
-
-// execute_process.c
-void					process_cmd_node(t_ast *node, t_info *info);
-void					process_io_redirection_node(t_ast *node, t_info *info);
 void					process_phrase_node(t_ast *node, t_info *info);
 
 // info_utils.c
@@ -134,6 +130,7 @@ int						launch_process_cmd(\
 // launch_process_pipe.c
 int						launch_process_pipe(\
 				char *cmd, char **args, t_info *info);
+int						wait_for_child_task(t_info *info);
 
 // execution_pipeline.c
 void					first_pipe(\
@@ -167,4 +164,7 @@ bool					match_pattern(const char *pattern, const char *str);
 void					clear_visited_paths(t_visited_paths *visited);
 // expand_wildcard_utils_2.c
 void					clear_expand_info(t_expand_info *head);
+
+// subshell.c
+int						process_subshell_node(t_ast *node, t_info *info);
 #endif // EXECUTE_H
