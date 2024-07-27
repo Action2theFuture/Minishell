@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 13:25:12 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/26 21:41:45 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/27 15:15:27 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 # define INITIAL_CAPACITY 100
 # define DELIMS "|&<>"
 # define SHELL_METACHARS "\"\'()&|<>"
-# define SHELL_OPERATORS "()%|<>"
+# define SHELL_OPERATORS "()&|<>"
 # define ARR_SEP '`'
 # define ASCII_ART_PATH "assets/ascii_art_colossal"
 # define HEREDOC_TMP "heredoc_tmp"

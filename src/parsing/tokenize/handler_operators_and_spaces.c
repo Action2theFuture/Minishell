@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/13 19:46:03 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/02 11:25:51 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/27 15:55:17 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,11 @@ static void	handle_repeated_operators(\
 		}
 		else
 			add_token(list, *input, 1);
+	}
+	else if (cnt == 3 && ft_strncmp(*input, "<<<", 3) == 0)
+	{
+		add_token(list, *input, 3);
+		*input += 2;
 	}
 	else
 	{
@@ -53,20 +58,25 @@ static void	hanlde_quotes_for_handle_cmd(\
 
 static void	handle_cmd(const char **input, const char **start, t_token **list)
 {
-	bool	in_quotes;
-	char	quote_char;
+	const char	*delims;
+	bool		in_quotes;
+	char		quote_char;
 
 	in_quotes = false;
 	quote_char = '\0';
+	delims = DELIMS;
 	while (**input && (in_quotes || \
-		(!ft_isspace(**input) && **input != '(' && **input != ')')))
+		(!ft_isspace(**input) && !ft_strchr(delims, **input) && \
+		**input != '(' && **input != ')')))
 	{
 		hanlde_quotes_for_handle_cmd(input, &in_quotes, &quote_char);
 		(*input)++;
 	}
 	if (*input > *start)
 		add_token(list, *start, *input - *start);
-	if (**input != '(' || **input != ')')
+	if (**input && ft_strchr(delims, **input))
+		handle_repeated_operators(input, start, list);
+	else if (**input != '(' || **input != ')')
 		*start = *input + 1;
 	else
 		*start = *input;
