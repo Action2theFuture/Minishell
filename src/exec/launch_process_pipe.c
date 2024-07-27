@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 08:49:20 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/20 08:45:52 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/27 16:29:18 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@ static int	wait_for_child_task(t_info *info)
 				ft_putstr_fd("^C\n", STDERR_FILENO);
 				printed_signal_msg = true;
 			}
+			else if (WTERMSIG(status) == SIGPIPE)
+				continue ;
 			info->exit_status = 128 + WTERMSIG(status);
 		}
 		else if (WIFEXITED(status))
