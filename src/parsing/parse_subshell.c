@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/13 19:26:43 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/26 13:08:16 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/27 22:44:02 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ bool	parse_subshell(t_token **token, t_ast **node)
 	char	*data_in_subshell;
 
 	tokens_in_subshell = NULL;
-	if (*token && (*token)->type == SUBSHELL)
+	while (*token && (*token)->type == SUBSHELL)
 	{
 		subshell_node = new_node("(", SUBSHELL);
 		if (!subshell_node)
@@ -98,7 +98,6 @@ bool	parse_subshell(t_token **token, t_ast **node)
 		free(data_in_subshell);
 		free_token(token_head);
 		subshell_node->left = *node;
-		*token = (*token)->next;
 		*node = subshell_node;
 	}
 	return (true);

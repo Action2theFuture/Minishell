@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/25 15:39:22 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/27 15:21:02 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/27 22:20:18 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,8 @@ static int	process_character(\
 	if (**input == '"' || **input == '\'')
 	{
 		err = handle_quotes(input, start, tokens);
+		if (*depth > 0 && **input == ')')
+			handle_close_subshell(input, depth, start, tokens);
 		if (err != -1)
 			return (err);
 	}
