@@ -6,7 +6,7 @@
 #    By: junsan <junsan@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    CreateCd: 2024/05/11 19:03:01 by junsan            #+#    #+#             #
-#    Updated: 2024/07/27 15:59:02 by junsan           ###   ########.fr        #
+#    Updated: 2024/07/27 19:48:46 by junsan           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -54,8 +54,8 @@ PARSING	= parsing.c arg_parse.c parse_subshell.c									\
 UTILS	= string_utils.c string_utils_2.c quotes_str.c error_utils.c 				\
 		subshell_and_quote_str.c normalize_spaces.c
 SIGNAL	= handler_signal.c
-EXECUTE = execute.c redir.c get_file_list.c execute_process.c dispatch_cmd.c		\
-		launch_process_cmd.c launch_process_pipe.c execution_pipe.c					\
+EXECUTE = execute.c redir.c get_file_list.c dispatch_cmd.c launch_process_cmd.c 	\
+		launch_process_pipe.c execution_pipe.c subshell.c							\
 		process_execute.c															\
 		/utils/redir_utils.c /utils/info_utils.c /utils/get_file_list_utils.c		\
 		/utils/stdio_redirector.c /utils/list_to_array.c /utils/args_utils.c 		\
@@ -114,7 +114,8 @@ OBJ_FILES_SPINNER_PID=
 
 $(OBJ_DIR)/%.o: %.c
 	@mkdir -p $(@D)
-	@$(CC) $(CFLAGS) $(IFLAGS) -c $< -o $@ > /dev/null 2>&1
+	#@$(CC) $(CFLAGS) $(IFLAGS) -c $< -o $@ > /dev/null 2>&1
+	@$(CC) $(CFLAGS) $(IFLAGS) -c $< -o $@
 
 $(LIBFT): 
 	@echo "$(COLOR_YELLOW)Compliling $(NAME)...$(COLOR_RESET)"

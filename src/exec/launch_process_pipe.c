@@ -6,13 +6,13 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 08:49:20 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/27 16:29:18 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/27 20:13:43 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	wait_for_child_task(t_info *info)
+int	wait_for_child_task(t_info *info)
 {
 	int		status;
 	bool	printed_signal_msg;

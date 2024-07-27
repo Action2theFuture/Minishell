@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 22:12:12 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/19 22:17:23 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/27 21:39:47 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,22 +14,11 @@
 
 void	categorize_tree(t_ast *node, t_info *info)
 {
-	t_info	subshell_info;
-
 	if (info->in_subshell == true && node->type == PHRASE && \
 		info->status == SUCCESS && (node->left && node->left->type == PHRASE))
 		info->in_subshell = false;
 	if (node->type == PHRASE && info->status == SUCCESS)
 		process_phrase_node(node, info);
-	if (node->type == SUBSHELL && ft_strncmp(node->data, "(", 1) == 0 \
-			&& info->status == SUCCESS)
-	{
-		init_info(&subshell_info, info->env);
-		subshell_info.in_subshell = true;
-		traverse_tree(node->right, &subshell_info);
-		info = &subshell_info;
-		info->in_subshell = false;
-	}
 }
 
 static void	process_pipe_segment(t_ast *pipe_node, t_info *info)
@@ -81,4 +70,29 @@ void	process_logical_node(t_ast *node, t_info *info)
 	if ((ft_strncmp(node->data, "&&", 2) == 0 && status == SUCCESS) || \
 		(ft_strncmp(node->data, "||", 2) == 0 && status > 0))
 		traverse_tree(node->left, info);
+}
+
+// left is redir, right is args
+void	process_phrase_node(t_ast *node, t_info *info)
+{
+	t_ast	*redir_node;
+	t_ast	*cmd_node;
+
+	if (node == NULL)
+		return ;
+	redir_node = node->left;
+	cmd_node = node->right;
+	if (redir_node)
+	{
+		if (redir_node->type == PHRASE && info->status == SUCCESS)
+		{
+			redir_node = redir_node->left;
+			info->in_subshell = false;
+		}
+		info->status = handle_io_redirection(redir_node->left, info);
+		if (redir_node->right && info->status == SUCCESS)
+			info->status = handle_io_redirection(redir_node->right, info);
+	}
+	if (cmd_node && info->status == SUCCESS)
+		info->exit_status = dispatch_cmd(cmd_node, info);
 }
