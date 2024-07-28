@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 18:34:10 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/27 21:44:13 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/28 13:28:41 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,17 +20,18 @@ void	traverse_tree(t_ast *node, t_info *info)
 		return ;
 	if (node->type == LOGICAL)
 		process_logical_node(node, info);
-	if (node->type == PIPE)
+	else if (node->type == PIPE)
 		process_pipe_node(node, info);
-	if (node->type == SUBSHELL && ft_strncmp(node->data, "(", 1) == 0 \
+	else if (node->type == SUBSHELL && ft_strncmp(node->data, "(", 1) == 0 \
 			&& info->status == SUCCESS)
 	{
 		init_info(&subshell_info, info->env);
 		subshell_info.in_subshell = true;
-		info->status = process_subshell_node(node, &subshell_info);
+		info->exit_status = process_subshell_node(node, &subshell_info);
 		info->in_subshell = false;
 	}
-	if (node->type != PIPE && node->type != LOGICAL && node->type != SUBSHELL)
+	else if (node->type != PIPE && node->type != LOGICAL && \
+		node->type != SUBSHELL)
 	{
 		categorize_tree(node, info);
 		if (node->left)

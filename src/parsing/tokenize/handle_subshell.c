@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/13 19:45:20 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/01 17:25:17 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/27 22:27:20 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	handle_close_subshell(\
 	const char **input, int *depth, const char **start, t_token **list)
 {
 	(*depth)--;
-	if (*depth == 0)
+	if (*depth >= 0)
 	{
 		while (ft_isspace(**start))
 			(*start)++;

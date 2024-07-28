@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/13 19:23:45 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/19 13:33:12 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/28 19:35:01 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,12 @@ bool	parse_logical(t_token **token, t_ast **node)
 	t_ast	*left;
 
 	left = NULL;
-	if (!parse_pipe(token, node))
+	if (*token && (*token)->type == SUBSHELL)
+	{
+		if (!parse_subshell(token, node))
+			return (false);
+	}
+	else if (!parse_pipe(token, node))
 		return (false);
 	while (*token && (*token)->type == LOGICAL)
 	{
