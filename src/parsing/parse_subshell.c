@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/13 19:26:43 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/27 22:44:02 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/28 09:51:19 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,28 +77,53 @@ static char	*collect_data_until_subshell(t_token **token)
 				&total_len, &capacity, data_in_subshell, token));
 }
 
-bool	parse_subshell(t_token **token, t_ast **node)
+static t_ast	*parse_single_subshell(t_token **token)
 {
 	t_token	*tokens_in_subshell;
 	t_token	*token_head;
 	t_ast	*subshell_node;
+	t_ast	*logical_node;
 	char	*data_in_subshell;
 
 	tokens_in_subshell = NULL;
+	logical_node = NULL;
+	subshell_node = new_node("(", SUBSHELL);
+	if (!subshell_node)
+		return (NULL);
+	*token = (*token)->next;
+	data_in_subshell = collect_data_until_subshell(token);
+	tokenize(data_in_subshell, &tokens_in_subshell);
+	token_head = tokens_in_subshell;
+	parse_logical(&tokens_in_subshell, &logical_node);
+	free(data_in_subshell);
+	free_token(token_head);
+	subshell_node->left = logical_node;
+	return (subshell_node);
+}
+
+bool	parse_subshell(t_token **token, t_ast **node)
+{
+	t_ast	*subshell_node;
+	t_ast	*cur_node;
+	t_ast	*last_node;
+
+	cur_node = NULL;
+	last_node = NULL;
 	while (*token && (*token)->type == SUBSHELL)
 	{
-		subshell_node = new_node("(", SUBSHELL);
+		subshell_node = parse_single_subshell(token);
 		if (!subshell_node)
 			return (false);
-		*token = (*token)->next;
-		data_in_subshell = collect_data_until_subshell(token);
-		tokenize(data_in_subshell, &tokens_in_subshell);
-		token_head = tokens_in_subshell;
-		parse_logical(&tokens_in_subshell, node);
-		free(data_in_subshell);
-		free_token(token_head);
-		subshell_node->left = *node;
-		*node = subshell_node;
+		if (!cur_node)
+			cur_node = subshell_node;
+		else
+		{
+			last_node = cur_node;
+			while (last_node->left)
+				last_node = last_node->left;
+			last_node->left = subshell_node;
+		}
 	}
+	*node = cur_node;
 	return (true);
 }
