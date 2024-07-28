@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 13:25:12 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/27 15:15:27 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/28 12:40:42 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,12 @@ typedef enum tree_direction
 	LEFT,
 	RIGHT,
 }						t_tree_direction;
+
+typedef enum subshell_type
+{
+	OPEN,
+	CLOSE,
+}	t_subshell_type;
 
 typedef enum type_dir
 {

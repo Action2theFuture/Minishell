@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/26 11:49:26 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/19 13:10:02 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/28 19:13:42 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,9 +54,11 @@ char	*get_type_str(int type)
 
 void	print_token(t_token *head)
 {
+	printf("start----------------------------------\n");
 	if (!head)
 	{
 		printf("empty head\n");
+		printf("end----------------------------------\n");
 		return ;
 	}
 	while (head)
@@ -64,6 +66,7 @@ void	print_token(t_token *head)
 		printf("data : %s, type : %s\n", head->data, get_type_str(head->type));
 		head = head->next;
 	}
+	printf("end----------------------------------\n");
 }
 
 void	print_file_list(t_file_list *file_list)

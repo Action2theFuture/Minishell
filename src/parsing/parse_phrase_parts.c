@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 22:46:47 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/22 09:58:09 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/28 21:44:20 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,11 +75,12 @@ bool	parse_redirection_part(\
 	left = NULL;
 	if (*token && (*token)->type == REDIRECTION)
 	{
-		parse_redirection(token, &left);
+		if (!parse_redirection(token, &left))
+			return (false);
 		left->parent = *phrase_node;
 		(*phrase_node)->left = left;
 		if (!handle_redir_in_parse_redir_part(token, phrase_node, &left))
-			return (false);
+			return (free_tree(left), false);
 		*node = *phrase_node;
 	}
 	return (true);
@@ -103,16 +104,16 @@ bool	parse_cmd_part(t_token **token, t_ast **phrase_node, t_ast **node)
 	while (*token && (*token)->type == CMD)
 	{
 		arg_tokens = arg_parsing(token);
+		if (!arg_tokens)
+			return (false);
 		if ((*node)->right == NULL)
 			(*node)->right = new_node(arg_tokens, ARGS);
 		else
 			(*node)->right->data = append_with_semicolon(\
-										(*node)->right->data, (*token)->data);
+									(*node)->right->data, (*token)->data);
 		free(arg_tokens);
 	}
-	(*phrase_node)->right = *node;
-	*node = *phrase_node;
-	return (true);
+	return ((*phrase_node)->right = *node, *node = *phrase_node, true);
 }
 
 bool	parse_phrase_part(\
@@ -122,8 +123,10 @@ bool	parse_phrase_part(\
 	t_ast	*phrase_node;
 
 	phrase_node = new_node(NULL, PHRASE);
-	phrase_node->parent = *node;
 	if (!phrase_node)
 		return (false);
-	return (parse_func(token, &phrase_node, node));
+	phrase_node->parent = *node;
+	if (!parse_func(token, &phrase_node, node))
+		return (free_tree(phrase_node), NULL);
+	return (true);
 }

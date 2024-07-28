@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 13:09:24 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/22 09:57:37 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/28 11:21:28 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,11 @@ bool					is_file_name(const char *token);
 
 // subshell_utils.c
 char					*remove_nested_subshell(t_token **token);
+
+// subshell_utils_2.c
+void					ensure_capacity(\
+		char **data_in_subshell, size_t *capacity, size_t space_needed);
+char					*collect_data_until_subshell(t_token **token);
 
 // type_redir_functions.c
 bool					is_input_redirection(const char *data);
