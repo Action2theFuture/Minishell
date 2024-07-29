@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/23 19:45:39 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/22 08:40:40 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/29 08:40:00 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,12 @@ void	parse_log_error(int err, int *exit_status)
 		*exit_status = 258;
 		ft_putstr_fd("minishell$> ", STDERR_FILENO);
 		ft_putstr_fd("Unclosed quote\n", STDERR_FILENO);
+	}
+	else if (err == SYNTAX_ERROR)
+	{
+		*exit_status = 2;
+		ft_putstr_fd("minishell$> ", STDERR_FILENO);
+		ft_putstr_fd("syntax error unexpected token\n", STDERR_FILENO);
 	}
 	else if (err == TOKEN_ERROR)
 	{

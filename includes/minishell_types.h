@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 13:25:12 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/28 12:40:42 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/29 08:31:53 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,7 @@ typedef enum error
 	UNCLOSED_QUOTE,
 	TOKEN_ERROR,
 	PARSE_ERROR,
+	SYNTAX_ERROR,
 }						t_error;
 
 typedef enum path_type
