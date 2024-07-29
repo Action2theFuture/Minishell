@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/27 19:38:46 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/29 19:59:20 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/29 21:16:46 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ static void	traverse_tree_in_subshell(t_ast **node, t_info *info)
 */
 static void	process_logical_node_in_subshell(t_ast **node, t_info *info)
 {
-	t_ast	*last_node;
+	//t_ast	*last_node;
 	int		status;
 	
 	traverse_tree_in_subshell(&(*node)->right, info);
@@ -78,14 +78,18 @@ static void	process_logical_node_in_subshell(t_ast **node, t_info *info)
 	{
 		if (status > 0)
 			traverse_tree_in_subshell(&(*node)->left, info);
+		/*
 		else if (status == 0)
 		{
 			last_node = *node;
 			while (last_node && last_node->type != SUBSHELL)
 				last_node = last_node->left;
-			if (last_node->data[0] == ')')
+			printf("last-----------------------\n");
+			print_tree(last_node, 10);
+			if (last_node->data && last_node->data[0] == ')' && last_node->left && \
+				!(ft_strncmp(last_node->left->data, "||", 2) == 0))
 				traverse_tree_in_subshell(&last_node, info);
-		}
+		}*/
 	}
 }
 
