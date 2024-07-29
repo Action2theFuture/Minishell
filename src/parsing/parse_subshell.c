@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/13 19:26:43 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/29 18:30:05 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/29 19:17:34 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,6 @@ static t_ast	*create_subshell_node(t_token **token, char **subshell)
 	return (subshell_node);
 }
 
-// The reason for the code for close is for subshells within subshells 
 static bool	process_subshell_token(t_token **token, t_ast **cur_node)
 {
 	t_ast	*subshell_node;
@@ -78,7 +77,7 @@ static bool	process_subshell_token(t_token **token, t_ast **cur_node)
 	if (!(*cur_node))
 		*cur_node = subshell_node;
 	else
-		attach_to_tree_side(*cur_node, subshell_node, LEFT);
+		attach_to_tree(*cur_node, subshell_node, LEFT);
 	return (true);
 }
 
