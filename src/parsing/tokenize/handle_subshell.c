@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/13 19:45:20 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/29 09:19:04 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/29 11:12:58 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@ int	add_depth_token(const char **input, int *depth, t_token **tokens)
 {
 	if (**input == '(')
 	{
+		if (*(*input + 1) == '(')
+			return (SYNTAX_ERROR);
 		if (*(*input - 1) == '$')
 			return (SYNTAX_ERROR);
 		add_token(tokens, "(", 1);
@@ -23,6 +25,8 @@ int	add_depth_token(const char **input, int *depth, t_token **tokens)
 	}
 	else if (*depth > 0 && **input == ')')
 	{
+		if (*(*input + 1) == ')')
+			return (SYNTAX_ERROR);
 		add_token(tokens, ")", 1);
 		(*depth)--;
 	}

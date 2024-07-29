@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/27 19:38:46 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/29 11:11:29 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/29 11:21:50 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,15 +71,9 @@ static void	process_logical_node_in_subshell(t_ast **node, t_info *info)
 
 	traverse_tree_in_subshell(&(*node)->right, info);
 	status = info->exit_status;
-	if (ft_strlen((*node)->data) == 2 && \
-			ft_strncmp((*node)->data, "&&", 2) == 0 && status == SUCCESS)
+	if ((ft_strncmp((*node)->data, "&&", 2) == 0 && status == SUCCESS) || \
+		(ft_strncmp((*node)->data, "||", 2) == 0 && status > 0))
 		traverse_tree_in_subshell(&(*node)->left, info);
-	else if (ft_strlen((*node)->data) == 2 && \
-			ft_strncmp((*node)->data, "||", 2) == 0)
-	{
-		if (status > 0)
-			traverse_tree_in_subshell(&(*node)->left, info);
-	}
 }
 
 int	process_subshell_node(t_ast *node, t_info *info)
