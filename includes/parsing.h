@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 13:09:24 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/28 11:21:28 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/29 18:26:57 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@ void					remove_outer_parentheses(char **str, t_ast **root);
 // parsing_utils_2.c
 void					add_parent(t_ast *node, t_ast *left, t_ast *right);
 char					*append_with_semicolon(char *original, char *to_append);
+t_ast					*attach_to_tree_side(\
+					t_ast *root, t_ast *node, int side);
 
 // parsing.c
 bool					parsing_tree(t_token_list **tokens, t_ast **root);
@@ -69,7 +71,7 @@ bool					is_file_name(const char *token);
 // subshell_utils.c
 char					*remove_nested_subshell(t_token **token);
 
-// subshell_utils_2.c
+// collect_data_until_subshell.c
 void					ensure_capacity(\
 		char **data_in_subshell, size_t *capacity, size_t space_needed);
 char					*collect_data_until_subshell(t_token **token);

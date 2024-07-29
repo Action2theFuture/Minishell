@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   subshell_utils_2.c                                 :+:      :+:    :+:   */
+/*   collect_data_until_subshell.c                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 11:20:27 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/28 20:45:08 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/29 18:28:04 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,25 +83,26 @@ static char	*append_data_until_subshell(\
 size_t *total_len, size_t *capacity, char *data_in_subshell, t_token **token)
 {
 	t_token	*check_token;
+	int		logical_cnt;
 
 	check_token = NULL;
-	while (*token && (*token)->type != SUBSHELL)
+	logical_cnt = 0;
+	while (*token && (*token)->type != SUBSHELL && logical_cnt < 2)
 	{
 		append_token_data(&data_in_subshell, total_len, capacity, token);
 		if (data_in_subshell == NULL)
 			return (NULL);
 		check_token = *token;
 		*token = (*token)->next;
+		if (*token && (*token)->type == LOGICAL)
+			logical_cnt++;
 	}
 	if (*token && (*token)->data[0] == '(' && \
 		check_token && is_logical_operator(check_token->data))
 	{
 		if (!handle_subshell_cmd_only(\
 				token, &data_in_subshell, total_len, capacity))
-		{
-			if (data_in_subshell == NULL)
-				return (NULL);
-		}
+			return (NULL);
 	}
 	return (data_in_subshell);
 }
