@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 13:11:43 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/24 20:45:32 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/29 09:19:34 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,12 @@ int						handle_quotes(const char **input,
 							const char **start, t_token **list);
 
 // handle_subshell.c
-void					handle_open_subshell(const char **input, int *depth,
+int						handle_open_subshell(const char **input, int *depth,
 							const char **start, t_token **list);
-void					handle_close_subshell(const char **input, int *depth,
+int						handle_close_subshell(const char **input, int *depth,
 							const char **start, t_token **list);
+int						add_depth_token(\
+						const char **input, int *depth, t_token **tokens);
 
 // handle_operators_and_spaces.c
 void					handle_operators_and_spaces(const char **input,

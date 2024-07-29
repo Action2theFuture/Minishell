@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/13 11:22:54 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/19 13:54:28 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/29 11:10:26 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,18 +54,19 @@ static const char	*get_type_str(int type)
 	return (get_type_str_redir(type));
 }
 
-static void	print_all(t_ast *node)
+static void	print_all(t_ast *node, const char *direction)
 {
 	const char	*type_str;
 
 	type_str = get_type_str((int)node->type);
 	if (node->data)
-		printf("data : %s, type : %s\n", node->data, type_str);
+		printf("%s: data : %s, type : %s\n", direction, node->data, type_str);
 	else
-		printf("%s\n", type_str);
+		printf("%s: %s\n", direction, type_str);
 }
 
-static void	print_tree_util(t_ast *node, int space, int depth)
+static void	print_tree_util(\
+			t_ast *node, int space, int depth, const char *direction)
 {
 	int		i;
 
@@ -74,16 +75,16 @@ static void	print_tree_util(t_ast *node, int space, int depth)
 	space += depth;
 	i = depth;
 	if (node->right)
-		print_tree_util(node->right, space, depth);
+		print_tree_util(node->right, space, depth, "Right");
 	printf("\n");
 	while (i < space)
 	{
 		printf("-");
 		i++;
 	}
-	print_all(node);
+	print_all(node, direction);
 	if (node->left)
-		print_tree_util(node->left, space, depth);
+		print_tree_util(node->left, space, depth, "Left");
 }
 
 void	print_tree(t_ast *root, int depth)
@@ -91,6 +92,6 @@ void	print_tree(t_ast *root, int depth)
 	if (!root)
 		return ;
 	printf("start----------------------------------\n");
-	print_tree_util(root, 0, depth);
+	print_tree_util(root, 0, depth, "Root");
 	printf("end----------------------------------\n");
 }
