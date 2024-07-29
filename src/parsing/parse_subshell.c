@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/13 19:26:43 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/29 09:14:43 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/29 18:30:05 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ static t_ast	*create_subshell_node(t_token **token, char **subshell)
 	t_token	*tokens_in_subshell;
 	t_ast	*subshell_node;
 
+	subshell_node = NULL;
 	*subshell = (*token)->data;
 	tokens_in_subshell = collect_and_tokenize_subshell_data(token);
 	if (!tokens_in_subshell)
@@ -60,8 +61,6 @@ static t_ast	*create_subshell_node(t_token **token, char **subshell)
 		subshell_node = parse_single_subshell(tokens_in_subshell, OPEN);
 	else if ((*subshell)[0] == ')')
 		subshell_node = parse_single_subshell(tokens_in_subshell, CLOSE);
-	else
-		subshell_node = NULL;
 	return (subshell_node);
 }
 
@@ -69,11 +68,9 @@ static t_ast	*create_subshell_node(t_token **token, char **subshell)
 static bool	process_subshell_token(t_token **token, t_ast **cur_node)
 {
 	t_ast	*subshell_node;
-	t_ast	*last_node;
 	char	*subshell;
 
 	subshell_node = NULL;
-	last_node = NULL;
 	if (*token && (*token)->type == SUBSHELL)
 		subshell_node = create_subshell_node(token, &subshell);
 	if (!subshell_node)
@@ -81,12 +78,7 @@ static bool	process_subshell_token(t_token **token, t_ast **cur_node)
 	if (!(*cur_node))
 		*cur_node = subshell_node;
 	else
-	{
-		last_node = *cur_node;
-		while (last_node->left)
-			last_node = last_node->left;
-		last_node->left = subshell_node;
-	}
+		attach_to_tree_side(*cur_node, subshell_node, LEFT);
 	return (true);
 }
 

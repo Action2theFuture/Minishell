@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 15:40:23 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/28 11:20:15 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/29 16:46:27 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,4 +45,26 @@ char	*append_with_semicolon(char *original, char *to_append)
 			new_str + original_len + 1, to_append, new_len - original_len - 1);
 	free((char *)original);
 	return (new_str);
+}
+
+t_ast	*attach_to_tree_side(t_ast *root, t_ast *node, int side)
+{
+	t_ast	*current;
+
+	if (!root)
+		return (node);
+	current = root;
+	if (side == LEFT)
+	{
+		while (current->left)
+			current = current->left;
+		current->left = node;
+	}
+	else if (side == RIGHT)
+	{
+		while (current->right)
+			current = current->right;
+		current->right = node;
+	}
+	return (root);
 }

@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/13 19:23:45 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/28 19:35:01 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/29 18:29:19 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ bool	parse_logical(t_token **token, t_ast **node)
 			return (false);
 		*token = (*token)->next;
 		if (!parse_pipe(token, &left))
-			return (false);
+			return (free(logical_node), false);
 		logical_node->left = left;
 		logical_node->right = *node;
 		add_parent(logical_node, logical_node->left, logical_node->right);
