@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 13:12:49 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/27 21:25:46 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/30 23:04:28 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,11 @@
 // execute.c
 void					execute(t_ast *root, t_env *env, int *exit_status);
 void					traverse_tree(t_ast *node, t_info *info);
+void					categorize_tree(t_ast *node, t_info *info);
 
 // process_execute.c
 void					process_logical_node(t_ast *node, t_info *info);
 void					process_pipe_node(t_ast *pipe_node, t_info *info);
-void					categorize_tree(t_ast *node, t_info *info);
 void					process_phrase_node(t_ast *node, t_info *info);
 
 // info_utils.c
@@ -105,6 +105,8 @@ char					*get_bin_path(const char *cmd);
 // stdio_redirector.c
 int						backup_stdio(t_info *info);
 int						restore_stdio(t_info *info);
+int						backup_fds(t_info *info);
+int						restore_fds(t_info *info);
 
 // get_file_list.c
 void					free_file_list(t_file_list *file_list);

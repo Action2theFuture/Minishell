@@ -6,11 +6,37 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 14:08:08 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/19 15:50:31 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/30 23:05:14 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int	backup_fds(t_info *info)
+{
+	info->backup_stdin = dup(STDIN_FILENO);
+	info->backup_stdout = dup(STDOUT_FILENO);
+	if (info->backup_stdin == -1 || info->backup_stdout == -1)
+		return (fd_log_error("Backup fd error", NULL, NULL));
+	return (SUCCESS);
+}
+
+int	restore_fds(t_info *info)
+{
+	if (info->is_re_pipe)
+	{
+		if (dup2(info->backup_stdin, STDIN_FILENO) == -1 || \
+			dup2(info->backup_stdout, STDOUT_FILENO) == -1)
+			return (fd_log_error("Dup Restore fd error", NULL, NULL));
+	}
+	else
+	{
+		if (dup2(info->backup_stdout, STDOUT_FILENO) == -1)
+			return (fd_log_error("Dup Restore stdout_fd error!", NULL, NULL));
+		close(info->stdout_fd);
+	}
+	return (SUCCESS);
+}
 
 int	backup_stdio(t_info *info)
 {
