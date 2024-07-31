@@ -6,39 +6,53 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 22:12:12 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/28 15:19:31 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/30 23:36:41 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	categorize_tree(t_ast *node, t_info *info)
+static void	process_pipe_segment(t_ast *pipe_node, t_info *info);
+
+static void	handle_middle_and_last_pipe_segment(t_ast *pipe_node, t_info *info)
 {
-	if (info->in_subshell == true && node->type == PHRASE && \
-		info->status == SUCCESS && (node->left && node->left->type == PHRASE))
-		info->in_subshell = false;
-	if (node->type == PHRASE && info->status == SUCCESS)
-		process_phrase_node(node, info);
+	info->pipe_loc = MIDDLE;
+	process_phrase_node(pipe_node->left, info);
+	pipe_node = pipe_node->parent;
+	if (info->is_re_pipe)
+	{
+		process_pipe_segment(pipe_node, info);
+		return ;
+	}
+	while (pipe_node->parent && pipe_node->parent->type == PIPE)
+	{
+		process_phrase_node(pipe_node->left, info);
+		pipe_node = pipe_node->parent;
+		if (info->is_re_pipe)
+		{
+			process_pipe_segment(pipe_node, info);
+			return ;
+		}
+	}
+	info->pipe_loc = LAST;
+	info->is_re_pipe = false;
+	process_phrase_node(pipe_node->left, info);
 }
 
 static void	process_pipe_segment(t_ast *pipe_node, t_info *info)
 {
-	if (pipe_node->parent && pipe_node->parent->type == PIPE)
+	if (info->is_re_pipe && pipe_node->parent && \
+			pipe_node->parent->type == PIPE)
 	{
-		info->pipe_loc = MIDDLE;
-		process_phrase_node(pipe_node->left, info);
-		pipe_node = pipe_node->parent;
-		while (pipe_node->parent && pipe_node->parent->type == PIPE)
-		{
-			process_phrase_node(pipe_node->left, info);
-			pipe_node = pipe_node->parent;
-		}
-		info->pipe_loc = LAST;
+		info->pipe_loc = FIRST;
 		process_phrase_node(pipe_node->left, info);
 	}
+	if (pipe_node->parent && pipe_node->parent->type == PIPE)
+		handle_middle_and_last_pipe_segment(pipe_node, info);
 	else
 	{
 		info->pipe_loc = LAST;
+		info->is_re_pipe = false;
 		process_phrase_node(pipe_node->left, info);
 	}
 }
@@ -50,12 +64,14 @@ void	process_pipe_node(t_ast *pipe_node, t_info *info)
 	{
 		info->stdin_pipe = -1;
 		info->is_pipe = true;
+		info->is_re_pipe = false;
 		while (pipe_node && pipe_node->right && pipe_node->right->type == PIPE)
 			pipe_node = pipe_node->right;
 		info->pipe_loc = FIRST;
 		process_phrase_node(pipe_node->right, info);
 		process_pipe_segment(pipe_node, info);
 		info->is_pipe = false;
+		info->is_re_pipe = false;
 		info->pipe_loc = -1;
 	}
 }
@@ -80,6 +96,7 @@ void	process_phrase_node(t_ast *node, t_info *info)
 
 	if (node == NULL)
 		return ;
+	backup_fds(info);
 	redir_node = node->left;
 	cmd_node = node->right;
 	if (redir_node && redir_node->type != SUBSHELL)
@@ -87,7 +104,13 @@ void	process_phrase_node(t_ast *node, t_info *info)
 		info->status = handle_io_redirection(redir_node->left, info);
 		if (redir_node->right && info->status == SUCCESS)
 			info->status = handle_io_redirection(redir_node->right, info);
+		if (info->pipe_loc == MIDDLE)
+		{
+			info->pipe_loc = LAST;
+			info->is_re_pipe = true;
+		}
 	}
 	if (cmd_node && info->status == SUCCESS)
 		info->exit_status = dispatch_cmd(cmd_node, info);
+	restore_fds(info);
 }

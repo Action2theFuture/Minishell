@@ -6,11 +6,20 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 18:34:10 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/28 13:28:41 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/30 23:26:05 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	categorize_tree(t_ast *node, t_info *info)
+{
+	if (info->in_subshell == true && node->type == PHRASE && \
+		info->status == SUCCESS && (node->left && node->left->type == PHRASE))
+		info->in_subshell = false;
+	if (node->type == PHRASE && info->status == SUCCESS)
+		process_phrase_node(node, info);
+}
 
 void	traverse_tree(t_ast *node, t_info *info)
 {
