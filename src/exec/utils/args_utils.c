@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/19 14:48:46 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/18 15:47:49 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/31 22:13:57 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,15 +72,9 @@ char	**allocate_null_and_cmd_chunk(char **cmd, int cmd_cnt)
 	char	**chunk;
 	int		i;
 
-	cmd_cnt = 0;
-	while (cmd[cmd_cnt])
-		cmd_cnt++;
 	chunk = (char **)malloc(sizeof(char *) * (cmd_cnt + 1));
 	if (chunk == NULL)
-	{
-		perror("malloc");
-		return (NULL);
-	}
+		return (perror("malloc"), NULL);
 	i = -1;
 	while (cmd[++i])
 		chunk[i] = ft_strdup(cmd[i]);

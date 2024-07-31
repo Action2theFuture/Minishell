@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/16 19:56:30 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/31 20:20:20 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/31 21:27:06 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ void	init_info(t_info *info, t_env *env, t_ast *root)
 	info->exit_status = SUCCESS;
 	info->is_pipe = false;
 	info->is_re_pipe = false;
+	info->pipe_loc = -1;
 	info->stdin_fd = -1;
 	info->stdout_fd = -1;
 	info->origin_stdin_fd = -1;

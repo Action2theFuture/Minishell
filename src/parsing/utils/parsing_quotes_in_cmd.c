@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/29 13:19:33 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/31 21:01:54 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/31 21:43:38 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ char	**parse_cmd_line_with_quotes(const char *input, int *cnt)
 	in_quotes[0] = false;
 	in_quotes[1] = false;
 	arg_idx[0] = 0;
-	arg_idx[1] = -1;
+	arg_idx[1] = 0;
 	ptr = input;
 	while (*ptr)
 	{
@@ -91,8 +91,8 @@ char	**parse_cmd_line_with_quotes(const char *input, int *cnt)
 			ptr++;
 		parse_arg(&ptr, arg, &arg_idx[0], in_quotes);
 		if (arg_idx[0] > 0)
-			args[++arg_idx[1]] = ft_strdup(arg);
+			args[arg_idx[1]++] = ft_strdup(arg);
 		ft_memset(arg, '\0', ft_strlen(arg));
 	}
-	return (free(arg), args[++arg_idx[1]] = NULL, *cnt = arg_idx[1], args);
+	return (free(arg), args[arg_idx[1]++] = NULL, *cnt = arg_idx[1] - 1, args);
 }

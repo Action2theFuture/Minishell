@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 17:58:55 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/31 21:22:43 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/31 22:13:15 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ static char	**merge_chunks(char **chunk1, char **chunk2, int chunk1_cnt)
 	char	**merged_chunk;
 
 	merged_chunk = prepend_cmd_and_add_spaces(chunk1, chunk2, chunk1_cnt);
-	free(chunk1);
+	free_args(chunk1);
 	return (merged_chunk);
 }
 
@@ -55,10 +55,10 @@ static char	**prepare_cmd(\
 	}
 	else
 		chunk = allocate_null_and_cmd_chunk(parsed_cmd, cmd_cnt);
+	free_args(parsed_cmd);
 	if (info->redir_args)
 		chunk = merge_chunks(\
-				chunk, info->redir_args + 1, count_strings(parsed_cmd));
-	free_args(parsed_cmd);
+				chunk, info->redir_args + 1, count_strings(chunk));
 	expand_wildcard(&chunk);
 	expand_and_strip_quotes_in_args(chunk, info);
 	determine_and_set_path(chunk[0], info);
