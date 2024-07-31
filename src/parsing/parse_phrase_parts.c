@@ -3,19 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   parse_phrase_parts.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
+/*   By: max <max@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 22:46:47 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/28 21:44:20 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/31 14:51:03 by max              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-bool	parse_cmd(t_token **token, t_ast **node)
+bool parse_cmd(t_token **token, t_ast **node)
 {
-	t_ast	*cmd_node;
-	char	*arg_tokens;
+	t_ast *cmd_node;
+	char *arg_tokens;
 
 	if (*token && (*token)->type == CMD)
 	{
@@ -36,11 +36,11 @@ bool	parse_cmd(t_token **token, t_ast **node)
 	return (true);
 }
 
-static bool	handle_redir_in_parse_redir_part(\
-			t_token **token, t_ast **phrase_node, t_ast **left)
+static bool handle_redir_in_parse_redir_part(
+	t_token **token, t_ast **phrase_node, t_ast **left)
 {
-	t_ast	*attach_node;
-	t_ast	*right;
+	t_ast *attach_node;
+	t_ast *right;
 
 	right = NULL;
 	attach_node = NULL;
@@ -67,10 +67,10 @@ static bool	handle_redir_in_parse_redir_part(\
 }
 
 // case : [<in1 cmd1 in2>]
-bool	parse_redirection_part(\
-			t_token **token, t_ast **phrase_node, t_ast **node)
+bool parse_redirection_part(
+	t_token **token, t_ast **phrase_node, t_ast **node)
 {
-	t_ast	*left;
+	t_ast *left;
 
 	left = NULL;
 	if (*token && (*token)->type == REDIRECTION)
@@ -87,11 +87,10 @@ bool	parse_redirection_part(\
 }
 
 // cose : [cmd1 < in2] or [cmd1 > in2]
-bool	parse_cmd_part(t_token **token, t_ast **phrase_node, t_ast **node)
+bool parse_cmd_part(t_token **token, t_ast **phrase_node, t_ast **node)
 {
-	t_ast	*left;
-	char	*arg_tokens;
-
+	t_ast *left;
+	char *arg_tokens;
 	left = NULL;
 	if (!parse_cmd(token, node))
 		return (false);
@@ -108,19 +107,18 @@ bool	parse_cmd_part(t_token **token, t_ast **phrase_node, t_ast **node)
 			return (false);
 		if ((*node)->right == NULL)
 			(*node)->right = new_node(arg_tokens, ARGS);
-		else
-			(*node)->right->data = append_with_semicolon(\
-									(*node)->right->data, (*token)->data);
+		else if (*token)
+			(*node)->right->data = append_with_semicolon((*node)->right->data, (*token)->data);
 		free(arg_tokens);
 	}
 	return ((*phrase_node)->right = *node, *node = *phrase_node, true);
 }
 
-bool	parse_phrase_part(\
-	t_token **token, t_ast **node, \
+bool parse_phrase_part(
+	t_token **token, t_ast **node,
 	bool (*parse_func)(t_token **, t_ast **, t_ast **))
 {
-	t_ast	*phrase_node;
+	t_ast *phrase_node;
 
 	phrase_node = new_node(NULL, PHRASE);
 	if (!phrase_node)
