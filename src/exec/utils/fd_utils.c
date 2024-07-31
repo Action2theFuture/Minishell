@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 14:08:08 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/31 09:13:32 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/31 09:38:07 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,17 +23,19 @@ int	backup_fds(t_info *info)
 
 int	restore_fds(t_info *info)
 {
-	if (info->is_re_pipe)
+	if (info->is_re_pipe && info->backup_stdin != -1 && \
+			info->backup_stdout != -1)
 	{
 		if (dup2(info->backup_stdin, STDIN_FILENO) == -1 || \
 			dup2(info->backup_stdout, STDOUT_FILENO) == -1)
 			return (fd_log_error("Dup Restore fd error", NULL, NULL));
 	}
-	else if (!info->is_re_pipe)
+	else if (!info->is_re_pipe && info->backup_stdout != -1)
 	{
 		if (dup2(info->backup_stdout, STDOUT_FILENO) == -1)
 			return (fd_log_error("Dup Restore stdout_fd error!", NULL, NULL));
-		close(info->stdout_fd);
+		if (info->stdout_fd != -1)
+			close(info->stdout_fd);
 	}
 	return (SUCCESS);
 }
