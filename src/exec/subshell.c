@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/27 19:38:46 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/30 09:04:39 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/31 13:37:45 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static void	handle_special_nodes(t_ast	**node, t_info *info)
 		process_pipe_node(*node, info);
 	else if ((*node)->type == SUBSHELL)
 	{
-		init_info(&subshell_info, info->env);
+		init_info(&subshell_info, info->env, *node);
 		process_logical_node_in_subshell(&(*node)->left, &subshell_info);
 		info->exit_status = subshell_info.exit_status;
 	}

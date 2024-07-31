@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 17:58:55 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/26 20:54:46 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/31 14:26:29 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,8 +79,9 @@ static int	start_execute(char **chunk, t_info *info)
 {
 	int		status;
 	int		built_in;
-	int		(*arr_built_in[8])(const char *, const char **, t_env *);
+	int		(*arr_built_in[7])(const char *, const char **, t_env *);
 
+	info->args = chunk;
 	if (info->is_pipe)
 		status = launch_process_pipe(chunk[0], chunk, info);
 	else
@@ -89,6 +90,8 @@ static int	start_execute(char **chunk, t_info *info)
 		built_in = handler_builtin(chunk[0]);
 		if (built_in != NONE)
 		{
+			if (built_in == EXIT)
+				ft_exit(info);
 			status = arr_built_in[built_in](\
 			(const char *)chunk[0], (const char **)chunk, info->env);
 		}
