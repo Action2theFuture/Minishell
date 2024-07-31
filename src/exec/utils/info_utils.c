@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/16 19:56:30 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/31 09:14:22 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/31 09:37:26 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,15 @@ void	init_info(t_info *info, t_env *env)
 	info->status = SUCCESS;
 	info->exit_status = SUCCESS;
 	info->is_pipe = false;
+	info->is_re_pipe = false;
 	info->stdin_fd = -1;
 	info->stdout_fd = -1;
 	info->origin_stdin_fd = -1;
 	info->origin_stdout_fd = -1;
+	info->backup_stdin = -1;
+	info->backup_stdout = -1;
 	info->tmp_fd = -1;
+	info->fd_null = -1;
 	info->in_subshell = false;
 	info->stdin_backup = dup(STDIN_FILENO);
 	if (info->stdin_backup == -1)
