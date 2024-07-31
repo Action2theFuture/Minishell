@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 18:20:15 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/31 17:02:53 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/31 20:25:00 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,8 @@ int	open_file_with_mode(char *file, int mode)
 		fd = open(file, O_WRONLY | O_CREAT | O_APPEND, 0644);
 	else
 		return (-1);
+	if (fd == -1)
+		return (perror("open error"), -1);
 	return (fd);
 }
 
@@ -57,4 +59,13 @@ void	process_quotes_in_arg(char *str)
 		else
 			break ;
 	}
+}
+
+void	process_quotes_in_args(char **str)
+{
+	int	i;
+
+	i = -1;
+	while (str[++i])
+		process_quotes_in_arg(str[i]);
 }

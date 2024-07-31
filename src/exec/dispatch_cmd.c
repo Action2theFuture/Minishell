@@ -6,32 +6,11 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 17:58:55 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/31 14:26:29 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/31 21:22:43 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-static char	**prepend_cmd_and_add_spaces(char **cmd, char **args, int cmd_cnt)
-{
-	char	**new_args;
-	int		arg_cnt;
-	int		i;
-
-	arg_cnt = 0;
-	while (args[arg_cnt])
-		arg_cnt++;
-	new_args = (char **)malloc(sizeof(char *) * (cmd_cnt + arg_cnt + 1));
-	if (!new_args)
-		return (perror("malloc error"), NULL);
-	i = -1;
-	while (++i < cmd_cnt)
-		new_args[i] = ft_strdup(cmd[i]);
-	i = -1;
-	while (++i < arg_cnt)
-		new_args[cmd_cnt + i] = ft_strdup(args[i]);
-	return (new_args[cmd_cnt + arg_cnt] = NULL, new_args);
-}
 
 static void	determine_and_set_path(const char *cmd, t_info *info)
 {
@@ -48,25 +27,37 @@ static void	determine_and_set_path(const char *cmd, t_info *info)
 		info->path = get_bin_path(cmd);
 }
 
+static char	**merge_chunks(char **chunk1, char **chunk2, int chunk1_cnt)
+{
+	char	**merged_chunk;
+
+	merged_chunk = prepend_cmd_and_add_spaces(chunk1, chunk2, chunk1_cnt);
+	free(chunk1);
+	return (merged_chunk);
+}
+
 static char	**prepare_cmd(\
 			char **args, t_ast *cmd_node, t_ast *args_node, t_info *info)
 {
 	char		**chunk;
 	char		**parsed_cmd;
-	int			cnt;
+	int			cmd_cnt;
 
 	args = NULL;
 	chunk = NULL;
-	cnt = 0;
-	parsed_cmd = parse_cmd_line_with_quotes(cmd_node->data, &cnt);
+	cmd_cnt = 0;
+	parsed_cmd = parse_cmd_line_with_quotes(cmd_node->data, &cmd_cnt);
 	if (args_node)
 	{
 		args = ft_split(args_node->data, ARR_SEP);
-		chunk = prepend_cmd_and_add_spaces(parsed_cmd, args, cnt);
+		chunk = prepend_cmd_and_add_spaces(parsed_cmd, args, cmd_cnt);
 		free_args(args);
 	}
 	else
-		chunk = allocate_null_and_cmd_chunk(parsed_cmd, cnt);
+		chunk = allocate_null_and_cmd_chunk(parsed_cmd, cmd_cnt);
+	if (info->redir_args)
+		chunk = merge_chunks(\
+				chunk, info->redir_args + 1, count_strings(parsed_cmd));
 	free_args(parsed_cmd);
 	expand_wildcard(&chunk);
 	expand_and_strip_quotes_in_args(chunk, info);

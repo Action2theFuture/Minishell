@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/16 19:56:30 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/31 13:34:27 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/31 20:20:20 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ void	init_info(t_info *info, t_env *env, t_ast *root)
 	if (info->stdout_backup == -1)
 		perror("dup stdout_backup error");
 	info->path = NULL;
+	info->redir_args = NULL;
 	info->env = env;
 	info->root = root;
 	info->quote_info = NULL;
