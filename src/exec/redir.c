@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 12:01:59 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/31 17:06:45 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/31 18:20:26 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,23 +31,23 @@ static int	here_doc_redir(t_ast *node, t_info *info)
 
 static int	input_redir(t_ast *node, t_info *info)
 {
-	t_ast	*args_node;
 	t_ast	*io_node;
+	char	**args;
 	int		pipe_fd[2];
 
 	io_node = node->left;
-	args_node = node->right;
+	args = info->redir_args;
 	if (io_node->type == IN_REDIR)
-		info->stdin_fd = open_file_with_mode(args_node->data, READ);
+		info->stdin_fd = open_file_with_mode(args[0], READ);
 	else if (io_node->type == IN_HEREDOC)
-		here_doc_redir(args_node, info);
+		here_doc_redir(node->right, info);
 	else if (io_node->type == IN_HERESTR)
 	{
 		if (pipe(pipe_fd) == -1)
-			return (fd_log_error(NULL, args_node->data, strerror(errno)));
+			return (fd_log_error(NULL, args[0], strerror(errno)));
 		if (write(pipe_fd[1], \
-			args_node->data, ft_strlen(args_node->data)) == -1)
-			return (fd_log_error(NULL, args_node->data, strerror(errno)));
+			args[0], ft_strlen(args[0])) == -1)
+			return (fd_log_error(NULL, args[0], strerror(errno)));
 		close(pipe_fd[1]);
 		info->stdin_fd = pipe_fd[0];
 	}
@@ -61,23 +61,23 @@ static int	input_redir(t_ast *node, t_info *info)
 static int	output_redir(t_ast *node, t_info *info)
 {
 	t_ast	*io_node;
-	t_ast	*args_node;
+	char	**args;
 
 	io_node = node->left;
-	args_node = node->right;
+	args = info->redir_args;
 	if (io_node->type == OUT_REDIR)
 	{
-		info->stdout_fd = open_file_with_mode(args_node->data, WRITE);
+		info->stdout_fd = open_file_with_mode(args[0], WRITE);
 		if (info->stdout_fd == -1)
-			return (fd_log_error(NULL, args_node->data, strerror(errno)));
+			return (fd_log_error(NULL, args[0], strerror(errno)));
 		if (dup2(info->stdout_fd, STDOUT_FILENO) == -1)
 			return (fd_log_error("Dup stdout_fd error!", NULL, NULL));
 	}
 	else if (io_node->type == OUT_APPEND)
 	{
-		info->stdout_fd = open_file_with_mode(args_node->data, APPEND);
+		info->stdout_fd = open_file_with_mode(args[0], APPEND);
 		if (info->stdout_fd == -1)
-			return (fd_log_error(NULL, args_node->data, strerror(errno)));
+			return (fd_log_error(NULL, args[0], strerror(errno)));
 		if (dup2(info->stdout_fd, STDOUT_FILENO) == -1)
 			return (fd_log_error("Dup stdout_fd error!", NULL, NULL));
 	}
@@ -87,15 +87,17 @@ static int	output_redir(t_ast *node, t_info *info)
 static int	handle_ft_redirection(t_ast *node, t_info *info)
 {
 	t_ast	*io_node;
-	t_ast	*arg_node;
+	char	**args;
 
 	io_node = node->left;
-	arg_node = node->right;
+	info->redir_args = ft_split(node->right->data, ARR_SEP);
+	process_quotes_in_arg(info->redir_args[0]);
+	args = info->redir_args;
 	if (io_node->type == IN_REDIR || io_node->type == IN_HEREDOC || \
 		io_node->type == IN_HERESTR)
 	{
-		if (io_node->type == IN_REDIR && (access(arg_node->data, F_OK) == -1))
-			return (fd_log_error(NULL, arg_node->data, strerror(errno)), 127);
+		if (io_node->type == IN_REDIR && (access(args[0], F_OK) == -1))
+			return (fd_log_error(NULL, args[0], strerror(errno)), 127);
 		if (redirect_to_null(info) == FAILURE)
 			return (FAILURE);
 		if (input_redir(node, info) == FAILURE)
@@ -112,6 +114,7 @@ static int	handle_ft_redirection(t_ast *node, t_info *info)
 int	handle_io_redirection(t_ast *node, t_info *info)
 {
 	int		status;
+	int		i;
 
 	status = SUCCESS;
 	if (info->stdin_fd != -1)
@@ -120,9 +123,14 @@ int	handle_io_redirection(t_ast *node, t_info *info)
 		close(info->stdout_fd);
 	while (node && status == SUCCESS)
 	{
-		if (node->right)
-			process_quotes_in_arg(node->right->data);
 		status = handle_ft_redirection(node, info);
+		i = 0;
+		while (info->redir_args[++i])
+		{
+			if (get_path_type(info->redir_args[i], info) != PATH_RELATIVE)
+				status = execve_log_error(info->redir_args[i], ENOENT);
+		}
+		free_args(info->redir_args);
 		if (status > SUCCESS)
 			info->is_pipe = false;
 		if (!node->left->left)
