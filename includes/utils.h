@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 13:27:16 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/31 16:59:18 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/26 09:46:34 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,10 +33,9 @@ char					*normalize_spaces(const char *str);
 
 // quotes_str.c
 void					remove_quotes(char *str);
-void					remove_surrounding_single_quotes(char *str);
-void					remove_surrounding_double_quotes(char *str);
+void					remove_single_quotes(char *str);
+void					remove_double_quotes(char *str);
 void					remove_empty_quotes(char *str);
-void					remove_double_quotes_inside_single_quotes(char *str);
 
 // subshell_and_quote_str.c
 bool					are_parentheses_balanced(const char *input);

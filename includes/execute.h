@@ -151,7 +151,6 @@ int						handle_io_redirection(t_ast *node, t_info *info);
 // redir_utils.c
 int						open_file_with_mode(char *file, int mode);
 void					cleanup_tmp_file(void);
-void					process_quotes_in_arg(char *str);
 
 // here_doc.c
 int						here_doc(int infile, char *limiter, t_info *info);

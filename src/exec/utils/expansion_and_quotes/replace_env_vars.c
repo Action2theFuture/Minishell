@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/28 15:08:22 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/31 17:01:30 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/26 10:31:39 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static void	remove_outer_double_quotes(t_env_var *env_var)
 	while (env_var->str[0] == '\"' && \
 		env_var->str[ft_strlen(env_var->str) - 1] == '\"')
 	{
-		remove_surrounding_double_quotes((char *)env_var->str);
+		remove_double_quotes((char *)env_var->str);
 		env_var->is_value_expansion = true;
 	}
 }
@@ -27,7 +27,7 @@ static void	remove_outer_single_quotes(t_env_var *env_var)
 	while (env_var->str[0] == '\'' && \
 		env_var->str[ft_strlen(env_var->str) - 1] == '\'' && \
 		!env_var->is_value_expansion)
-		remove_surrounding_single_quotes((char *)env_var->str);
+		remove_single_quotes((char *)env_var->str);
 }
 
 static void	process_str(t_env_var *env_var)
