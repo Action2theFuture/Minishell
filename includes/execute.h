@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 13:12:49 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/31 13:53:17 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/31 20:26:32 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,6 +126,10 @@ void					clear_env_arr(char **arr);
 // dispatch_cmd.c
 int						dispatch_cmd(t_ast *node, t_info *info);
 
+// dispatch_cmd_utils.c
+char					**prepend_cmd_and_add_spaces(\
+				char **cmd, char **args, int cmd_cnt);
+
 // launch_process_cmd.c
 int						launch_process_cmd(\
 				char *cmd, char **args, t_info *info);
@@ -151,6 +155,7 @@ int						handle_io_redirection(t_ast *node, t_info *info);
 // redir_utils.c
 int						open_file_with_mode(char *file, int mode);
 void					cleanup_tmp_file(void);
+void					process_quotes_in_args(char **str);
 void					process_quotes_in_arg(char *str);
 
 // here_doc.c
