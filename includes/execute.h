@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 13:12:49 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/31 08:47:21 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/31 17:03:04 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,6 +149,7 @@ int						handle_io_redirection(t_ast *node, t_info *info);
 // redir_utils.c
 int						open_file_with_mode(char *file, int mode);
 void					cleanup_tmp_file(void);
+void					process_quotes_in_arg(char *str);
 
 // here_doc.c
 int						here_doc(int infile, char *limiter, t_info *info);

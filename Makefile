@@ -6,7 +6,7 @@
 #    By: junsan <junsan@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    CreateCd: 2024/05/11 19:03:01 by junsan            #+#    #+#             #
-#    Updated: 2024/07/31 09:10:28 by junsan           ###   ########.fr        #
+#    Updated: 2024/07/31 17:09:49 by junsan           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -106,7 +106,6 @@ $(NAME) : $(LIBFT) $(OBJS)
 	@$(CC) $(CFLAGS) -o $@ $(OBJS) $(LIBFT) $(LD_FLAGS) > /dev/null 2>&1 & COMPILER_PID=$$!; \
 	./$(SPINNER_SCRIPT) $$COMPILER_PID; \
 	wait $$COMPILER_PID
-	@echo "$(COLOR_GREEN)Compilation completed successfully! 🎉$(COLOR_RESET)"
 	@echo "$(COLOR_CYAN)Welcome to minishell$(COLOR_RESET)"
 	@echo "$(COLOR_GREEN)Program Name : $(NAME)$(COLOR_RESET)"
 

@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 08:33:49 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/11 17:32:25 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/31 17:00:49 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ void	remove_double_quotes_from_args(char **args)
 	while (args[++i])
 	{
 		while (args[i][0] == '\"' && args[i][ft_strlen(args[i] - 1)] == '\"')
-			remove_double_quotes(args[i]);
+			remove_surrounding_double_quotes(args[i]);
 	}
 }
 
@@ -70,7 +70,7 @@ void	remove_single_quotes_from_args(char **args)
 	while (args[++i])
 	{
 		while (args[i][0] == '\'' && args[i][ft_strlen(args[i] - 1)] == '\'')
-			remove_single_quotes(args[i]);
+			remove_surrounding_single_quotes(args[i]);
 	}
 }
 
