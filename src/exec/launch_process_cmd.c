@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/23 17:08:10 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/31 14:00:34 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/31 18:38:15 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,10 @@ static void	execute_cmd(\
 	{
 		execve(info->path, args, env);
 		free(info->path);
+		info->path = NULL;
 	}
 	if (execve(cmd, args, env) == -1)
-		exit(126 + execve_log_error(cmd, errno));
+		cleanup_and_exit(126 + execve_log_error(cmd, errno), args, env, info);
 }
 
 static int	monitor_child_task(char *cmd, pid_t pid, t_info *info)
