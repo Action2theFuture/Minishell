@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 13:12:49 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/30 23:04:28 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/31 08:47:21 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,11 +102,12 @@ char					*get_absolute_path(const char *path);
 // get_bin_path.c
 char					*get_bin_path(const char *cmd);
 
-// stdio_redirector.c
+// fd_utils.c
 int						backup_stdio(t_info *info);
 int						restore_stdio(t_info *info);
 int						backup_fds(t_info *info);
 int						restore_fds(t_info *info);
+int						redirect_to_null(t_info *info);
 
 // get_file_list.c
 void					free_file_list(t_file_list *file_list);

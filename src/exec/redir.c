@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 12:01:59 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/30 22:10:48 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/31 09:03:20 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ static int	here_doc_redir(t_ast *node, t_info *info)
 	here_doc(info->stdin_fd, node->data, info);
 	if (dup2(info->tmp_fd, STDOUT_FILENO) == -1)
 		return (fd_log_error("Dup tmp fd error!", NULL, NULL));
+	close(info->tmp_fd);
 	return (SUCCESS);
 }
 
@@ -95,6 +96,8 @@ static int	handle_ft_redirection(t_ast *node, t_info *info)
 	{
 		if (io_node->type == IN_REDIR && (access(arg_node->data, F_OK) == -1))
 			return (fd_log_error(NULL, arg_node->data, strerror(errno)), 127);
+		if (redirect_to_null(info) == FAILURE)
+			return (FAILURE);
 		if (input_redir(node, info) == FAILURE)
 			return (FAILURE);
 	}
