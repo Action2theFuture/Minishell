@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 13:25:12 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/31 16:53:50 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/31 15:25:34 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define MINISHELL_TYPES_H
 
 # define MAX_PATH_LENGTH 4096
+# define MAX_BUFFER_SIZE 1024
 # define MAX_ARGS 100
 # define MEMORY_CAPACITY 256
 # define HISTSIZE 500
@@ -29,6 +30,12 @@
 # define DEV_NULL_PATH "/dev/null"
 # define BASE_PATH '.'
 # define INIT_UNDER_SCORE "env"
+
+typedef enum fd_type
+{
+	READ_END = 0,
+	WRITE_END = 1,
+}	t_fd_type;
 
 typedef enum signal_type
 {
@@ -157,6 +164,7 @@ typedef struct s_info
 	bool				pipe_exists;
 	bool				in_subshell;
 	char				*path;
+	char				**args;
 	int					child_pids[MAX_PIPES];
 	int					fd_null;
 	int					stdin_fd;
@@ -174,6 +182,7 @@ typedef struct s_info
 	int					tmp_fd;
 	int					exit_status;
 	int					status;
+	struct s_ast		*root;
 	struct s_env		*env;
 	struct s_quote_info	*quote_info;
 }						t_info;

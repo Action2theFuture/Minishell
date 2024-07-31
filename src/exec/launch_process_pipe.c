@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 08:49:20 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/30 22:07:08 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/31 15:27:29 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,8 @@ int	wait_for_child_task(t_info *info)
 	return (SUCCESS);
 }
 
-static void	execute_child_process(char *cmd, char **args, t_info *info)
+static void	execute_child_process(\
+		char *cmd, char **args, t_info *info)
 {
 	char	**env;
 
@@ -50,13 +51,13 @@ static void	execute_child_process(char *cmd, char **args, t_info *info)
 		exit(1);
 	}
 	if (info->pipe_loc == FIRST)
+	{
 		first_pipe(cmd, env, args, info);
+	}
 	else if (info->pipe_loc == MIDDLE)
 		middle_pipe(cmd, env, args, info);
 	else if (info->pipe_loc == LAST)
 		last_pipe(cmd, env, args, info);
-	if (env)
-		clear_env_arr(env);
 	exit(info->exit_status);
 }
 

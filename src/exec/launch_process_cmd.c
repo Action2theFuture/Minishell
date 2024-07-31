@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/23 17:08:10 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/27 20:14:39 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/31 14:00:34 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,18 +15,10 @@
 static void	execute_cmd(\
 				char *cmd, char **args, t_info *info, char **env)
 {
-	int		built_in;
-	int		(*arr_built_in[8])(const char *, const char **, t_env *);
-
 	if (ft_strlen(cmd) == 4 && ft_strncmp(cmd, "true", 4) == 0)
 		exit(SUCCESS);
 	else if (ft_strlen(cmd) == 5 && ft_strncmp(cmd, "false", 5) == 0)
 		exit(FAILURE);
-	init_builtin(arr_built_in);
-	built_in = handler_builtin(cmd);
-	if (built_in != NONE)
-		exit(arr_built_in[built_in](\
-			(const char *)cmd, (const char **)args, info->env));
 	if (ft_strlen(args[0]) > 2 && args[0][0] == '.' && args[0][1] == '/'
 		&& execve(cmd, args, env) == -1)
 		exit(125 + execve_log_error(cmd, errno));

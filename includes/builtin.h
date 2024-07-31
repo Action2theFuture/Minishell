@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 13:14:06 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/12 23:09:13 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/31 14:11:06 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,7 @@ void					printf_env(t_env *list);
 int						ft_env(const char *cmd, const char **args, t_env *list);
 
 // ft_exit.c
-int						ft_exit(const char *cmd, const char **args,
-							t_env *list);
+int						ft_exit(t_info *info);
 
 // ft_export.c
 int						ft_export(\

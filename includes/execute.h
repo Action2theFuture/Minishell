@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 13:12:49 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/31 17:03:04 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/31 13:53:17 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void					process_pipe_node(t_ast *pipe_node, t_info *info);
 void					process_phrase_node(t_ast *node, t_info *info);
 
 // info_utils.c
-void					init_info(t_info *info, t_env *env);
+void					init_info(t_info *info, t_env *env, t_ast *root);
 void					clear_info(t_info *info);
 void					reset_consts_fd(t_info *info);
 
@@ -142,6 +142,8 @@ void					middle_pipe(\
 		char *cmd, char **env, char **args, t_info *info);
 void					last_pipe(\
 		char *cmd, char **env, char **args, t_info *info);
+void					cleanup_and_exit(\
+		int status, char **args, char **env, t_info *info);
 
 // redir.c
 int						handle_io_redirection(t_ast *node, t_info *info);

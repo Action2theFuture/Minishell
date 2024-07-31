@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/25 22:45:45 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/31 16:16:34 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/31 14:22:22 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,12 +23,12 @@ static void	parse_and_execute(\
 	root = NULL;
 	token_list = get_token_list(tokens);
 	is_parse = parsing_tree(&token_list, &root);
+	free(token_list);
+	free_token(tokens);
 	if (is_parse)
 		execute(root, env, exit_status);
 	else
 		*err = PARSE_ERROR;
-	free(token_list);
-	free_token(tokens);
 	free_tree(root);
 }
 

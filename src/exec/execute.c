@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 18:34:10 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/30 23:26:05 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/31 14:23:11 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	traverse_tree(t_ast *node, t_info *info)
 	else if (node->type == SUBSHELL && ft_strncmp(node->data, "(", 1) == 0 \
 			&& info->status == SUCCESS)
 	{
-		init_info(&subshell_info, info->env);
+		init_info(&subshell_info, info->env, node);
 		subshell_info.in_subshell = true;
 		info->exit_status = process_subshell_node(node, &subshell_info);
 		info->in_subshell = false;
@@ -54,7 +54,7 @@ void	execute(t_ast *root, t_env *env, int *exit_status)
 {
 	t_info	info;
 
-	init_info(&info, env);
+	init_info(&info, env, root);
 	if (exit_status != 0)
 		info.exit_status = *exit_status;
 	if (backup_stdio(&info) == FAILURE)
