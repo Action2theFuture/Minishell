@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/15 23:01:48 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/26 22:51:29 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/31 11:01:52 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,5 +103,6 @@ void	*init_pwd_oldpwd_under_score(t_env *head)
 		return (perror("malloc error"), \
 		free(head), free(head->pwd), free(head->old_pwd), free(cur_dir), NULL);
 	free(cur_dir);
+	cur_dir = NULL;
 	return (NULL);
 }

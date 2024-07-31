@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 12:05:58 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/30 08:41:15 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/31 14:48:36 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,18 +32,19 @@ static int	validate_exit_args(const char **args)
 	return (0);
 }
 
-int	ft_exit(const char *cmd, const char **args, t_env *list)
+int	ft_exit(t_info *info)
 {
-	int	num_args;
-	int	exit_code;
+	const char	**args;
+	int			num_args;
+	int			exit_code;
 
-	(void)cmd;
-	(void)list;
+	args = (const char **)info->args;
 	num_args = 0;
 	while (args[num_args])
 		num_args++;
 	if (num_args == 1)
-		(ft_putstr_fd("exit\n", 2), exit(EXIT_SUCCESS));
+		(ft_putstr_fd("exit\n", 2), \
+		cleanup_and_exit(EXIT_SUCCESS, info->args, NULL, info));
 	if (num_args > 2)
 	{
 		ft_putstr_fd("minishell: exit: too many arguments\n", STDERR_FILENO);
@@ -53,8 +54,8 @@ int	ft_exit(const char *cmd, const char **args, t_env *list)
 	{
 		exit_code = validate_exit_args(args);
 		if (exit_code != 0)
-			exit(exit_code);
-		exit(ft_atoi(args[0]));
+			(cleanup_and_exit(exit_code, info->args, NULL, info));
+		(cleanup_and_exit(ft_atoi(args[0]), info->args, NULL, info));
 	}
-	exit(EXIT_SUCCESS);
+	return (SUCCESS);
 }
