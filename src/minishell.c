@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/11 19:14:21 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/31 11:17:30 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/31 18:50:58 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,6 @@ static void	shell_loop(t_env *env, int *exit_status)
 	while ("minishell")
 	{
 		input = read_user_input();
-		if (!input)
-			break ;
 		process_input(input, env, exit_status);
 	}
 }
