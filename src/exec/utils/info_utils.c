@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/16 19:56:30 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/31 09:04:14 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/31 09:14:22 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,8 @@ void	reset_consts_fd(t_info *info)
 
 void	clear_info(t_info *info)
 {
+	if (info->fd_null != -1)
+		close(info->fd_null);
 	if (info->stdin_fd != -1)
 		close(info->stdin_fd);
 	if (info->stdout_fd != -1)
