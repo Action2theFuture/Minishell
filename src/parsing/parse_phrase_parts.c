@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 22:46:47 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/28 21:44:20 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/31 17:09:28 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,8 @@ bool	parse_cmd(t_token **token, t_ast **node)
 	return (true);
 }
 
-static bool	handle_redir_in_parse_redir_part(\
-			t_token **token, t_ast **phrase_node, t_ast **left)
+static bool	handle_redir_in_parse_redir_part(
+	t_token **token, t_ast **phrase_node, t_ast **left)
 {
 	t_ast	*attach_node;
 	t_ast	*right;
@@ -67,8 +67,8 @@ static bool	handle_redir_in_parse_redir_part(\
 }
 
 // case : [<in1 cmd1 in2>]
-bool	parse_redirection_part(\
-			t_token **token, t_ast **phrase_node, t_ast **node)
+bool	parse_redirection_part(
+	t_token **token, t_ast **phrase_node, t_ast **node)
 {
 	t_ast	*left;
 
@@ -86,11 +86,10 @@ bool	parse_redirection_part(\
 	return (true);
 }
 
-// cose : [cmd1 < in2] or [cmd1 > in2]
+// case : [cmd1 < in2] or [cmd1 > in2]
 bool	parse_cmd_part(t_token **token, t_ast **phrase_node, t_ast **node)
 {
 	t_ast	*left;
-	char	*arg_tokens;
 
 	left = NULL;
 	if (!parse_cmd(token, node))
@@ -101,23 +100,13 @@ bool	parse_cmd_part(t_token **token, t_ast **phrase_node, t_ast **node)
 		left->parent = *phrase_node;
 		(*phrase_node)->left = left;
 	}
-	while (*token && (*token)->type == CMD)
-	{
-		arg_tokens = arg_parsing(token);
-		if (!arg_tokens)
-			return (false);
-		if ((*node)->right == NULL)
-			(*node)->right = new_node(arg_tokens, ARGS);
-		else
-			(*node)->right->data = append_with_semicolon(\
-									(*node)->right->data, (*token)->data);
-		free(arg_tokens);
-	}
-	return ((*phrase_node)->right = *node, *node = *phrase_node, true);
+	(*phrase_node)->right = *node;
+	*node = *phrase_node;
+	return (true);
 }
 
-bool	parse_phrase_part(\
-	t_token **token, t_ast **node, \
+bool	parse_phrase_part(
+	t_token **token, t_ast **node,
 	bool (*parse_func)(t_token **, t_ast **, t_ast **))
 {
 	t_ast	*phrase_node;

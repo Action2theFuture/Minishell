@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 12:01:59 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/31 09:03:20 by junsan           ###   ########.fr       */
+/*   Updated: 2024/07/31 17:06:45 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,7 @@ static int	handle_ft_redirection(t_ast *node, t_info *info)
 
 int	handle_io_redirection(t_ast *node, t_info *info)
 {
-	int	status;
+	int		status;
 
 	status = SUCCESS;
 	if (info->stdin_fd != -1)
@@ -120,6 +120,8 @@ int	handle_io_redirection(t_ast *node, t_info *info)
 		close(info->stdout_fd);
 	while (node && status == SUCCESS)
 	{
+		if (node->right)
+			process_quotes_in_arg(node->right->data);
 		status = handle_ft_redirection(node, info);
 		if (status > SUCCESS)
 			info->is_pipe = false;
