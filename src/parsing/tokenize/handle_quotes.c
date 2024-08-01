@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/13 19:44:46 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/24 23:06:59 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/01 14:34:13 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,8 @@ static bool	are_quotes_balanced(const char *str, int *i)
 	while (str[++(*i)])
 	{
 		update_quote_state(str[*i], &in_single_quote, &in_double_quote);
-		if (((!in_single_quote && !in_double_quote) && \
-			(ft_strchr(SHELL_OPERATORS, str[*i]) || ft_isspace(str[*i]))))
+		if (!in_single_quote && !in_double_quote && \
+			ft_strchr(SHELL_OPERATORS, str[*i]))
 		{
 			if (first_char == str[*i - 1])
 				return (*i -= 1, true);
@@ -65,7 +65,7 @@ int	handle_quotes(\
 			i++;
 		add_token(list, *input, i);
 		*input += i;
-		*start = *input + 1;
+		*start = *input;
 	}
 	return (-1);
 }
