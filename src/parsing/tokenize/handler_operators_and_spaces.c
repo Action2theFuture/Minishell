@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/13 19:46:03 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/01 14:27:33 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/01 21:09:35 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ static void	handle_repeated_operators(\
 	*start = *input + 1;
 }
 
-static void	hanlde_quotes_for_handle_cmd(\
+static void	handle_quotes_for_handle_cmd(\
 			const char **input, bool *in_quotes, char *quote_char)
 {
 	if (**input == '"' || **input == '\'')
@@ -69,7 +69,7 @@ static void	handle_cmd(const char **input, const char **start, t_token **list)
 		(!ft_isspace(**input) && !ft_strchr(delims, **input) && \
 		**input != '(' && **input != ')')))
 	{
-		hanlde_quotes_for_handle_cmd(input, &in_quotes, &quote_char);
+		handle_quotes_for_handle_cmd(input, &in_quotes, &quote_char);
 		(*input)++;
 	}
 	if (*input > *start)
