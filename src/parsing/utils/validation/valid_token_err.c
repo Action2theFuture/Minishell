@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/28 17:14:53 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/03 21:10:12 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/01 11:09:34 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@ static bool	is_redir_err(t_token *prev, t_token *cur, t_token *next)
 	{
 		if (get_type_redir(cur->data) == NOT_REDIR)
 			return (true);
-		if (!next || is_operator(next->data))
+		if (!next || is_operator(next->data) || \
+			is_redirection_operator(next->data))
 			return (true);
 	}
 	return (false);
