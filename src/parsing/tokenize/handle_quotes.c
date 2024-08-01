@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/13 19:44:46 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/01 14:34:13 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/01 17:15:06 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,16 +31,18 @@ static bool	are_quotes_balanced(const char *str, int *i)
 	in_single_quote = false;
 	in_double_quote = false;
 	first_char = str[0];
-	while (str[++(*i)])
+	while (str[*i])
 	{
 		update_quote_state(str[*i], &in_single_quote, &in_double_quote);
-		if (!in_single_quote && !in_double_quote && \
-			ft_strchr(SHELL_OPERATORS, str[*i]))
+		if ((!in_single_quote && !in_double_quote) || \
+			(!in_single_quote && !in_double_quote && \
+			ft_strchr(SHELL_OPERATORS, str[*i])))
 		{
-			if (first_char == str[*i - 1])
-				return (*i -= 1, true);
+			if (first_char == str[*i] && *i > 0)
+				return (*i += 1, true);
 			break ;
 		}
+		(*i)++;
 	}
 	last_char = str[ft_strlen(str) - 1];
 	if (first_char == last_char)
@@ -51,18 +53,16 @@ static bool	are_quotes_balanced(const char *str, int *i)
 int	handle_quotes(\
 	const char **input, const char **start, t_token **list)
 {
-	int	i;
+	int			i;
 
-	i = -1;
+	i = 0;
 	*start = *input;
 	if (!are_quotes_balanced(*input, &i))
 		return (UNCLOSED_QUOTE);
-	if (i == -1)
+	if (i == 0)
 		*start = *input + 1;
 	else
 	{
-		if ((*input)[i] != '\0')
-			i++;
 		add_token(list, *input, i);
 		*input += i;
 		*start = *input;

@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 18:20:15 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/01 09:59:49 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/01 17:30:51 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,13 +73,4 @@ void	process_quotes_in_arg(char *str)
 		else
 			break ;
 	}
-}
-
-void	process_quotes_in_args(char **str)
-{
-	int	i;
-
-	i = -1;
-	while (str[++i])
-		process_quotes_in_arg(str[i]);
 }
