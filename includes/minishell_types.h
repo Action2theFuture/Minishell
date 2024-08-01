@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 13:25:12 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/31 17:53:08 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/01 22:21:43 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@
 # define DEV_NULL_PATH "/dev/null"
 # define BASE_PATH '.'
 # define INIT_UNDER_SCORE "env"
+
+extern volatile sig_atomic_t	g_heredoc_interrupted;
 
 typedef enum fd_type
 {

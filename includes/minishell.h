@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/11 19:22:19 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/26 21:41:58 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/01 22:23:41 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,9 @@ int						increment_shlvl(t_env *env);
 // ------------------------ signal ---------------------------//
 // handler_signal.c
 void					set_signal_handler(int sig_int);
+
+// handler_heredoc_signal.c
+void					set_heredoc_signal_handler(void);
 
 // --------------------------- print --------------------------//
 //  prints.c

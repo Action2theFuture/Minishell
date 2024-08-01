@@ -6,11 +6,13 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/04 13:40:54 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/01 15:39:28 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/01 22:37:54 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+volatile sig_atomic_t	g_heredoc_interrupted;
 
 static char	*get_env_value(t_env *env, const char *key)
 {
@@ -103,15 +105,19 @@ int	here_doc(int infile, char *limiter, t_info *info)
 {
 	char	*line;
 
+	set_heredoc_signal_handler();
+	g_heredoc_interrupted = 0;
 	while (1)
 	{
 		line = readline("heredoc> ");
-		if (line == NULL || \
+		if (line == NULL || g_heredoc_interrupted || \
 			!process_line_and_write(infile, line, limiter, info))
 			break ;
 		free(line);
 		line = NULL;
 	}
+	if (g_heredoc_interrupted)
+		return (free(line), cleanup_tmp_file(), FAILURE);
 	close(infile);
 	info->stdin_fd = open(HEREDOC_TMP, O_RDONLY, 0644);
 	if (info->stdin_fd == -1)
