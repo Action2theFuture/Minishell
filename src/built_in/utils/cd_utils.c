@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 10:29:42 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/15 22:22:52 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/01 11:59:53 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,10 @@
 
 int	chdir_to_home(t_env *env)
 {
+	t_env	*head;
 	char	*home_path;
 
+	head = env;
 	while (env)
 	{
 		if (ft_strncmp(env->name, "HOME", 4) == 0)
@@ -30,7 +32,7 @@ int	chdir_to_home(t_env *env)
 		ft_putstr_fd("cd : HOME not set\n", 2);
 		return (FAILURE);
 	}
-	update_pwd_oldpwd(env, home_path);
+	update_pwd_oldpwd(head, home_path);
 	return (SUCCESS);
 }
 

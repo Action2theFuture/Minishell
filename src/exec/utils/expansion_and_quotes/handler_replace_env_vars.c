@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 20:03:41 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/26 22:58:52 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/01 12:29:28 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,10 +67,13 @@ void	handle_dollar_sign(t_env_var *env_var)
 		env_var->str[env_var->i + 1] == '?')
 		handle_expansion_var(env_var, '?');
 	else if (env_var->str[env_var->i] == '$' && \
-			ft_isalpha(env_var->str[env_var->i + 1]))
+			(ft_isalnum(env_var->str[env_var->i + 1]) || \
+			(env_var->str[env_var->i + 1] == '_' && \
+			env_var->str[env_var->i + 2])))
 		handle_simple_var(env_var, var_name);
 	else if (env_var->str[env_var->i] == '$' && \
-			env_var->str[env_var->i + 1] == '_')
+			env_var->str[env_var->i + 1] == '_' && \
+			env_var->str[env_var->i + 2] == '\0' )
 		handle_expansion_var(env_var, '_');
 	else
 		env_var->res[env_var->j++] = env_var->str[env_var->i++];

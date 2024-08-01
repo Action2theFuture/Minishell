@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 11:37:49 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/26 21:41:30 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/01 11:56:29 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,11 +63,11 @@ static void	initialize_default_env(t_env **head)
 		return ;
 	}
 	*head = new_env("PWD", cur_dir);
-	free(cur_dir);
 	init_pwd_oldpwd_under_score(*head);
 	add_env_by_name(*head, "OLDPWD", NULL);
 	add_env_by_name(*head, "SHLVL", "1");
 	add_env_by_name(*head, "_", INIT_UNDER_SCORE);
+	free(cur_dir);
 }
 
 t_env	*env_init(char **envp)
