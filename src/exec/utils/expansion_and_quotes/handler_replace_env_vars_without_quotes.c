@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/11 13:30:34 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/26 22:09:05 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/01 12:33:37 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static void	hadle_dollar_sign(t_handler_info *h_info, const char *input)
 {
 	if (input[++h_info->i] == '?')
 		handle_expansion_var_without_quotes(h_info, '?');
-	else if (input[h_info->i] == '_')
+	else if (input[h_info->i] == '_' && input[h_info->i + 1] == '\0')
 		handle_expansion_var_without_quotes(h_info, '_');
 	else
 		(extract_var_name_from_input(h_info, input), \
@@ -34,8 +34,9 @@ char	*handler_dollar_sign_wihout_quotes(\
 	{
 		if (!h_info.in_single_quotes && \
 			input[h_info.i] == '$' && input[h_info.i + 1] && \
-			(ft_isalpha(input[h_info.i + 1]) || input[h_info.i + 1] == '_' || \
-			input[h_info.i + 1] == '?'))
+			((ft_isalnum(input[h_info.i + 1]) || \
+			input[h_info.i + 1] == '_' || \
+			input[h_info.i + 1] == '?')))
 			hadle_dollar_sign(&h_info, input);
 		else
 		{
