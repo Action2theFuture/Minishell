@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/11 19:14:21 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/31 18:50:58 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/01 15:36:28 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,32 +26,19 @@ static void	set_terminal_attributes(void)
 	tcsetattr(STDIN_FILENO, TCSANOW, &term);
 }
 
-static char	*read_user_input(void)
-{
-	char	*input;
-
-	input = readline("minishell$> ");
-	if (!input)
-	{
-		exit_shell();
-		return (NULL);
-	}
-	if (!*input)
-	{
-		free(input);
-		return (NULL);
-	}
-	add_history(input);
-	return (input);
-}
-
 static void	shell_loop(t_env *env, int *exit_status)
 {
 	char	*input;
 
 	while ("minishell")
 	{
-		input = read_user_input();
+		input = readline("minishell$> ");
+		if (!input)
+		{
+			exit_shell();
+			break ;
+		}
+		add_history(input);
 		process_input(input, env, exit_status);
 	}
 }

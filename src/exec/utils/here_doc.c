@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/04 13:40:54 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/31 19:32:39 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/01 15:39:28 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,8 +113,8 @@ int	here_doc(int infile, char *limiter, t_info *info)
 		line = NULL;
 	}
 	close(infile);
-	infile = open(HEREDOC_TMP, O_RDONLY, 0644);
-	if (infile == -1)
+	info->stdin_fd = open(HEREDOC_TMP, O_RDONLY, 0644);
+	if (info->stdin_fd == -1)
 		return (perror("heredoc open error"), FAILURE);
 	return (SUCCESS);
 }
