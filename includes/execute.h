@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 13:12:49 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/01 10:09:14 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/01 17:31:13 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,7 +164,6 @@ int						handle_ft_redirection(\
 int						open_file_with_mode(char *file, int mode);
 void					close_fds(t_info *info);
 void					cleanup_tmp_file(void);
-void					process_quotes_in_args(char **str);
 void					process_quotes_in_arg(char *str);
 
 // here_doc.c

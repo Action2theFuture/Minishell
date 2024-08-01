@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 12:01:59 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/01 10:10:41 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/01 17:31:38 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ static void	process_redir_args(char **args, t_info *info)
 		{
 			merged_args = merge_args_and_add_spaces(\
 			info->redir_args, new_redir_args, count_strings(info->redir_args));
+			expand_and_strip_quotes_in_args(merged_args, info);
 			free_args(new_redir_args);
 			info->redir_args = merged_args;
 		}
@@ -44,7 +45,6 @@ int	handle_io_redirection(t_ast *node, t_info *info)
 	while (node && status == SUCCESS)
 	{
 		args = ft_split(node->right->data, ARR_SEP);
-		process_quotes_in_args(args);
 		status = handle_ft_redirection(args[0], node, info);
 		process_redir_args(args, info);
 		free_args(args);
