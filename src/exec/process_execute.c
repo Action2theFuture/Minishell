@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 22:12:12 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/01 15:40:28 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/01 17:57:43 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,6 +114,5 @@ void	process_phrase_node(t_ast *node, t_info *info)
 	}
 	if (cmd_node && info->status == SUCCESS)
 		info->exit_status = dispatch_cmd(cmd_node, info);
-	free_args(info->redir_args);
-	restore_fds(info);
+	(free_args(info->redir_args), info->redir_args = NULL, restore_fds(info));
 }
