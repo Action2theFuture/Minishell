@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 10:07:54 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/01 10:10:09 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/01 15:39:40 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,14 +17,14 @@ int	here_doc_redir(char *arg, t_info *info)
 	info->tmp_fd = dup(STDOUT_FILENO);
 	if (info->tmp_fd == -1)
 		return (fd_log_error("fd error!", NULL, NULL));
+	if (redirect_to_null(info) == FAILURE)
+		return (FAILURE);
 	if (dup2(info->origin_stdin_fd, STDIN_FILENO) == -1)
 		return (fd_log_error("Dup origin_stdin_fd error!", NULL, NULL));
 	if (dup2(info->origin_stdout_fd, STDOUT_FILENO) == -1)
 		return (fd_log_error("Dup origin_stdout_fd error!", NULL, NULL));
 	info->stdin_fd = open_file_with_mode(HEREDOC_TMP, WRITE);
 	here_doc(info->stdin_fd, arg, info);
-	if (dup2(info->tmp_fd, STDOUT_FILENO) == -1)
-		return (fd_log_error("Dup tmp fd error!", NULL, NULL));
 	close(info->tmp_fd);
 	return (SUCCESS);
 }
@@ -53,6 +53,7 @@ int	input_redir(char *arg, t_ast *node, t_info *info)
 		return (fd_log_error("Dup stdin_fd error!", NULL, NULL));
 	if (dup2(info->stdin_fd, STDIN_FILENO) == -1)
 		return (fd_log_error("Dup stdin_fd error!", NULL, NULL));
+	close(info->stdin_fd);
 	return (SUCCESS);
 }
 
