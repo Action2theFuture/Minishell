@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 13:12:49 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/31 20:26:32 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/01 10:09:14 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,11 @@ void					clear_info(t_info *info);
 void					reset_consts_fd(t_info *info);
 
 // args_utils.c
+int						count_strings(char **arr);
+char					**allocate_null_and_cmd_chunk(char **cmd, int cmd_cnt);
+char					**copy_str_arr(char **src);
 void					free_args(char **args);
 void					replace_env_vars_in_args(char **args, t_info *info);
-char					**allocate_null_and_cmd_chunk(char **cmd, int cmd_cnt);
 
 // quotes_utils.c
 void					remove_consecutive_double_quotes_from_args(char **args);
@@ -125,9 +127,7 @@ void					clear_env_arr(char **arr);
 
 // dispatch_cmd.c
 int						dispatch_cmd(t_ast *node, t_info *info);
-
-// dispatch_cmd_utils.c
-char					**prepend_cmd_and_add_spaces(\
+char					**merge_args_and_add_spaces(\
 				char **cmd, char **args, int cmd_cnt);
 
 // launch_process_cmd.c
@@ -152,8 +152,17 @@ void					cleanup_and_exit(\
 // redir.c
 int						handle_io_redirection(t_ast *node, t_info *info);
 
+// process_redir.c
+
+int						here_doc_redir(char *arg, t_info *info);
+int						input_redir(char *arg, t_ast *node, t_info *info);
+int						output_redir(char *arg, t_ast *node, t_info *info);
+int						handle_ft_redirection(\
+				char *arg, t_ast *node, t_info *info);
+
 // redir_utils.c
 int						open_file_with_mode(char *file, int mode);
+void					close_fds(t_info *info);
 void					cleanup_tmp_file(void);
 void					process_quotes_in_args(char **str);
 void					process_quotes_in_arg(char *str);

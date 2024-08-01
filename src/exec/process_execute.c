@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 22:12:12 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/31 21:40:56 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/01 10:17:53 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,8 @@ void	process_phrase_node(t_ast *node, t_info *info)
 	if (redir_node && redir_node->type != SUBSHELL)
 	{
 		info->status = handle_io_redirection(redir_node->left, info);
-		free_args(info->redir_args);
+		if (redir_node->right)
+			free_args(info->redir_args);
 		if (redir_node->right && info->status == SUCCESS)
 			info->status = handle_io_redirection(redir_node->right, info);
 		if (info->pipe_loc == MIDDLE)
@@ -113,7 +114,6 @@ void	process_phrase_node(t_ast *node, t_info *info)
 	}
 	if (cmd_node && info->status == SUCCESS)
 		info->exit_status = dispatch_cmd(cmd_node, info);
-	if (info->redir_args)
-		free_args(info->redir_args);
+	free_args(info->redir_args);
 	restore_fds(info);
 }

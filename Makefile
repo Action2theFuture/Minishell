@@ -6,7 +6,7 @@
 #    By: junsan <junsan@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    CreateCd: 2024/05/11 19:03:01 by junsan            #+#    #+#             #
-#    Updated: 2024/07/31 22:15:42 by junsan           ###   ########.fr        #
+#    Updated: 2024/08/01 10:21:02 by junsan           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -52,15 +52,14 @@ PARSING	= parsing.c arg_parse.c parse_subshell.c									\
 		/utils/validation/valid_token.c /utils/validation/valid_token_utils.c		\
 		/utils/validation/valid_token_err.c /utils/validation/valid_token_err_2.c
 UTILS	= string_utils.c string_utils_2.c quotes_str.c error_utils.c 				\
-		subshell_and_quote_str.c normalize_spaces.c arr_utils.c
+		subshell_and_quote_str.c normalize_spaces.c
 SIGNAL	= handler_signal.c
 EXECUTE = execute.c redir.c get_file_list.c dispatch_cmd.c launch_process_cmd.c 	\
 		launch_process_pipe.c execution_pipe.c subshell.c							\
-		process_execute.c															\
+		process_execute.c process_redir.c											\
 		/utils/redir_utils.c /utils/info_utils.c /utils/get_file_list_utils.c		\
 		/utils/fd_utils.c  /utils/list_to_array.c /utils/args_utils.c 				\
-		/utils/get_absolute_path.c /utils/dispatch_cmd_utils.c						\
-		/utils/get_path_type.c /utils/find_cmd_in_path.c							\
+		/utils/get_absolute_path.c /utils/get_path_type.c /utils/find_cmd_in_path.c	\
 		/utils/quotes_utils.c /utils/get_bin_path.c /utils/here_doc.c				\
 		/utils/expansion_and_quotes/var_expansion_with_args.c						\
 		/utils/expansion_and_quotes/replace_env_vars.c								\
@@ -124,7 +123,7 @@ $(LIBFT):
 	@echo "$(COLOR_BLUE)Compliling Obj files...$(COLOR_RESET)"
 
 debug: CFLAGS += -g3 -fsanitize=address
-debug: $(NAME)
+debug: fclean $(NAME)
 		@echo "$(COLOR_GREEN)Start Debugging! 🛠️$(COLOR_RESET)"
 
 clean:
