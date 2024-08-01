@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 13:27:16 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/31 20:05:59 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/01 09:15:43 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,4 @@ int						fd_log_error(char *cmd, char *arg, char *error);
 int						execve_log_error(char *cmd, int error);
 void					parse_log_error(int err, int *exit_status);
 
-// arr_utils.c
-int						count_strings(char **arr);
 #endif // UTILS_H
