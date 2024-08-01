@@ -6,7 +6,7 @@
 #    By: junsan <junsan@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    CreateCd: 2024/05/11 19:03:01 by junsan            #+#    #+#             #
-#    Updated: 2024/08/01 15:42:07 by junsan           ###   ########.fr        #
+#    Updated: 2024/08/01 22:34:37 by junsan           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -53,7 +53,7 @@ PARSING	= parsing.c arg_parse.c parse_subshell.c									\
 		/utils/validation/valid_token_err.c /utils/validation/valid_token_err_2.c
 UTILS	= string_utils.c string_utils_2.c quotes_str.c error_utils.c 				\
 		subshell_and_quote_str.c normalize_spaces.c
-SIGNAL	= handler_signal.c
+SIGNAL	= handler_signal.c handler_heredoc_signal.c
 EXECUTE = execute.c redir.c get_file_list.c dispatch_cmd.c launch_process_cmd.c 	\
 		launch_process_pipe.c execution_pipe.c subshell.c							\
 		process_execute.c process_redir.c											\
@@ -105,7 +105,6 @@ $(NAME) : $(LIBFT) $(OBJS)
 	@$(CC) $(CFLAGS) -o $@ $(OBJS) $(LIBFT) $(LD_FLAGS) > /dev/null 2>&1 & COMPILER_PID=$$!; \
 	./$(SPINNER_SCRIPT) $$COMPILER_PID; \
 	wait $$COMPILER_PID
-	@echo "$(COLOR_CYAN)Welcome to minishell$(COLOR_RESET)"
 	@echo "$(COLOR_GREEN)Program Name : $(NAME)$(COLOR_RESET)"
 
 OBJ_FILES_SPINNER_PID=

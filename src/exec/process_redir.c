@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 10:07:54 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/01 15:39:40 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/01 22:39:04 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ int	here_doc_redir(char *arg, t_info *info)
 		return (fd_log_error("Dup origin_stdout_fd error!", NULL, NULL));
 	info->stdin_fd = open_file_with_mode(HEREDOC_TMP, WRITE);
 	here_doc(info->stdin_fd, arg, info);
+	set_signal_handler(SIGNAL_HANDLER);
 	close(info->tmp_fd);
 	return (SUCCESS);
 }
