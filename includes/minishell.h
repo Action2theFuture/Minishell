@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/11 19:22:19 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/01 22:23:41 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/02 12:31:47 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@
 # include "minishell_types.h"
 # include "parsing.h"
 # include "execute.h"
+# include "expansion_and_quotes.h"
 # include "builtin.h"
 # include "tokenize.h"
 # include "utils.h"
