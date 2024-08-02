@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 14:08:08 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/31 09:38:07 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/02 10:03:31 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,18 +57,5 @@ int	restore_stdio(t_info *info)
 		return (fd_log_error("Dup origin_stdin_fd error", NULL, NULL));
 	if (dup2(info->origin_stdout_fd, STDOUT_FILENO) == -1)
 		return (fd_log_error("Dup origin_stdout_fd error", NULL, NULL));
-	return (SUCCESS);
-}
-
-int	redirect_to_null(t_info *info)
-{
-	info->fd_null = open(DEV_NULL_PATH, O_WRONLY);
-	if (info->fd_null == -1)
-		return (fd_log_error("fd error!", NULL, NULL));
-	if (dup2(info->fd_null, STDOUT_FILENO) == -1)
-	{
-		close(info->fd_null);
-		return (fd_log_error("Dup fd error!", NULL, NULL));
-	}
 	return (SUCCESS);
 }
