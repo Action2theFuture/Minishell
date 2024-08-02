@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 10:03:13 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/02 17:58:29 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/02 19:36:13 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,12 +54,14 @@ int	redirect_stdin_to_empty(int stdin)
 		close(pipe_fd[1]);
 		return (fd_log_error("write error!", NULL, NULL));
 	}
-	close(pipe_fd[1]);
+	if (pipe_fd[1] != -1)
+		close(pipe_fd[1]);
 	if (dup2(pipe_fd[0], stdin) == -1)
 	{
 		close(pipe_fd[0]);
 		return (fd_log_error("dup2 error!", NULL, NULL));
 	}
-	close(pipe_fd[0]);
+	if (pipe_fd[0] != -1)
+		close(pipe_fd[0]);
 	return (SUCCESS);
 }

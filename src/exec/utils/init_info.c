@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 12:04:00 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/02 12:05:08 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/02 19:00:25 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 static void	init_fds(t_info *info)
 {
+	info->stdin_pipe = -1;
 	info->stdin_fd = -1;
 	info->stdout_fd = -1;
 	info->origin_stdin_fd = -1;

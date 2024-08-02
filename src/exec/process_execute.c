@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 22:12:12 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/02 18:01:02 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/02 21:03:04 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,13 +33,8 @@ static void	process_io_redirections(t_ast *redir_node, t_info *info)
 		info->status = handle_io_redirection(redir_node->right, info);
 	if (info->pipe_loc == FIRST || info->pipe_loc == MIDDLE)
 	{
-		if (redirect_input_to_null(info) == FAILURE)
-			info->exit_status = FAILURE;
-		if (info->pipe_loc == MIDDLE)
-		{
-			info->pipe_loc = LAST;
-			info->is_re_pipe = true;
-		}
+		info->pipe_loc = LAST;
+		info->is_re_pipe = true;
 	}
 }
 
@@ -58,10 +53,14 @@ void	process_phrase_node(t_ast *node, t_info *info)
 		process_io_redirections(redir_node, info);
 	if (cmd_node && info->status == SUCCESS)
 		info->exit_status = dispatch_cmd(cmd_node, info);
-	(free_args(info->redir_args), info->redir_args = NULL, restore_fds(info));
+	(free_args(info->redir_args), info->redir_args = NULL);
 	if (redir_node)
 	{
-		if (info->stdin_pipe)
+		if (redirect_output_to_null(info) == FAILURE)
+			info->exit_status = FAILURE;
+		if (info->stdin_pipe != -1)
 			redirect_stdin_to_empty(info->stdin_pipe);
 	}
+	else
+		restore_fds(info);
 }

@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 08:49:20 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/02 12:42:21 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/02 19:46:11 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,19 +65,23 @@ static void	close_pipe_ends(t_info *info)
 {
 	if (info->pipe_loc == FIRST)
 	{
-		close(info->tmp_pipe[2]);
+		if (info->tmp_pipe[2] != -1)
+			close(info->tmp_pipe[2]);
 		info->tmp_pipe[2] = -1;
 	}
 	if (info->pipe_loc == MIDDLE)
 	{
-		close(info->tmp_pipe[0]);
+		if (info->tmp_pipe[0] != -1)
+			close(info->tmp_pipe[0]);
 		info->tmp_pipe[0] = -1;
-		close(info->tmp_pipe[2]);
+		if (info->tmp_pipe[2] != -1)
+			close(info->tmp_pipe[2]);
 		info->tmp_pipe[2] = -1;
 	}
 	if (info->pipe_loc == LAST)
 	{
-		close(info->tmp_pipe[0]);
+		if (info->tmp_pipe[0] != -1)
+			close(info->tmp_pipe[0]);
 		info->tmp_pipe[0] = -1;
 	}
 }
