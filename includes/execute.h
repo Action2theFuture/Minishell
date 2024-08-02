@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 13:12:49 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/02 12:31:17 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/02 18:01:25 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,7 @@ void					close_tmp_pipe(int *tmp_pipe);
 // redirect_to_null.c
 int						redirect_input_to_null(t_info *info);
 int						redirect_output_to_null(t_info *info);
+int						redirect_stdin_to_empty(int stdin);
 
 // get_file_list.c
 void					free_file_list(t_file_list *file_list);
