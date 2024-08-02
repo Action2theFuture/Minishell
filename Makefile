@@ -6,7 +6,7 @@
 #    By: junsan <junsan@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    CreateCd: 2024/05/11 19:03:01 by junsan            #+#    #+#             #
-#    Updated: 2024/08/01 22:34:37 by junsan           ###   ########.fr        #
+#    Updated: 2024/08/02 10:50:38 by junsan           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,49 +30,47 @@ CFLAGS 	:= -Wall -Wextra -Werror -g3
 
 SRC_DIR = src
 PARSING_DIR = $(SRC_DIR)/parsing
+TOKENIZE_DIR = $(PARSING_DIR)/tokenize
+VALIIDATION_DIR = $(PARSING_DIR)/utils/validation
 BUILT_IN_DIR = $(SRC_DIR)/built_in
 UTILS_DIR = $(SRC_DIR)/utils
 INIT_DIR = $(SRC_DIR)/init
 SIGNAL_DIR = $(SRC_DIR)/signal
 EXECUTE_DIR = $(SRC_DIR)/exec
+EXPANSION_AND_QUOTES_DIR = $(EXECUTE_DIR)/utils/expansion_and_quotes
 PRINT_DIR = $(SRC_DIR)/print
+
 OBJ_DIR = obj
 
 SRC 	= minishell.c process_input.c
 INIT	= init_minishell.c env_init.c increment_shlvl.c env_utils.c env_utils_2.c
-PARSING	= parsing.c arg_parse.c parse_subshell.c									\
-		parse_logical.c parse_pipe.c parse_phrase.c parse_redirection.c				\
-		parse_phrase_parts.c														\
-		/tokenize/tokenize.c /tokenize/handler_operators_and_spaces.c				\
-		/tokenize/handle_quotes.c /tokenize/handle_subshell.c						\
+PARSING	= parsing.c arg_parse.c parse_subshell.c parse_logical.c parse_pipe.c 		\
+		parse_phrase.c parse_redirection.c parse_phrase_parts.c						\
 		/utils/parsing_utils.c /utils/tokenize_utils.c /utils/tokenize_utils_2.c	\
 		/utils/type_redir_functions.c /utils/type_functions.c /utils/get_type.c 	\
 		/utils/subshell_utils.c /utils/parsing_utils_2.c 							\
-		/utils/collect_data_until_subshell.c /utils/parsing_quotes_in_cmd.c			\
-		/utils/validation/valid_token.c /utils/validation/valid_token_utils.c		\
-		/utils/validation/valid_token_err.c /utils/validation/valid_token_err_2.c
+		/utils/collect_data_until_subshell.c /utils/parsing_quotes_in_cmd.c
+TOKENIZE = tokenize.c handler_operators_and_spaces.c handle_quotes.c 				\
+		handle_subshell.c
+VALIIDATION = valid_token.c valid_token_utils.c valid_token_err.c 					\
+		valid_token_err_2.c
 UTILS	= string_utils.c string_utils_2.c quotes_str.c error_utils.c 				\
 		subshell_and_quote_str.c normalize_spaces.c
 SIGNAL	= handler_signal.c handler_heredoc_signal.c
 EXECUTE = execute.c redir.c get_file_list.c dispatch_cmd.c launch_process_cmd.c 	\
 		launch_process_pipe.c execution_pipe.c subshell.c							\
-		process_execute.c process_redir.c											\
+		process_execute.c process_redir.c process_execute_pipe.c					\
 		/utils/redir_utils.c /utils/info_utils.c /utils/get_file_list_utils.c		\
 		/utils/fd_utils.c  /utils/list_to_array.c /utils/args_utils.c 				\
 		/utils/get_absolute_path.c /utils/get_path_type.c /utils/find_cmd_in_path.c	\
 		/utils/quotes_utils.c /utils/get_bin_path.c /utils/here_doc.c				\
-		/utils/expansion_and_quotes/var_expansion_with_args.c						\
-		/utils/expansion_and_quotes/replace_env_vars.c								\
-		/utils/expansion_and_quotes/replace_env_vars_utils.c						\
-		/utils/expansion_and_quotes/replace_env_vars_utils_2.c						\
-		/utils/expansion_and_quotes/handler_replace_env_vars.c						\
-		/utils/expansion_and_quotes/handler_under_score.c							\
-		/utils/expansion_and_quotes/process_expand_strip_quotes.c					\
-		/utils/expansion_and_quotes/handler_replace_env_vars_without_quotes.c		\
-		/utils/expansion_and_quotes/init_utils_for_expansion.c						\
-		/utils/expansion_and_quotes/init_utils_for_expansion_2.c					\
-		/utils/expansion_and_quotes/expand_wildcard.c								\
-		/utils/expansion_and_quotes/expand_wildcard_utils.c
+		/utils/redirect_to_null.c													
+EXPANSION_AND_QUOTES = var_expansion_with_args.c replace_env_vars.c					\
+		replace_env_vars_utils.c replace_env_vars_utils_2.c							\
+		handler_replace_env_vars.c handler_under_score.c							\
+		process_expand_strip_quotes.c handler_replace_env_vars_without_quotes.c		\
+		init_utils_for_expansion.c	init_utils_for_expansion_2.c					\
+		expand_wildcard.c expand_wildcard_utils.c
 BUILT_IN = built_in.c ft_cd.c  ft_env.c ft_export.c ft_unset.c						\
 		ft_echo.c ft_exit.c ft_pwd.c												\
 		utils/cd_utils.c utils/ft_export_utils.c utils/ft_export_utils_2.c			\
@@ -87,6 +85,9 @@ SRCS += $(addprefix $(INIT_DIR)/, $(INIT))
 SRCS += $(addprefix $(SIGNAL_DIR)/, $(SIGNAL))
 SRCS += $(addprefix $(EXECUTE_DIR)/, $(EXECUTE))
 SRCS += $(addprefix $(BUILT_IN_DIR)/, $(BUILT_IN))
+SRCS += $(addprefix $(EXPANSION_AND_QUOTES_DIR)/, $(EXPANSION_AND_QUOTES))
+SRCS += $(addprefix $(VALIIDATION_DIR)/, $(VALIIDATION))
+SRCS += $(addprefix $(TOKENIZE_DIR)/, $(TOKENIZE))
 
 OBJS = $(patsubst %.c,$(OBJ_DIR)/%.o,$(SRCS))
 

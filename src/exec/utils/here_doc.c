@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/04 13:40:54 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/01 22:37:54 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/02 09:46:11 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,6 @@ static int	process_line_and_write(\
 	}
 	else
 		write(infile, line, ft_strlen(line));
-	write(infile, "\n", 1);
 	return (1);
 }
 
@@ -109,7 +108,8 @@ int	here_doc(int infile, char *limiter, t_info *info)
 	g_heredoc_interrupted = 0;
 	while (1)
 	{
-		line = readline("heredoc> ");
+		ft_putstr_fd("heredoc> ", STDIN_FILENO);
+		line = get_next_line(STDIN_FILENO);
 		if (line == NULL || g_heredoc_interrupted || \
 			!process_line_and_write(infile, line, limiter, info))
 			break ;
