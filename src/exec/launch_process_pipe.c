@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 08:49:20 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/31 15:27:29 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/02 12:42:21 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,20 +61,34 @@ static void	execute_child_process(\
 	exit(info->exit_status);
 }
 
-static void	handle_parent_process(t_info *info)
+static void	close_pipe_ends(t_info *info)
 {
 	if (info->pipe_loc == FIRST)
 	{
 		close(info->tmp_pipe[2]);
+		info->tmp_pipe[2] = -1;
 	}
 	if (info->pipe_loc == MIDDLE)
 	{
 		close(info->tmp_pipe[0]);
+		info->tmp_pipe[0] = -1;
 		close(info->tmp_pipe[2]);
+		info->tmp_pipe[2] = -1;
 	}
 	if (info->pipe_loc == LAST)
 	{
 		close(info->tmp_pipe[0]);
+		info->tmp_pipe[0] = -1;
+	}
+}
+
+static void	handle_parent_process(t_info *info)
+{
+	if (info->pipe_loc == FIRST || info->pipe_loc == MIDDLE)
+		close_pipe_ends(info);
+	if (info->pipe_loc == LAST)
+	{
+		close_pipe_ends(info);
 		wait_for_child_task(info);
 	}
 }

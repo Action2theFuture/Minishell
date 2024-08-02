@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 14:08:08 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/02 10:03:31 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/02 12:14:01 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,4 +58,19 @@ int	restore_stdio(t_info *info)
 	if (dup2(info->origin_stdout_fd, STDOUT_FILENO) == -1)
 		return (fd_log_error("Dup origin_stdout_fd error", NULL, NULL));
 	return (SUCCESS);
+}
+
+void	close_tmp_pipe(int *tmp_pipe)
+{
+	int	i;
+
+	i = -1;
+	while (++i < 3)
+	{
+		if (tmp_pipe[i] != -1)
+		{
+			close(tmp_pipe[i]);
+			tmp_pipe[i] = -1;
+		}
+	}
 }
