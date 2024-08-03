@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 18:34:10 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/02 18:30:48 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/03 10:27:14 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ void	traverse_tree(t_ast *node, t_info *info)
 		subshell_info.in_subshell = true;
 		info->exit_status = process_subshell_node(node, &subshell_info);
 		info->in_subshell = false;
+		clear_info(&subshell_info);
 	}
 	else if (node->type != PIPE && node->type != LOGICAL && \
 		node->type != SUBSHELL)
