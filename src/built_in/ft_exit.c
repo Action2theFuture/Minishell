@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 12:05:58 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/31 14:48:36 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/03 09:58:11 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int	ft_exit(t_info *info)
 	num_args = 0;
 	while (args[num_args])
 		num_args++;
-	if (num_args == 1)
+	if (num_args == 1 && !info->in_subshell)
 		(ft_putstr_fd("exit\n", 2), \
 		cleanup_and_exit(EXIT_SUCCESS, info->args, NULL, info));
 	if (num_args > 2)
