@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 18:34:10 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/02 18:30:48 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/03 10:51:33 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,19 @@ void	categorize_tree(t_ast *node, t_info *info)
 		process_phrase_node(node, info);
 }
 
-void	traverse_tree(t_ast *node, t_info *info)
+static void	handle_subshell_node(t_ast *node, t_info *info)
 {
 	t_info	subshell_info;
 
+	init_info(&subshell_info, info->env, node);
+	subshell_info.in_subshell = true;
+	info->exit_status = process_subshell_node(node, &subshell_info);
+	info->in_subshell = false;
+	clear_info(&subshell_info);
+}
+
+void	traverse_tree(t_ast *node, t_info *info)
+{
 	if (node == NULL)
 		return ;
 	if (node->type == LOGICAL)
@@ -33,12 +42,7 @@ void	traverse_tree(t_ast *node, t_info *info)
 		process_pipe_node(node, info);
 	else if (node->type == SUBSHELL && ft_strncmp(node->data, "(", 1) == 0 \
 			&& info->status == SUCCESS)
-	{
-		init_info(&subshell_info, info->env, node);
-		subshell_info.in_subshell = true;
-		info->exit_status = process_subshell_node(node, &subshell_info);
-		info->in_subshell = false;
-	}
+		handle_subshell_node(node, info);
 	else if (node->type != PIPE && node->type != LOGICAL && \
 		node->type != SUBSHELL)
 	{

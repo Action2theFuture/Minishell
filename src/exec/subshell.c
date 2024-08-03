@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/27 19:38:46 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/31 13:37:45 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/03 10:55:14 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ static void	handle_special_nodes(t_ast	**node, t_info *info)
 		init_info(&subshell_info, info->env, *node);
 		process_logical_node_in_subshell(&(*node)->left, &subshell_info);
 		info->exit_status = subshell_info.exit_status;
+		clear_info(&subshell_info);
 	}
 }
 
@@ -91,11 +92,15 @@ int	process_subshell_node(t_ast *node, t_info *info)
 		return (fd_log_error("fork_error", NULL, NULL));
 	if (pid == 0)
 	{
+		if (backup_stdio(info) == FAILURE)
+			fd_log_error(NULL, NULL, strerror(errno));
 		set_signal_handler(DFL);
 		traverse_tree_in_subshell(&subshell_node, info);
-		exit(info->exit_status);
+		if (restore_stdio(info) == FAILURE)
+			fd_log_error(NULL, NULL, strerror(errno));
 	}
 	else
 		wait_for_child_task(info);
+	cleanup_tmp_file();
 	return (info->exit_status);
 }
