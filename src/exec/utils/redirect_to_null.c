@@ -6,39 +6,43 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 10:03:13 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/02 19:36:13 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/03 08:50:17 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	redirect_output_to_null(t_info *info)
+int	redirect_output_to_null(void)
 {
-	info->fd_null = open(DEV_NULL_PATH, O_WRONLY);
-	if (info->fd_null == -1)
+	int	fd_null;
+
+	fd_null = open(DEV_NULL_PATH, O_WRONLY);
+	if (fd_null == -1)
 		return (fd_log_error("fd error!", NULL, NULL));
-	if (dup2(info->fd_null, STDOUT_FILENO) == -1)
+	if (dup2(fd_null, STDOUT_FILENO) == -1)
 	{
-		close(info->fd_null);
+		close(fd_null);
 		return (fd_log_error("Dup fd error!", NULL, NULL));
 	}
-	close(info->fd_null);
-	info->fd_null = -1;
+	close(fd_null);
+	fd_null = -1;
 	return (SUCCESS);
 }
 
-int	redirect_input_to_null(t_info *info)
+int	redirect_input_to_null(void)
 {
-	info->fd_null = open(DEV_NULL_PATH, O_RDONLY);
-	if (info->fd_null == -1)
+	int	fd_null;
+
+	fd_null = open(DEV_NULL_PATH, O_RDONLY);
+	if (fd_null == -1)
 		return (fd_log_error("fd error!", NULL, NULL));
-	if (dup2(info->fd_null, STDIN_FILENO) == -1)
+	if (dup2(fd_null, STDIN_FILENO) == -1)
 	{
-		close(info->fd_null);
+		close(fd_null);
 		return (fd_log_error("Dup fd error!", NULL, NULL));
 	}
-	close(info->fd_null);
-	info->fd_null = -1;
+	close(fd_null);
+	fd_null = -1;
 	return (SUCCESS);
 }
 
@@ -63,5 +67,22 @@ int	redirect_stdin_to_empty(int stdin)
 	}
 	if (pipe_fd[0] != -1)
 		close(pipe_fd[0]);
+	return (SUCCESS);
+}
+
+int	redirect_stdout_to_null(int stdout)
+{
+	int	fd_null;
+
+	fd_null = open(DEV_NULL_PATH, O_WRONLY);
+	if (fd_null == -1)
+		return (fd_log_error("fd error!", NULL, NULL));
+	if (dup2(fd_null, stdout) == -1)
+	{
+		close(fd_null);
+		return (fd_log_error("Dup fd error!", NULL, NULL));
+	}
+	close(fd_null);
+	fd_null = -1;
 	return (SUCCESS);
 }
