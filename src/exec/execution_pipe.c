@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 21:28:11 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/02 19:03:11 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/03 12:12:54 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,15 @@
 void	cleanup_and_exit(int status, char **args, char **env, t_info *info)
 {
 	if (env)
-		clear_env_arr(env);
+		(clear_env_arr(env), env = NULL);
 	free_tree(info->root);
+	info->root = NULL;
 	if (args)
 		free_args(args);
 	if (info->path)
-		free(info->path);
+		(free(info->path), info->path = NULL);
 	clear_env(info->env);
+	info->env = NULL;
 	exit(status);
 }
 

@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 10:22:38 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/03 12:01:26 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/03 12:08:46 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ static void	handle_middle_and_last_pipe_segment(t_ast *pipe_node, t_info *info)
 	info->is_re_pipe = false;
 	process_phrase_node(pipe_node->left, info);
 	if (info->in_subshell)
-		exit(info->exit_status);
+		cleanup_and_exit(info->exit_status, NULL, NULL, info);
 }
 
 static void	process_pipe_segment(t_ast *pipe_node, t_info *info)
@@ -48,7 +48,7 @@ static void	process_pipe_segment(t_ast *pipe_node, t_info *info)
 		info->is_re_pipe = false;
 		process_phrase_node(pipe_node->left, info);
 		if (info->in_subshell)
-			exit(info->exit_status);
+			cleanup_and_exit(info->exit_status, NULL, NULL, info);
 	}
 }
 

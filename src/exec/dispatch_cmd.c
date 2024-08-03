@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 17:58:55 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/03 09:02:41 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/03 12:14:09 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,7 @@ static int	start_execute(char **chunk, t_info *info)
 	}
 	free_args(chunk);
 	if (info->path)
-		free(info->path);
+		(free(info->path), info->path = NULL);
 	return (status);
 }
 
