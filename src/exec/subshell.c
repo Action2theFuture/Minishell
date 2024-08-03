@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/27 19:38:46 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/03 10:36:29 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/03 10:55:14 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,9 +91,16 @@ int	process_subshell_node(t_ast *node, t_info *info)
 	if (pid == -1)
 		return (fd_log_error("fork_error", NULL, NULL));
 	if (pid == 0)
-		(set_signal_handler(DFL), \
-		 traverse_tree_in_subshell(&subshell_node, info));
+	{
+		if (backup_stdio(info) == FAILURE)
+			fd_log_error(NULL, NULL, strerror(errno));
+		set_signal_handler(DFL);
+		traverse_tree_in_subshell(&subshell_node, info);
+		if (restore_stdio(info) == FAILURE)
+			fd_log_error(NULL, NULL, strerror(errno));
+	}
 	else
 		wait_for_child_task(info);
+	cleanup_tmp_file();
 	return (info->exit_status);
 }
