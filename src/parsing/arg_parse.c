@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/04 14:14:41 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/09 19:08:39 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/03 14:11:24 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,16 +38,22 @@ static size_t	get_total_arg_list_size(t_token *token)
 static void	file_data(char *data, t_token **token)
 {
 	char	*ptr;
+	int		len;
 
 	ptr = data;
 	while (*token && (*token)->type == CMD)
 	{
-		ft_strlcpy(ptr, (*token)->data, ft_strlen((*token)->data) + 1);
-		ptr += ft_strlen((*token)->data);
-		if ((*token)->next && (*token)->next->type == CMD)
+		len = ft_strlen((*token)->data);
+		if (len > 0 && \
+			!(len == 2 && (*token)->data[0] == '"' && (*token)->data[1] == '"'))
 		{
-			*ptr = ARR_SEP;
-			ptr++;
+			ft_strlcpy(ptr, (*token)->data, len + 1);
+			ptr += ft_strlen((*token)->data);
+			if ((*token)->next && (*token)->next->type == CMD)
+			{
+				*ptr = ARR_SEP;
+				ptr++;
+			}
 		}
 		*token = (*token)->next;
 	}
