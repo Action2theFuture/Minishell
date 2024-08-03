@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 10:22:38 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/03 11:29:10 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/03 12:01:26 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ static void	handle_middle_and_last_pipe_segment(t_ast *pipe_node, t_info *info)
 		info->pipe_loc = MIDDLE;
 		process_phrase_node(pipe_node->left, info);
 		pipe_node = pipe_node->parent;
+		if (!pipe_node)
+			break ;
 		if (info->is_re_pipe && \
 			pipe_node->parent && pipe_node->parent->type == PIPE)
 		{
@@ -32,6 +34,8 @@ static void	handle_middle_and_last_pipe_segment(t_ast *pipe_node, t_info *info)
 	info->pipe_loc = LAST;
 	info->is_re_pipe = false;
 	process_phrase_node(pipe_node->left, info);
+	if (info->in_subshell)
+		exit(info->exit_status);
 }
 
 static void	process_pipe_segment(t_ast *pipe_node, t_info *info)
@@ -43,6 +47,8 @@ static void	process_pipe_segment(t_ast *pipe_node, t_info *info)
 		info->pipe_loc = LAST;
 		info->is_re_pipe = false;
 		process_phrase_node(pipe_node->left, info);
+		if (info->in_subshell)
+			exit(info->exit_status);
 	}
 }
 
@@ -68,6 +74,7 @@ void	process_pipe_node(t_ast *pipe_node, t_info *info)
 		process_phrase_node(pipe_node->left, info);
 		if (pipe_node->parent && pipe_node->parent->type == PIPE)
 			process_pipe_segment(pipe_node, info);
+		info->has_multiple_pipes = false;
 		info->is_pipe = false;
 		info->is_re_pipe = false;
 		info->pipe_loc = -1;
