@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/13 19:46:03 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/01 21:09:35 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/03 12:54:46 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static void	handle_repeated_operators(\
 	cnt = count_repeated_chars(*input, **input);
 	if (cnt < 3)
 	{
-		if (*((*input) + 1) == **input)
+		if (cnt > 1 && *((*input) + 1) == **input)
 		{
 			add_token(list, *input, 2);
 			(*input)++;
