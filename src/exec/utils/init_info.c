@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 12:04:00 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/02 12:05:08 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/03 09:26:21 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 static void	init_fds(t_info *info)
 {
+	info->stdin_pipe = -1;
 	info->stdin_fd = -1;
 	info->stdout_fd = -1;
 	info->origin_stdin_fd = -1;
@@ -21,7 +22,6 @@ static void	init_fds(t_info *info)
 	info->backup_stdin = -1;
 	info->backup_stdout = -1;
 	info->tmp_fd = -1;
-	info->fd_null = -1;
 	info->stdin_backup = dup(STDIN_FILENO);
 	if (info->stdin_backup == -1)
 		perror("dup stdin_backup error");
@@ -38,6 +38,7 @@ static void	init_flags(t_info *info)
 	info->is_re_pipe = false;
 	info->pipe_loc = -1;
 	info->in_subshell = false;
+	info->has_multiple_pipes = false;
 }
 
 static void	init_pipes(t_info *info)
