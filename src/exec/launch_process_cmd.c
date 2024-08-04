@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/23 17:08:10 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/04 09:21:04 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/04 14:51:59 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,12 @@ static void	execute_cmd(\
 		&& execve(cmd, args, env) == -1)
 		cleanup_and_exit(125 + execve_log_error(cmd, errno), args, env, info);
 	else if (info->path)
-		cleanup_and_exit(execve(info->path, args, env), args, env, info);
+	{
+		if (execve(info->path, args, env) == -1)
+			cleanup_and_exit(\
+					126 + execve_log_error(cmd, EFAULT), args, env, info);
+		(free(info->path), info->path = NULL);
+	}
 	if (execve(cmd, args, env) == -1)
 		cleanup_and_exit(126 + execve_log_error(cmd, errno), args, env, info);
 }

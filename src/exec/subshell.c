@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/27 19:38:46 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/04 14:09:53 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/04 14:54:19 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static void	handle_special_nodes(t_ast	**node, t_info *info)
 
 	if ((*node)->type == LOGICAL)
 		process_logical_node_in_subshell(node, info);
-	if ((*node)->type == PIPE)
+	else if ((*node)->type == PIPE)
 		process_pipe_node(*node, info);
 	else if ((*node)->type == SUBSHELL)
 	{
@@ -62,7 +62,7 @@ static void	traverse_tree_in_subshell(t_ast **node, t_info *info)
 			last_node = *node;
 			while (last_node && last_node->type != SUBSHELL)
 				last_node = last_node->left;
-			if (last_node->data[0] == ')')
+			if (last_node->data[0] == ')') 
 				traverse_tree_in_subshell(&last_node, info);
 		}
 */
@@ -76,7 +76,8 @@ static void	process_logical_node_in_subshell(t_ast **node, t_info *info)
 		traverse_tree_in_subshell(&(*node)->left, info);
 	else if (ft_strncmp((*node)->data, "||", 2) == 0)
 	{
-		if (status > 0)
+		print_tree((*node)->left, 10);
+		if (info->exit_status > 0)
 			traverse_tree_in_subshell(&(*node)->left, info);
 	}
 	cleanup_and_exit(info->exit_status, NULL, NULL, info);
