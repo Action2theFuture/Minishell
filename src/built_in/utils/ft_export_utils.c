@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 10:19:00 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/04 14:12:33 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/04 15:39:46 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,8 @@ bool	var_if_exist(const char *name, t_env *lst)
 {
 	while (lst)
 	{
-		if (ft_strncmp(name, lst->name, ft_strlen(name)) == 0)
+		if ((ft_strlen(name) == ft_strlen(lst->name)) && \
+			ft_strncmp(name, lst->name, ft_strlen(lst->name)) == 0)
 			return (true);
 		lst = lst->next;
 	}
