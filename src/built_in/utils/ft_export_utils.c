@@ -6,33 +6,34 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 10:19:00 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/26 09:27:32 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/04 13:35:30 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	check_first_arg(const char arg)
+bool	is_valid_name(const char *name)
 {
-	if (ft_isalpha(arg) || arg == '_')
-		return (0);
-	else
-		return (1);
+	int	i;
+
+	i = 0;
+	if (!name || (!ft_isalpha((unsigned char)name[i]) && name[i] != '_'))
+		return (false);
+	while (name[i])
+	{
+		if (!ft_isalnum((unsigned char)name[i]) && name[i] != '_')
+			return (false);
+		i++;
+	}
+	return (true);
 }
 
-bool	change_var_if_exist(const char *name, const char *content, t_env *lst)
+bool	var_if_exist(const char *name, t_env *lst)
 {
 	while (lst)
 	{
 		if (ft_strncmp(name, lst->name, ft_strlen(name)) == 0)
-		{
-			free((char *)name);
-			if (lst->content && content != NULL)
-				free(lst->content);
-			if (content)
-				lst->content = (char *)content;
 			return (true);
-		}
 		lst = lst->next;
 	}
 	return (false);
@@ -48,35 +49,13 @@ int	ft_strcmp(char *s1, char *s2)
 	return (s1[i] - s2[i]);
 }
 
-t_env	*find_next_lower(t_env *lst, char *prec)
+bool	strip_trailing_plus(char *str)
 {
-	t_env	*cur;
-	t_env	*next_lower;
+	size_t	len;
 
-	cur = lst;
-	next_lower = NULL;
-	while (cur)
-	{
-		if (ft_strcmp(cur->name, prec) > 0 && (next_lower == NULL || \
-			ft_strcmp(cur->name, next_lower->name) < 0))
-			next_lower = cur;
-		cur = cur->next;
-	}
-	return (next_lower);
+	len = ft_strlen(str);
+	if (len > 0 && str[len - 1] == '+')
+		return (str[len - 1] = '\0', true);
+	return (false);
 }
 
-t_env	*find_lowest(t_env *lst)
-{
-	t_env	*cur;
-	t_env	*lowest;
-
-	cur = lst;
-	lowest = cur;
-	while (cur)
-	{
-		if (ft_strcmp(cur->name, lowest->name) < 0)
-			lowest = cur;
-		cur = cur->next;
-	}
-	return (lowest);
-}

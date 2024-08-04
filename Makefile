@@ -6,7 +6,7 @@
 #    By: junsan <junsan@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    CreateCd: 2024/05/11 19:03:01 by junsan            #+#    #+#             #
-#    Updated: 2024/08/04 09:20:46 by junsan           ###   ########.fr        #
+#    Updated: 2024/08/04 13:22:26 by junsan           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -74,7 +74,7 @@ EXPANSION_AND_QUOTES = var_expansion_with_args.c replace_env_vars.c					\
 		expand_wildcard.c expand_wildcard_utils.c
 BUILT_IN = built_in.c ft_cd.c  ft_env.c ft_export.c ft_unset.c						\
 		ft_echo.c ft_exit.c ft_pwd.c												\
-		utils/cd_utils.c utils/ft_export_utils.c utils/ft_export_utils_2.c			\
+		utils/cd_utils.c utils/ft_export_utils.c utils/builtin_node_utils.c			\
 		utils/handle_pwd_oldpwd.c
 PRINT	= prints.c prints_2.c
 

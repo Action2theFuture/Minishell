@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 13:14:06 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/31 14:11:06 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/04 13:35:53 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,6 @@ int						ft_echo(const char *cmd, const char **args,
 							t_env *list);
 
 // ft_env.c
-void					add_builtin_node(t_env **head, char *name,
-							char *content);
 void					printf_env(t_env *list);
 int						ft_env(const char *cmd, const char **args, t_env *list);
 
@@ -57,17 +55,19 @@ int						ft_export(\
 		const char *cmd, const char **args, t_env *list);
 
 // ft_export_utils.c
-int						check_first_arg(const char arg);
 int						ft_strcmp(char *s1, char *s2);
-t_env					*find_next_lower(t_env *lst, char *prec);
-t_env					*find_lowest(t_env *lst);
-bool					change_var_if_exist(\
-		const char *name, const char *content, t_env *lst);
+bool					var_if_exist(const char *name, t_env *lst);
+bool					is_valid_name(const char *name);
+bool					strip_trailing_plus(char *str);
 
-// ft_export_utils_2.c
+// builtin_node_utils.c
 t_env					*builtin_new_node(char *name, char *content);
 void					add_builtin_node(\
-		t_env **head, char *name, char *content);
+		t_env *head, char *name, char *content);
+void					update_builtin_node(\
+		t_env *head, char *name, char *content);
+void					append_builtin_node(\
+		t_env *head, char *name, char *content);
 
 // ft_pwd.c
 int						ft_pwd(const char *cmd, const char **args, t_env *list);
