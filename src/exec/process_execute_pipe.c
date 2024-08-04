@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 10:22:38 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/03 13:29:44 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/04 14:00:26 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,10 +63,7 @@ static void	handle_pipe_segment(t_ast *pipe_node, t_info *info)
 	if (pipe_node->parent && pipe_node->parent->type == PIPE)
 		process_pipe_segment(pipe_node, info);
 	else
-	{
-		if (info->in_subshell)
-			cleanup_and_exit(info->exit_status, NULL, NULL, info);
-	}
+		cleanup_and_exit(info->exit_status, NULL, NULL, info);
 }
 
 // The bottom left pipe node is the StartNode

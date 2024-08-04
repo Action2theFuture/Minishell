@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 12:05:58 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/03 11:32:58 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/04 09:25:31 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ int	ft_exit(t_info *info)
 			ft_putstr_fd("exit\n", 2);
 		cleanup_and_exit(EXIT_SUCCESS, info->args, NULL, info);
 	}
-	if (num_args > 2)
+	if (num_args > 1)
 		return (ft_putstr_fd("minishell: exit: too many arguments\n", \
 			STDERR_FILENO), FAILURE);
 	if (args[1])
