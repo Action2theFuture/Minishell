@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/27 19:38:46 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/04 14:54:19 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/04 15:32:24 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,11 +76,9 @@ static void	process_logical_node_in_subshell(t_ast **node, t_info *info)
 		traverse_tree_in_subshell(&(*node)->left, info);
 	else if (ft_strncmp((*node)->data, "||", 2) == 0)
 	{
-		print_tree((*node)->left, 10);
 		if (info->exit_status > 0)
 			traverse_tree_in_subshell(&(*node)->left, info);
 	}
-	cleanup_and_exit(info->exit_status, NULL, NULL, info);
 }
 
 int	process_subshell_node(t_ast *node, t_info *info)
@@ -100,6 +98,7 @@ int	process_subshell_node(t_ast *node, t_info *info)
 		traverse_tree_in_subshell(&subshell_node, info);
 		if (restore_stdio(info) == FAILURE)
 			fd_log_error(NULL, NULL, strerror(errno));
+		cleanup_and_exit(info->exit_status, NULL, NULL, info);
 	}
 	else
 		wait_for_child_task(info);
