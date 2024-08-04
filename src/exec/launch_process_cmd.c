@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/23 17:08:10 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/31 18:38:15 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/04 09:21:04 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,18 +16,14 @@ static void	execute_cmd(\
 				char *cmd, char **args, t_info *info, char **env)
 {
 	if (ft_strlen(cmd) == 4 && ft_strncmp(cmd, "true", 4) == 0)
-		exit(SUCCESS);
+		cleanup_and_exit(SUCCESS, args, env, info);
 	else if (ft_strlen(cmd) == 5 && ft_strncmp(cmd, "false", 5) == 0)
-		exit(FAILURE);
+		cleanup_and_exit(FAILURE, args, env, info);
 	if (ft_strlen(args[0]) > 2 && args[0][0] == '.' && args[0][1] == '/'
 		&& execve(cmd, args, env) == -1)
-		exit(125 + execve_log_error(cmd, errno));
+		cleanup_and_exit(125 + execve_log_error(cmd, errno), args, env, info);
 	else if (info->path)
-	{
-		execve(info->path, args, env);
-		free(info->path);
-		info->path = NULL;
-	}
+		cleanup_and_exit(execve(info->path, args, env), args, env, info);
 	if (execve(cmd, args, env) == -1)
 		cleanup_and_exit(126 + execve_log_error(cmd, errno), args, env, info);
 }
