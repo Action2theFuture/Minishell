@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/27 19:38:46 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/03 10:55:14 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/04 14:09:53 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static void	handle_special_nodes(t_ast	**node, t_info *info)
 
 	if ((*node)->type == LOGICAL)
 		process_logical_node_in_subshell(node, info);
-	else if ((*node)->type == PIPE)
+	if ((*node)->type == PIPE)
 		process_pipe_node(*node, info);
 	else if ((*node)->type == SUBSHELL)
 	{
@@ -79,6 +79,7 @@ static void	process_logical_node_in_subshell(t_ast **node, t_info *info)
 		if (status > 0)
 			traverse_tree_in_subshell(&(*node)->left, info);
 	}
+	cleanup_and_exit(info->exit_status, NULL, NULL, info);
 }
 
 int	process_subshell_node(t_ast *node, t_info *info)

@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 10:19:00 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/04 13:35:30 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/04 14:12:33 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,4 +58,3 @@ bool	strip_trailing_plus(char *str)
 		return (str[len - 1] = '\0', true);
 	return (false);
 }
-
