@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 12:01:59 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/04 10:27:23 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/04 10:46:23 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,27 +48,37 @@ static bool	is_valid_ambiguous_redirect(const char *str1, const char *str2)
 	return (true);
 }
 
+static int	process_io_node(t_ast *node, t_info *info)
+{
+	char	**args;
+	char	*first_arg;
+	int		status;
+
+	status = SUCCESS;
+	args = ft_split(node->right->data, ARR_SEP);
+	first_arg = ft_strdup(args[0]);
+	expand_and_strip_quotes_in_args(args, info);
+	if (is_valid_ambiguous_redirect(first_arg, args[0]))
+		status = handle_ft_redirection(args[0], node, info);
+	else
+		status = fd_log_error(first_arg, NULL, "ambiguous redirect");
+	process_redir_args(args, info);
+	free_args(args);
+	if (first_arg)
+		free(first_arg);
+	return (status);
+}
+
 // first ele in args is file name or heredoc limiter
 int	handle_io_redirection(t_ast *node, t_info *info)
 {
 	int		status;
-	char	**args;
-	char	*first_arg;
 
-	args = NULL;
+	status = SUCCESS;
 	close_fds(info);
 	while (node && status == SUCCESS)
 	{
-		args = ft_split(node->right->data, ARR_SEP);
-		first_arg = ft_strdup(args[0]);
-		expand_and_strip_quotes_in_args(args, info);
-		if (is_valid_ambiguous_redirect(first_arg, args[0]))
-			status = handle_ft_redirection(args[0], node, info);
-		else
-			status = fd_log_error(first_arg, NULL, "ambiguous redirect");
-		(process_redir_args(args, info), free_args(args));
-		if (first_arg)
-			free(first_arg);
+		status = process_io_node(node, info);
 		if (status > SUCCESS)
 			info->is_pipe = false;
 		if (!node->left->left)
