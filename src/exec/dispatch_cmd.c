@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 17:58:55 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/04 09:25:21 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/04 10:29:20 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,18 +98,15 @@ static int	start_execute(char **chunk, t_info *info)
 			if (built_in == EXIT)
 				status = ft_exit(info);
 			else
-			{
 				status = arr_built_in[built_in](\
 				(const char *)chunk[0], (const char **)chunk, info->env);
-			}
 		}
 		else
 			status = launch_process_cmd(chunk[0], chunk, info);
 	}
-	free_args(chunk);
 	if (info->path)
 		(free(info->path), info->path = NULL);
-	return (status);
+	return (free_args(chunk), status);
 }
 
 int	dispatch_cmd(t_ast	*node, t_info *info)
