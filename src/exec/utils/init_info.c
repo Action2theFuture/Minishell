@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 12:04:00 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/04 10:20:39 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/04 19:30:14 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ static void	init_flags(t_info *info)
 	info->exit_status = SUCCESS;
 	info->is_pipe = false;
 	info->is_re_pipe = false;
+	info->is_heredoc = false;
 	info->pipe_loc = -1;
 	info->in_subshell = false;
 	info->has_multiple_pipes = false;

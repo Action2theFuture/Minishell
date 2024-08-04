@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 14:08:08 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/02 19:47:01 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/04 19:17:48 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,25 +23,23 @@ int	backup_fds(t_info *info)
 
 int	restore_fds(t_info *info)
 {
-	if (info->is_re_pipe && info->backup_stdin != -1 && \
-			info->backup_stdout != -1)
+	if (info->backup_stdin != -1 && info->backup_stdout != -1)
 	{
 		if (dup2(info->backup_stdin, STDIN_FILENO) == -1 || \
 			dup2(info->backup_stdout, STDOUT_FILENO) == -1)
 			return (fd_log_error("Dup Restore fd error", NULL, NULL));
-		if (info->backup_stdin != -1)
-			close(info->backup_stdin);
-		if (info->backup_stdout != -1)
-			close(info->backup_stdout);
+		close(info->backup_stdin);
+		close(info->backup_stdout);
 		info->backup_stdin = -1;
 		info->backup_stdin = -1;
 	}
-	else if (!info->is_re_pipe && info->backup_stdout != -1)
+	else if (info->backup_stdout != -1)
 	{
 		if (dup2(info->backup_stdout, STDOUT_FILENO) == -1)
 			return (fd_log_error("Dup Restore stdout_fd error!", NULL, NULL));
 		if (info->stdout_fd != -1)
 			close(info->stdout_fd);
+		info->stdout_fd = -1;
 	}
 	return (SUCCESS);
 }

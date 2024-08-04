@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 13:25:12 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/04 10:20:43 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/04 19:30:33 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,6 +163,7 @@ typedef struct s_info
 	pid_t				pid;
 	bool				is_pipe;
 	bool				is_re_pipe;
+	bool				is_heredoc;
 	bool				has_multiple_pipes;
 	bool				pipe_exists;
 	bool				in_subshell;
