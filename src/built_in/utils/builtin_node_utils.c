@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_node_utils.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
+/*   By: max <max@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 10:32:58 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/04 13:35:17 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/05 19:17:38 by max              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,8 +76,8 @@ void	append_builtin_node(t_env *head, char *name, char *content)
 void	update_builtin_node(t_env *head, char *name, char *content)
 {
 	while (head)
-	{
-		if (ft_strncmp(name, head->name, ft_strlen(name)) == 0)
+	{	
+		if (ft_strncmp(name, head->name, ft_strlen(name)) == 0 && ft_strlen(name) == ft_strlen(head->name))
 		{
 			if (head->content && content)
 			{
