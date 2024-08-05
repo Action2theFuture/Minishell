@@ -3,18 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_node_utils.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
+/*   By: max <max@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 10:32:58 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/04 13:35:17 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/05 19:32:17 by max              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_env	*builtin_new_node(char *name, char *content)
+t_env *builtin_new_node(char *name, char *content)
 {
-	t_env	*res;
+	t_env *res;
 
 	res = (t_env *)malloc(sizeof(t_env));
 	if (!res)
@@ -27,13 +27,13 @@ t_env	*builtin_new_node(char *name, char *content)
 	return (res);
 }
 
-static void	concatenate_content(char **dest, const char *src)
+static void concatenate_content(char **dest, const char *src)
 {
-	size_t	new_size;
-	char	*new_content;
+	size_t new_size;
+	char *new_content;
 
 	if (!src)
-		return ;
+		return;
 	if (*dest)
 		new_size = ft_strlen(*dest) + ft_strlen(src) + 1;
 	else
@@ -42,7 +42,7 @@ static void	concatenate_content(char **dest, const char *src)
 	if (!new_content)
 	{
 		perror("malloc error");
-		return ;
+		return;
 	}
 	if (*dest)
 	{
@@ -55,29 +55,29 @@ static void	concatenate_content(char **dest, const char *src)
 	*dest = new_content;
 }
 
-void	append_builtin_node(t_env *head, char *name, char *content)
+void append_builtin_node(t_env *head, char *name, char *content)
 {
-	t_env	*cur;
+	t_env *cur;
 
 	if (!name || !head)
-		return ;
+		return;
 	cur = head;
 	while (cur)
 	{
 		if (ft_strncmp(cur->name, name, ft_strlen(name)) == 0)
 		{
 			concatenate_content(&cur->content, content);
-			return ;
+			return;
 		}
 		cur = cur->next;
 	}
 }
 
-void	update_builtin_node(t_env *head, char *name, char *content)
+void update_builtin_node(t_env *head, char *name, char *content)
 {
 	while (head)
 	{
-		if (ft_strncmp(name, head->name, ft_strlen(name)) == 0)
+		if (ft_strncmp(name, head->name, ft_strlen(name)) == 0 && ft_strlen(name) == ft_strlen(head->name))
 		{
 			if (head->content && content)
 			{
@@ -85,24 +85,24 @@ void	update_builtin_node(t_env *head, char *name, char *content)
 				if (content)
 					head->content = ft_strdup((char *)content);
 			}
-			return ;
+			return;
 		}
 		head = head->next;
 	}
 }
 
-void	add_builtin_node(t_env *head, char *name, char *content)
+void add_builtin_node(t_env *head, char *name, char *content)
 {
-	t_env	*new_node;
-	t_env	*cur;
+	t_env *new_node;
+	t_env *cur;
 
 	if (!name)
-		return ;
+		return;
 	new_node = builtin_new_node(name, content);
 	if (!new_node)
 	{
 		perror("malloc error");
-		return ;
+		return;
 	}
 	if (head == NULL)
 		head = new_node;

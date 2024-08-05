@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 08:49:20 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/05 13:15:59 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/05 19:12:56 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ int	wait_for_child_task(t_info *info)
 	int		status;
 	bool	printed_signal_msg;
 
+	status = 0;
 	printed_signal_msg = false;
 	set_signal_handler(IGN);
 	while (wait(&status) != -1)

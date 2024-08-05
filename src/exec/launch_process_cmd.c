@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/23 17:08:10 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/05 17:55:03 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/05 19:12:43 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ static int	monitor_child_task(char *cmd, pid_t pid, t_info *info)
 {
 	int	status;
 
+	status = 0;
 	if ((ft_strlen(cmd) == ft_strlen("./minishell")) && \
 		ft_strncmp(cmd, "./minishell", 11) == 0)
 		set_signal_handler(IGN);
@@ -67,7 +68,7 @@ int	launch_process_cmd(char *cmd, char **args, t_info *info)
 	if (env == NULL)
 		return (perror("Empty env"), 1);
 	if (pid == 0)
-		(execute_cmd(cmd, args, info, env), exit(EXIT_FAILURE));
+		execute_cmd(cmd, args, info, env);
 	else
 		monitor_child_task(cmd, pid, info);
 	if (env)
