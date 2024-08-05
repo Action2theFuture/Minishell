@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 21:28:11 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/04 16:06:49 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/05 17:55:49 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@ void	cleanup_and_exit(int status, char **args, char **env, t_info *info)
 static void	execute_cmd_with_pipe(\
 				char *cmd, char **args, t_info *info, char **env)
 {
+	if (ft_strlen(cmd) == 1 && ft_strncmp(cmd, ".", 1) == 0)
+		cleanup_and_exit(execve_log_error(cmd, errno), args, env, info);
 	if (ft_strlen(cmd) == 4 && ft_strncmp(cmd, "true", 4) == 0)
 		cleanup_and_exit(SUCCESS, args, env, info);
 	else if (ft_strlen(cmd) == 5 && ft_strncmp(cmd, "false", 5) == 0)
