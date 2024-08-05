@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 11:37:49 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/01 11:56:29 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/05 13:58:18 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,8 +79,8 @@ t_env	*env_init(char **envp)
 	i = -1;
 	while (envp[++i])
 		add_env(&env, envp[i]);
-	add_env_minimum_required_env(&env);
 	if (env == NULL)
 		initialize_default_env(&env);
+	add_env_minimum_required_env(&env);
 	return (env);
 }
