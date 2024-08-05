@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/11 13:30:34 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/05 18:33:21 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/05 20:02:19 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,6 @@ char	*handler_dollar_sign_wihout_quotes(\
 			hadle_dollar_sign(&h_info, input);
 		else
 		{
-			printf("input : %c\n", input[h_info.i]);
 			if (handle_quotes_from_input(&h_info, input))
 				continue ;
 			h_info.new_str[h_info.new_str_len++] = input[h_info.i++];
