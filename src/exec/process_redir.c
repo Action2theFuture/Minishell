@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 10:07:54 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/04 20:13:59 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/05 13:07:37 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,11 @@ int	here_doc_redir(char *arg, t_info *info)
 	int	status;
 
 	status = SUCCESS;
+	if (redirect_input_to_null() == FAILURE)
+		return (FAILURE);
 	info->tmp_fd = dup(STDOUT_FILENO);
 	if (info->tmp_fd == -1)
 		return (fd_log_error("fd error!", NULL, NULL));
-	if (redirect_input_to_null() == FAILURE)
-		return (FAILURE);
 	if (dup2(info->origin_stdin_fd, STDIN_FILENO) == -1)
 		return (fd_log_error("Dup origin_stdin_fd error!", NULL, NULL));
 	if (dup2(info->origin_stdout_fd, STDOUT_FILENO) == -1)

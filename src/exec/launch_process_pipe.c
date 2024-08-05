@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 08:49:20 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/03 09:19:04 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/05 13:15:59 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,9 @@ int	launch_process_pipe(char *cmd, char **args, t_info *info)
 		if (pipe(info->pipe) == -1)
 			return (fd_log_error("pipe error", NULL, NULL));
 	}
-	info->tmp_pipe[0] = info->stdin_pipe;
+	info->tmp_pipe[0] = dup(STDIN_FILENO);
+	if (!info->is_heredoc)
+		info->tmp_pipe[0] = info->stdin_pipe;
 	info->tmp_pipe[1] = info->pipe[0];
 	info->tmp_pipe[2] = info->pipe[1];
 	info->pid = fork();
