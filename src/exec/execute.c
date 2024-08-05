@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 18:34:10 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/04 16:21:36 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/05 19:46:21 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,27 @@ void	categorize_tree(t_ast *node, t_info *info)
 static void	handle_subshell_node(t_ast *node, t_info *info)
 {
 	t_info	subshell_info;
+	t_ast	*cur;
 
 	init_info(&subshell_info, info->env, node);
 	subshell_info.in_subshell = true;
 	info->exit_status = process_subshell_node(node, &subshell_info);
 	info->in_subshell = false;
+	init_info(&subshell_info, info->env, node);
+	subshell_info.in_subshell = true;
+	info->exit_status = process_subshell_node(node, &subshell_info);
+	info->in_subshell = false;
 	clear_info(&subshell_info);
+	cur = node;
+	while (cur)
+	{
+		if (cur->data && cur->data[0] == ')')
+		{
+			process_logical_node(cur->left, info);
+			break ;
+		}
+		cur = cur->left;
+	}
 }
 
 void	traverse_tree(t_ast *node, t_info *info)
