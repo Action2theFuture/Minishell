@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/11 18:36:39 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/16 15:04:02 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/05 18:17:53 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	init_env_var(\
 	env_var->info = info;
 	env_var->i = 0;
 	env_var->j = 0;
-	env_var->in_double_quotes = 0;
+	env_var->in_double_quotes = false;
 }
 
 void	init_handler_info(\
