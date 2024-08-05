@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 20:03:41 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/01 12:29:28 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/05 18:19:39 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,8 @@ static void	handle_simple_var(t_env_var *env_var, char *var_name)
 	env_var->i++;
 	extract_var_name(\
 			env_var->str, &(env_var->i), var_name);
-	var_value = process_replace_env_vars(var_name, env_var->info);
+	var_value = process_replace_env_vars(\
+				var_name, env_var->info, env_var->is_value_expansion);
 	if (var_value)
 		copy_var_value(var_value, env_var->res, &(env_var->j));
 }

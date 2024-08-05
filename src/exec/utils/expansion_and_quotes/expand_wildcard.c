@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 15:29:01 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/16 15:18:06 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/05 17:34:31 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,24 +71,24 @@ static int	count_new_args(char **args, t_expand_info *e_info)
 	int	i;
 
 	cnt = 0;
-	i = -1;
-	while (args[++i])
+	i = 0;
+	while (args[i])
 	{
-		if (i == 0)
+		if (i == 0 || !(ft_strchr(args[i], '*') && \
+			!(ft_strchr(args[i], '\"') || ft_strchr(args[i], '\''))))
 		{
 			cnt++;
-			continue ;
 		}
-		if (ft_strchr(args[i], '*') && \
-			!(ft_strchr(args[i], '\"') || ft_strchr(args[i], '\'')))
+		else
 		{
 			expand_wildcard_in_cur_dir(args[i], e_info);
+			if (e_info->cnt == 0)
+				e_info->matches[e_info->cnt++] = ft_strdup(args[i]);
 			cnt += e_info->cnt;
 			e_info->next = new_expand_info();
 			e_info = e_info->next;
 		}
-		else
-			cnt++;
+		i++;
 	}
 	return (cnt);
 }

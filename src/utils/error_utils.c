@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/23 19:45:39 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/31 18:14:42 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/05 17:58:53 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,12 @@ int	execve_log_error(char *cmd, int error)
 	ft_putstr_fd("minishell$> ", STDERR_FILENO);
 	ft_putstr_fd(cmd, STDERR_FILENO);
 	ft_putstr_fd(": ", STDERR_FILENO);
-	if (error == EACCES)
+	if (ft_strlen(cmd) == 1 && ft_strncmp(cmd, ".", 1) == 0)
+	{
+		ft_putstr_fd("filename argument required\n", STDERR_FILENO);
+		ft_putstr_fd(".: usage: . filename [arguments]\n", STDERR_FILENO);
+	}
+	else if (error == EACCES)
 		ft_putstr_fd("Permission denied.\n", STDERR_FILENO);
 	else if (error == ENOENT)
 		ft_putstr_fd("No such file or directory\n", STDERR_FILENO);

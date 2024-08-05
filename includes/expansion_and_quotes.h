@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 12:19:39 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/05 12:39:53 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/05 18:23:32 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,6 @@
 // var_expansion_with_args.c
 void					expand_and_strip_quotes_in_args(\
 		char **args, t_info *info);
-char					*process_replace_env_vars(char *arg, t_info *info);
-char					*process_replace_expansion_var(t_info *info);
 
 // replace_env_vars.c
 void					replace_env_vars(\
@@ -29,7 +27,8 @@ void					replace_env_vars(\
 void					pass_double_quotes(t_env_var *env_var);
 void					extract_var_name(\
 		const char *str, size_t *i, char *var_name);
-char					*process_replace_env_vars(char *arg, t_info *info);
+char					*process_replace_env_vars(\
+		char *arg, t_info *info, bool is_value_expansion);
 char					*process_replace_expansion_var(t_info *info);
 
 // replace_env_vars_utils_2.c
