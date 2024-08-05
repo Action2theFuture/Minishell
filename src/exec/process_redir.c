@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 10:07:54 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/05 16:57:09 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/05 17:20:07 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ int	input_redir(char *arg, t_ast *node, t_info *info)
 		info->stdin_fd = pipe_fd[0];
 	}
 	if (info->stdin_fd == -1)
-		return (fd_log_error("Dup stdin_fd error!", NULL, NULL));
+		return (FAILURE);
 	if (dup2(info->stdin_fd, STDIN_FILENO) == -1)
 		return (fd_log_error("Dup stdin_fd error!", NULL, NULL));
 	return (close(info->stdin_fd), status);
