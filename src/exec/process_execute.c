@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 22:12:12 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/04 20:10:46 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/04 20:20:24 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,5 +58,9 @@ void	process_phrase_node(t_ast *node, t_info *info)
 		(redirect_output_to_null(), redirect_input_to_null());
 	(free_args(info->redir_args), info->redir_args = NULL, restore_fds(info));
 	if (info->is_heredoc)
+	{
+		if (info->stdin_pipe != -1)
+			redirect_stdin_to_empty(&info->stdin_pipe);
 		redirect_input_to_empty();
+	}
 }
