@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 13:27:16 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/01 09:15:43 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/05 11:41:09 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,6 @@ char					*trim_whitespace(const char *str);
 char					*ft_strndup(const char *str, size_t n);
 bool					is_operator(const char *cmd);
 bool					is_special_char(char c);
-
-// normalize_spaces.c
-char					*normalize_spaces(const char *str);
 
 // quotes_str.c
 void					remove_quotes(char *str);
