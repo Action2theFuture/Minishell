@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 10:07:54 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/05 13:07:37 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/05 16:57:09 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,8 +96,6 @@ int	handle_ft_redirection(char *arg, t_ast *node, t_info *info)
 	{
 		if (io_node->type == IN_REDIR && (access(arg, F_OK) == -1))
 			return (fd_log_error(NULL, arg, strerror(errno)), 127);
-		if (redirect_output_to_null() == FAILURE)
-			return (FAILURE);
 		if (input_redir(arg, node, info) == FAILURE)
 			return (FAILURE);
 	}
