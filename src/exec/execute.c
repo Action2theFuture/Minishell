@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 18:34:10 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/05 19:46:21 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/05 19:52:53 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,11 +30,6 @@ static void	handle_subshell_node(t_ast *node, t_info *info)
 	subshell_info.in_subshell = true;
 	info->exit_status = process_subshell_node(node, &subshell_info);
 	info->in_subshell = false;
-	init_info(&subshell_info, info->env, node);
-	subshell_info.in_subshell = true;
-	info->exit_status = process_subshell_node(node, &subshell_info);
-	info->in_subshell = false;
-	clear_info(&subshell_info);
 	cur = node;
 	while (cur)
 	{
@@ -45,6 +40,7 @@ static void	handle_subshell_node(t_ast *node, t_info *info)
 		}
 		cur = cur->left;
 	}
+	clear_info(&subshell_info);
 }
 
 void	traverse_tree(t_ast *node, t_info *info)
