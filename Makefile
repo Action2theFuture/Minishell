@@ -6,7 +6,7 @@
 #    By: junsan <junsan@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    CreateCd: 2024/05/11 19:03:01 by junsan            #+#    #+#             #
-#    Updated: 2024/08/04 16:29:01 by junsan           ###   ########.fr        #
+#    Updated: 2024/08/05 13:18:38 by junsan           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -55,7 +55,7 @@ TOKENIZE = tokenize.c handler_operators_and_spaces.c handle_quotes.c 				\
 VALIIDATION = valid_token.c valid_token_utils.c valid_token_err.c 					\
 		valid_token_err_2.c
 UTILS	= string_utils.c string_utils_2.c quotes_str.c error_utils.c 				\
-		subshell_and_quote_str.c normalize_spaces.c
+		subshell_and_quote_str.c
 SIGNAL	= handler_signal.c handler_heredoc_signal.c
 EXECUTE = execute.c redir.c get_file_list.c dispatch_cmd.c launch_process_cmd.c 	\
 		launch_process_pipe.c execution_pipe.c subshell.c							\
@@ -71,7 +71,7 @@ EXPANSION_AND_QUOTES = var_expansion_with_args.c replace_env_vars.c					\
 		handler_replace_env_vars.c handler_under_score.c							\
 		process_expand_strip_quotes.c handler_replace_env_vars_without_quotes.c		\
 		init_utils_for_expansion.c	init_utils_for_expansion_2.c					\
-		expand_wildcard.c expand_wildcard_utils.c
+		expand_wildcard.c expand_wildcard_utils.c normalize_spaces.c
 BUILT_IN = built_in.c ft_cd.c  ft_env.c ft_export.c ft_unset.c						\
 		ft_echo.c ft_exit.c ft_pwd.c												\
 		utils/cd_utils.c utils/ft_export_utils.c utils/builtin_node_utils.c			\

@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/23 19:03:26 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/26 23:02:47 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/05 11:59:06 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static void	init_quote_info(t_quote_info *quote_info)
 	ft_memset(quote_info->tmp_str, 0, MAX_ARGS);
 }
 
-static char	*expand_and_strip_quotes_in_str(const char *str, t_info *info)
+static char	*expand_and_strip_quotes_in_str(char *str, t_info *info)
 {
 	t_quote_info	quote_info;
 	char			*res;
@@ -30,12 +30,16 @@ static char	*expand_and_strip_quotes_in_str(const char *str, t_info *info)
 	if (!res)
 		return (perror("malloc error"), NULL);
 	if (find_unquoted_dollar(str))
-		return (handler_dollar_sign_wihout_quotes(res, (char *)str, info), \
-		free((char *)str), res);
+	{
+		handler_dollar_sign_wihout_quotes(res, str, info);
+		if (str)
+			free(str);
+		return (res);
+	}
 	init_quote_info(&quote_info);
 	info->quote_info = &quote_info;
 	res = process_expand_strip_quotes(res, str, info);
-	free((char *)str);
+	free(str);
 	return (res);
 }
 

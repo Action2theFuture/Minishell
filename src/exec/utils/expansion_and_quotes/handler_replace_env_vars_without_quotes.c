@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/11 13:30:34 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/01 12:33:37 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/05 12:09:37 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,10 @@ static void	hadle_dollar_sign(t_handler_info *h_info, const char *input)
 	else if (input[h_info->i] == '_' && input[h_info->i + 1] == '\0')
 		handle_expansion_var_without_quotes(h_info, '_');
 	else
-		(extract_var_name_from_input(h_info, input), \
-		handle_normal_var_without_quotes(h_info));
+	{
+		extract_var_name_from_input(h_info, input);
+		handle_normal_var_without_quotes(h_info);
+	}
 }
 
 char	*handler_dollar_sign_wihout_quotes(\

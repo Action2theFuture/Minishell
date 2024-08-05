@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 13:25:12 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/04 19:30:33 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/05 12:45:13 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 # define MAX_PATH_LENGTH 4096
 # define MAX_BUFFER_SIZE 1024
-# define MAX_ARGS 100
+# define MAX_ARGS 4096
 # define MEMORY_CAPACITY 256
 # define HISTSIZE 500
 # define MAX_PIPES 64

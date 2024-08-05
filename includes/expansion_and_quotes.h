@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 12:19:39 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/02 12:34:27 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/05 12:39:53 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,5 +82,8 @@ t_expand_info			*new_expand_info(void);
 
 // init_utils_for_expansion_2.c
 void					clear_expand_info(t_expand_info *head);
+
+// normalize_spaces.c
+char					*normalize_spaces(const char *str);
 
 #endif // EXPANSION_AND_QUOTES_H

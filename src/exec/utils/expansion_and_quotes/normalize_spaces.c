@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/26 09:38:51 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/26 09:52:06 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/05 11:15:16 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ static void	remove_extra_spaces(char *result, const char *str)
 
 	i = skip_initial_spaces(str);
 	j = 0;
+	in_space = false;
 	while (str[i] != '\0')
 	{
 		if (ft_isspace((unsigned char)str[i]))
