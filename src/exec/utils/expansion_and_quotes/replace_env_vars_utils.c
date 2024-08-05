@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 16:53:48 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/05 18:21:27 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/05 18:30:14 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static char	*get_env_content(char *arg, t_info *info)
 }
 
 char	*process_replace_env_vars(\
-				char *arg, t_info *info, bool	is_value_expansion)
+				char *arg, t_info *info, bool is_value_expansion)
 {
 	char	*new_arg;
 	char	*trim_str;
