@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 22:46:47 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/03 13:51:55 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/06 12:47:54 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@ bool	parse_cmd(t_token **token, t_ast **node)
 			cmd_node->right = new_node(arg_tokens, ARGS);
 			free(arg_tokens);
 		}
+		else if (*token && (*token)->type == SUBSHELL)
+			return (false);
 		*node = cmd_node;
 	}
 	return (true);
@@ -46,15 +48,14 @@ static bool	handle_redir_in_parse_redir_part(
 	attach_node = NULL;
 	if (*token && (*token)->type == CMD)
 	{
-		parse_cmd(token, &right);
+		if (!parse_cmd(token, &right))
+			return (false);
 		(*phrase_node)->right = right;
 		parse_io_redirection(token, &((*left)->right));
 		*left = (*left)->right;
 		while (*token && (*token)->type == REDIRECTION)
-		{
-			parse_io_redirection(token, &attach_node);
-			*left = attach_to_tree(*left, attach_node, LEFT);
-		}
+			(parse_io_redirection(token, &attach_node), \
+			*left = attach_to_tree(*left, attach_node, LEFT));
 	}
 	else if (*token && (*token)->type == SUBSHELL)
 	{
@@ -96,7 +97,8 @@ bool	parse_cmd_part(t_token **token, t_ast **phrase_node, t_ast **node)
 		return (false);
 	if (*token && (*token)->type == REDIRECTION)
 	{
-		parse_redirection(token, &left);
+		if (!parse_redirection(token, &left))
+			return (false);
 		left->parent = *phrase_node;
 		(*phrase_node)->left = left;
 	}
@@ -116,6 +118,6 @@ bool	parse_phrase_part(
 		return (false);
 	phrase_node->parent = *node;
 	if (!parse_func(token, &phrase_node, node))
-		return (free_tree(phrase_node), NULL);
+		return (free_tree(phrase_node), false);
 	return (true);
 }

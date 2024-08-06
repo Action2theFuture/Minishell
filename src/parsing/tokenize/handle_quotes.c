@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/13 19:44:46 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/06 10:49:04 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/06 12:28:19 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,8 @@ int	handle_quotes(\
 	int			extra_quotes_idx;
 
 	i = 0;
+	printf("input : %s\n", *input);
+	*start = *input;
 	if (!are_quotes_balanced(*input, &i))
 		return (UNCLOSED_QUOTE);
 	if (i == 0)
