@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 13:12:49 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/06 18:54:47 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/06 20:07:22 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,9 +46,9 @@ void					remove_double_quotes_from_args(char **args);
 void					remove_single_quotes_from_args(char **args);
 char					*remove_all_quotes(const char *input);
 
-// parsing_quotes_in_cmd.c
-char					**parse_cmd_line_with_quotes(\
-		const char *input, int *cnt);
+// add_string_to_array.c
+char					**add_string_to_array(\
+		char **array, int *size, const char *str);
 
 // get_path_type.c
 t_path_type				get_path_type(const char *path, t_info *info);
