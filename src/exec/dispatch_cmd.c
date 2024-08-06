@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 17:58:55 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/06 20:04:29 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/06 21:14:36 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,9 +60,8 @@ static char	**prepare_cmd(\
 
 	args = NULL;
 	chunk = NULL;
-	parsed_cmd = NULL;
 	cmd_cnt = 0;
-	parsed_cmd = add_string_to_array(parsed_cmd, &cmd_cnt, cmd_node->data);
+	parsed_cmd = add_string_to_array(&cmd_cnt, cmd_node->data);
 	if (args_node)
 	{
 		args = ft_split(args_node->data, ARR_SEP);

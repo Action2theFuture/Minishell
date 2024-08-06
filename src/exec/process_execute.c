@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 22:12:12 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/06 20:22:56 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/06 21:27:28 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	process_logical_node(t_ast *node, t_info *info)
 
 static void	process_io_redirections(t_ast *redir_node, t_info *info)
 {
-	info->exit_status = handle_io_redirection(redir_node->left, info);
+	info->status = handle_io_redirection(redir_node->left, info);
 	if (redir_node->right)
 		free_args(info->redir_args);
 	if (redir_node->right && info->exit_status == SUCCESS)
@@ -44,16 +44,20 @@ void	process_phrase_node(t_ast *node, t_info *info)
 {
 	t_ast	*redir_node;
 	t_ast	*cmd_node;
+	int		status;
 
 	if (node == NULL)
 		return ;
 	redir_node = node->left;
 	cmd_node = node->right;
+	status = SUCCESS;
 	backup_fds(info);
 	if (redir_node && redir_node->type != SUBSHELL)
 		process_io_redirections(redir_node, info);
-	if (cmd_node && info->exit_status == SUCCESS)
-		info->exit_status = dispatch_cmd(cmd_node, info);
+	status = info->status;
+	if (cmd_node && status == SUCCESS)
+		status = dispatch_cmd(cmd_node, info);
+	info->exit_status = status;
 	if (redir_node)
 		(redirect_output_to_null(), redirect_input_to_null());
 	(free_args(info->redir_args), info->redir_args = NULL, restore_fds(info));
