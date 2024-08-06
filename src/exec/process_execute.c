@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 22:12:12 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/05 13:13:42 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/06 11:48:51 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,11 @@ void	process_logical_node(t_ast *node, t_info *info)
 
 static void	process_io_redirections(t_ast *redir_node, t_info *info)
 {
-	info->status = handle_io_redirection(redir_node->left, info);
+	info->exit_status = handle_io_redirection(redir_node->left, info);
 	if (redir_node->right)
 		free_args(info->redir_args);
-	if (redir_node->right && info->status == SUCCESS)
-		info->status = handle_io_redirection(redir_node->right, info);
+	if (redir_node->right && info->exit_status == SUCCESS)
+		info->exit_status = handle_io_redirection(redir_node->right, info);
 	if ((info->pipe_loc == FIRST && info->has_multiple_pipes) || \
 		info->pipe_loc == MIDDLE)
 	{
@@ -50,18 +50,13 @@ void	process_phrase_node(t_ast *node, t_info *info)
 	redir_node = node->left;
 	cmd_node = node->right;
 	backup_fds(info);
-	if (redir_node && redir_node->type != SUBSHELL && info->status == SUCCESS)
+	if (redir_node && redir_node->type != SUBSHELL)
 		process_io_redirections(redir_node, info);
-	if (cmd_node && info->status == SUCCESS)
+	if (cmd_node)
 		info->exit_status = dispatch_cmd(cmd_node, info);
 	if (redir_node)
 		(redirect_output_to_null(), redirect_input_to_null());
 	(free_args(info->redir_args), info->redir_args = NULL, restore_fds(info));
 	if (info->is_heredoc)
-	{
-		if (info->stdin_pipe != -1)
-			redirect_stdin_to_empty(&info->stdin_pipe);
-		redirect_input_to_empty();
-		info->is_heredoc = false;
-	}
+		(redirect_input_to_empty(), info->is_heredoc = false);
 }
