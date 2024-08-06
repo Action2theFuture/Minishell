@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 12:01:59 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/05 16:56:22 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/06 20:22:41 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ static int	process_io_node(t_ast *node, t_info *info)
 	first_arg = ft_strdup(args[0]);
 	expand_and_strip_quotes_in_args(args, info);
 	if (io_node->type == IN_HEREDOC)
-		handle_ft_redirection(first_arg, node, info);
+		status = handle_ft_redirection(first_arg, node, info);
 	else
 	{
 		if (is_valid_ambiguous_redirect(first_arg, args[0]))
