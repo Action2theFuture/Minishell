@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/13 19:44:46 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/06 12:28:19 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/06 14:16:35 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,12 +66,15 @@ int	handle_quotes(\
 		*start = *input + 1;
 	else
 	{
-		while ((*input)[i] && !ft_isspace((*input)[i]) && \
-		!ft_strchr(SHELL_METACHARS, (*input)[i]))
-			i++;
-		extra_quotes_idx = 0;
-		if (are_quotes_balanced(&(*input)[i], &extra_quotes_idx))
-			i += extra_quotes_idx;
+		while (*input[i])
+		{
+			while ((*input)[i] && !ft_isspace((*input)[i]) && \
+			!ft_strchr(SHELL_METACHARS, (*input)[i]))
+				i++;
+			extra_quotes_idx = 0;
+			if (are_quotes_balanced(&(*input)[i], &extra_quotes_idx))
+				i += extra_quotes_idx;
+		}
 		add_token(list, *input, i);
 		*input += i;
 		*start = *input;

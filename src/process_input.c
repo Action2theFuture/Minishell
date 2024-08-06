@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/25 22:45:45 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/06 12:52:38 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/06 14:18:39 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@ static void	tokenize_and_validate(char *input, t_token **tokens, int *err)
 	int	err_in_tokenizing;
 
 	err_in_tokenizing = tokenize(input, tokens);
-	print_token(*tokens);
 	if (err_in_tokenizing != -1)
 	{
 		*err = err_in_tokenizing;
