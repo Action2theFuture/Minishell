@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/23 19:03:26 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/05 18:32:15 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/06 16:50:39 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,9 @@ static char	*expand_and_strip_quotes_in_str(char *str, t_info *info)
 	res = ft_calloc(sizeof(char), MAX_ARGS);
 	if (!res)
 		return (perror("malloc error"), NULL);
-	if (find_unquoted_dollar(str))
+	if (contains_unquoted_dollar(str))
 	{
+		printf("str : %s\n", str);
 		handler_dollar_sign_wihout_quotes(res, str, info);
 		if (str)
 			free(str);

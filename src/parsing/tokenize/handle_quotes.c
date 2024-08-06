@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/13 19:44:46 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/06 16:18:39 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/06 17:07:57 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ static bool	are_quotes_balanced(const char *str, int *i)
 		(*i)++;
 	}
 	last_char = str[ft_strlen(str) - 1];
-	if (first_char == last_char)
+	if (first_char == last_char && *i > 0)
 		return (*i = ft_strlen(str) - 1, true);
 	return (!in_single_quote && !in_double_quote);
 }
@@ -83,7 +83,10 @@ int	handle_quotes(\
 	if (!are_quotes_balanced(*input, &i))
 		return (UNCLOSED_QUOTE);
 	if (i == 0)
-		*start = *input + 1;
+	{
+		(*input)++;
+		return (UNCLOSED_QUOTE);
+	}
 	else
 	{
 		status = calculate_token_len(input, &i);

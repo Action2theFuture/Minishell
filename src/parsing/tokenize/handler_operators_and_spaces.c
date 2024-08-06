@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/13 19:46:03 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/06 16:13:35 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/06 17:12:01 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,13 +87,15 @@ static void	handle_cmd(const char **input, const char **start, t_token **list)
 	if (*input > *start)
 	{
 		add_token(list, *start, *input - *start);
-		if (**input == '\'' || **input == '"')
+		*start = *input;
+		if (**input && (**input == '\'' || **input == '"'))
 		{
 			handle_quotes(input, start, list);
 			merge_last_two_tokens(list);
 		}
 	}
-	*start = *input;
+	else
+		*start = *input;
 }
 
 // DELIMS "|&<>"

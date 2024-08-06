@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 08:33:49 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/31 17:00:49 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/06 16:51:04 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ void	remove_single_quotes_from_args(char **args)
 	}
 }
 
-bool	find_unquoted_dollar(const char *input)
+bool	contains_unquoted_dollar(const char *input)
 {
 	bool	in_single_quotes;
 	bool	in_double_quotes;
