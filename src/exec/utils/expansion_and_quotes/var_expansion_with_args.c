@@ -6,11 +6,32 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/23 19:03:26 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/06 16:50:39 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/06 18:54:41 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static bool	contains_unquoted_dollar(const char *input)
+{
+	bool	in_single_quotes;
+	bool	in_double_quotes;
+	int		i;
+
+	in_single_quotes = false;
+	in_double_quotes = false;
+	i = -1;
+	while (input[++i] != '\0')
+	{
+		if (input[i] == '\'' && !in_double_quotes)
+			in_single_quotes = !in_single_quotes;
+		else if (input[i] == '"' && !in_single_quotes)
+			in_double_quotes = !in_double_quotes;
+		else if (input[i] == '$' && !in_single_quotes && !in_double_quotes)
+			return (true);
+	}
+	return (false);
+}
 
 static void	init_quote_info(t_quote_info *quote_info)
 {
@@ -31,7 +52,6 @@ static char	*expand_and_strip_quotes_in_str(char *str, t_info *info)
 		return (perror("malloc error"), NULL);
 	if (contains_unquoted_dollar(str))
 	{
-		printf("str : %s\n", str);
 		handler_dollar_sign_wihout_quotes(res, str, info);
 		if (str)
 			free(str);

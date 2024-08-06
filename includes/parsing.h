@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 13:09:24 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/29 18:26:57 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/06 18:47:27 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,11 +55,6 @@ bool					parse_io_redirection(t_token **token, t_ast **node);
 
 // parse_subshell.c
 bool					parse_subshell(t_token **token, t_ast **node);
-
-// parsing_quotes_in_cmd.c
-char					*remove_all_quotes(const char *input);
-char					**parse_cmd_line_with_quotes(\
-		const char *input, int *cnt);
 
 // type_functions.c
 bool					is_logical_operator(const char *token);

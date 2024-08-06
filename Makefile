@@ -6,7 +6,7 @@
 #    By: junsan <junsan@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    CreateCd: 2024/05/11 19:03:01 by junsan            #+#    #+#             #
-#    Updated: 2024/08/06 09:36:35 by junsan           ###   ########.fr        #
+#    Updated: 2024/08/06 18:50:28 by junsan           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -49,7 +49,7 @@ PARSING	= parsing.c arg_parse.c parse_subshell.c parse_logical.c parse_pipe.c 		
 		/utils/parsing_utils.c /utils/tokenize_utils.c /utils/tokenize_utils_2.c	\
 		/utils/type_redir_functions.c /utils/type_functions.c /utils/get_type.c 	\
 		/utils/subshell_utils.c /utils/parsing_utils_2.c 							\
-		/utils/collect_data_until_subshell.c /utils/parsing_quotes_in_cmd.c
+		/utils/collect_data_until_subshell.c
 TOKENIZE = tokenize.c handler_operators_and_spaces.c handle_quotes.c 				\
 		handle_subshell.c
 VALIIDATION = valid_token.c valid_token_utils.c valid_token_err.c 					\
@@ -65,7 +65,7 @@ EXECUTE = execute.c redir.c get_file_list.c dispatch_cmd.c launch_process_cmd.c 
 		/utils/fd_utils.c  /utils/list_to_array.c /utils/args_utils.c 				\
 		/utils/get_absolute_path.c /utils/get_path_type.c /utils/find_cmd_in_path.c	\
 		/utils/quotes_utils.c /utils/get_bin_path.c /utils/here_doc.c				\
-		/utils/redirect_to_null.c													
+		/utils/redirect_to_null.c /utils/parse_cmd_line_with_quotes.c													
 EXPANSION_AND_QUOTES = var_expansion_with_args.c replace_env_vars.c					\
 		replace_env_vars_utils.c replace_env_vars_utils_2.c							\
 		handler_replace_env_vars.c handler_under_score.c							\

@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 13:12:49 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/06 16:51:35 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/06 18:54:47 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,11 @@ void					replace_env_vars_in_args(char **args, t_info *info);
 void					remove_consecutive_double_quotes_from_args(char **args);
 void					remove_double_quotes_from_args(char **args);
 void					remove_single_quotes_from_args(char **args);
-bool					contains_unquoted_dollar(const char *input);
+char					*remove_all_quotes(const char *input);
+
+// parsing_quotes_in_cmd.c
+char					**parse_cmd_line_with_quotes(\
+		const char *input, int *cnt);
 
 // get_path_type.c
 t_path_type				get_path_type(const char *path, t_info *info);

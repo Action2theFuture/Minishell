@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 08:33:49 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/06 16:51:04 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/06 18:53:55 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,23 +74,22 @@ void	remove_single_quotes_from_args(char **args)
 	}
 }
 
-bool	contains_unquoted_dollar(const char *input)
+char	*remove_all_quotes(const char *input)
 {
-	bool	in_single_quotes;
-	bool	in_double_quotes;
+	int		len;
+	char	*res;
 	int		i;
+	int		j;
 
-	in_single_quotes = false;
-	in_double_quotes = false;
+	len = ft_strlen(input);
+	res = (char *)malloc(sizeof(char) * (len + 1));
 	i = -1;
-	while (input[++i] != '\0')
+	j = 0;
+	while (++i < len)
 	{
-		if (input[i] == '\'' && !in_double_quotes)
-			in_single_quotes = !in_single_quotes;
-		else if (input[i] == '"' && !in_single_quotes)
-			in_double_quotes = !in_double_quotes;
-		else if (input[i] == '$' && !in_single_quotes && !in_double_quotes)
-			return (true);
+		if (input[i] != '"' && input[i] != '\'')
+			res[j++] = input[i];
 	}
-	return (false);
+	res[j] = '\0';
+	return (res);
 }

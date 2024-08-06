@@ -1,36 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parsing_quotes_in_cmd.c                            :+:      :+:    :+:   */
+/*   parse_cmd_line_with_quotes.c                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/29 13:19:33 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/03 13:47:16 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/06 18:54:22 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-char	*remove_all_quotes(const char *input)
-{
-	int		len;
-	char	*res;
-	int		i;
-	int		j;
-
-	len = ft_strlen(input);
-	res = (char *)malloc(sizeof(char) * (len + 1));
-	i = -1;
-	j = 0;
-	while (++i < len)
-	{
-		if (input[i] != '"' && input[i] != '\'')
-			res[j++] = input[i];
-	}
-	res[j] = '\0';
-	return (res);
-}
 
 static void	handle_quotes_in_args(\
 			const char **ptr, bool *in_single_quotes, bool *in_double_quotes)
