@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/13 19:44:46 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/05 18:48:23 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/06 10:49:04 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,13 +50,14 @@ static bool	are_quotes_balanced(const char *str, int *i)
 	return (!in_single_quote && !in_double_quote);
 }
 
+// extra_quotes_idx is Index for additional post-parsing quote handling
 int	handle_quotes(\
 	const char **input, const char **start, t_token **list)
 {
 	int			i;
+	int			extra_quotes_idx;
 
 	i = 0;
-	*start = *input;
 	if (!are_quotes_balanced(*input, &i))
 		return (UNCLOSED_QUOTE);
 	if (i == 0)
@@ -64,8 +65,11 @@ int	handle_quotes(\
 	else
 	{
 		while ((*input)[i] && !ft_isspace((*input)[i]) && \
-			!ft_strchr(SHELL_METACHARS, (*input)[i]))
+		!ft_strchr(SHELL_METACHARS, (*input)[i]))
 			i++;
+		extra_quotes_idx = 0;
+		if (are_quotes_balanced(&(*input)[i], &extra_quotes_idx))
+			i += extra_quotes_idx;
 		add_token(list, *input, i);
 		*input += i;
 		*start = *input;

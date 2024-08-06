@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/28 17:25:07 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/24 20:44:57 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/06 00:29:10 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,9 @@ bool	check_quotes_in_tokens(t_token *head)
 	char	*data;
 	int		i;
 
-	quote = 0;
 	while (head)
 	{
+		quote = 0;
 		i = -1;
 		data = head->data;
 		while (data[++i])
@@ -33,9 +33,11 @@ bool	check_quotes_in_tokens(t_token *head)
 					quote = 0;
 			}
 		}
+		if (quote != 0)
+			return (false);
 		head = head->next;
 	}
-	return (quote == 0);
+	return (true);
 }
 
 bool	check_subshell_closed(t_token *head)
