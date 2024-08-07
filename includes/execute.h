@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 13:12:49 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/06 21:08:25 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/07 12:17:55 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ char					*remove_all_quotes(const char *input);
 // add_string_to_array.c
 char					**add_string_to_array(\
 		int *size, const char *str);
+char					*remove_shell_quotes(const char *str);
 
 // get_path_type.c
 t_path_type				get_path_type(const char *path, t_info *info);
@@ -118,7 +119,7 @@ int						handle_io_redirection(t_ast *node, t_info *info);
 
 // process_redir.c
 
-int						here_doc_redir(char *arg, t_info *info);
+int						here_doc_redir(char *limiter, t_info *info);
 int						input_redir(char *arg, t_ast *node, t_info *info);
 int						output_redir(char *arg, t_ast *node, t_info *info);
 int						handle_ft_redirection(\

@@ -6,17 +6,40 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 10:07:54 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/06 20:21:57 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/07 14:19:12 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	here_doc_redir(char *arg, t_info *info)
+static int	start_heredoc(char *limiter, t_info *info)
 {
-	int	status;
+	char	*parsed_limiter;
+	int		status;
 
-	status = SUCCESS;
+	info->stdin_fd = open_file_with_mode(HEREDOC_TMP, WRITE);
+	if (ft_strlen(limiter) > 1 && \
+		((limiter[0] == '\'' && limiter[ft_strlen(limiter) - 1] == '\'') || \
+		(limiter[0] == '"' && limiter[ft_strlen(limiter) - 1] == '"')))
+	{
+		parsed_limiter = remove_shell_quotes(limiter);
+		status = here_doc(info->stdin_fd, parsed_limiter, info);
+		free(parsed_limiter);
+	}
+	else
+	{
+		info->is_expansion_heredoc = true;
+		status = here_doc(info->stdin_fd, limiter, info);
+	}
+	info->is_expansion_heredoc = false;
+	if (status == FAILURE)
+		info->is_heredoc = false;
+	close(info->tmp_fd);
+	return (status);
+}
+
+int	here_doc_redir(char *limiter, t_info *info)
+{
 	if (redirect_input_to_null() == FAILURE)
 		return (FAILURE);
 	info->tmp_fd = dup(STDOUT_FILENO);
@@ -28,11 +51,7 @@ int	here_doc_redir(char *arg, t_info *info)
 		return (fd_log_error("Dup origin_stdin_fd error!", NULL, NULL));
 	if (dup2(info->origin_stdout_fd, STDOUT_FILENO) == -1)
 		return (fd_log_error("Dup origin_stdout_fd error!", NULL, NULL));
-	info->stdin_fd = open_file_with_mode(HEREDOC_TMP, WRITE);
-	status = here_doc(info->stdin_fd, arg, info);
-	if (status == FAILURE)
-		info->is_heredoc = false;
-	return (set_signal_handler(SIGNAL_HANDLER), close(info->tmp_fd), status);
+	return (start_heredoc(limiter, info));
 }
 
 int	input_redir(char *arg, t_ast *node, t_info *info)
