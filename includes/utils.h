@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 13:27:16 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/08 09:43:50 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/08 10:21:07 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ bool					is_special_char(char c);
 // string_utils_3.c
 char					*concat_three_strings(\
 		char *str1, char *str2, char *str3);
+char					*concat_two_strings(char *str1, char *str2);
 
 // quotes_str.c
 void					remove_quotes(char *str);

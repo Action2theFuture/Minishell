@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 11:37:49 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/05 13:58:18 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/08 11:12:03 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,31 +30,32 @@ t_env	*new_env(const char *name, const char *content)
 static void	add_env_minimum_required_env(t_env **head)
 {
 	char	*cur_dir;
+	char	*loc_minishell;
 	t_env	*cur;
 
 	cur = *head;
-	if (!is_check_key("PWD", cur))
+	cur_dir = getcwd(NULL, 0);
+	if (!cur_dir)
 	{
-		cur_dir = getcwd(NULL, 0);
-		if (!cur_dir)
-		{
-			perror("getcwd error");
-			return ;
-		}
-		add_env_by_name(*head, "PWD", cur_dir);
-		free(cur_dir);
+		perror("getcwd error");
+		return ;
 	}
+	if (!is_check_key("PWD", cur))
+		add_env_by_name(*head, "PWD", cur_dir);
+	loc_minishell = concat_two_strings(cur_dir, LOC_MINISHELL);
 	if (!is_check_key("OLDPWD", cur))
 		add_env_by_name(*head, "OLDPWD", NULL);
 	if (!is_check_key("SHLVL", cur))
 		add_env_by_name(*head, "SHLVL", "1");
 	if (!is_check_key("_", cur))
-		add_env_by_name(*head, "_", INIT_UNDER_SCORE);
+		add_env_by_name(*head, "_", loc_minishell);
+	(free(cur_dir), free(loc_minishell));
 }
 
 static void	initialize_default_env(t_env **head)
 {
 	char	*cur_dir;
+	char	*loc_minishell;
 
 	cur_dir = getcwd(NULL, 0);
 	if (!cur_dir)
@@ -66,8 +67,9 @@ static void	initialize_default_env(t_env **head)
 	init_pwd_oldpwd_under_score(*head);
 	add_env_by_name(*head, "OLDPWD", NULL);
 	add_env_by_name(*head, "SHLVL", "1");
-	add_env_by_name(*head, "_", INIT_UNDER_SCORE);
-	free(cur_dir);
+	loc_minishell = concat_two_strings(cur_dir, LOC_MINISHELL);
+	add_env_by_name(*head, "_", cur_dir);
+	(free(cur_dir), free(loc_minishell));
 }
 
 t_env	*env_init(char **envp)

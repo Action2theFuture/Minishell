@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 09:42:51 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/08 09:43:00 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/08 10:28:18 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,18 +14,29 @@
 
 char	*concat_three_strings(char *str1, char *str2, char *str3)
 {
-	size_t	new_data_len;
-	char	*new_data;
+	size_t	new_str_len;
+	char	*new_str;
 
-	new_data_len = ft_strlen(str1) + ft_strlen(str2) + 2;
-	new_data = (char *)malloc(sizeof(char) * (new_data_len + 1));
-	if (!new_data)
-	{
-		perror("malloc error");
-		return (NULL);
-	}
-	ft_strlcpy(new_data, str1, new_data_len);
-	ft_strlcat(new_data, str2, new_data_len);
-	ft_strlcat(new_data, str3, new_data_len);
-	return (new_data);
+	new_str_len = ft_strlen(str1) + ft_strlen(str2) + ft_strlen(str3) + 1;
+	new_str = (char *)malloc(sizeof(char) * (new_str_len + 1));
+	if (!new_str)
+		return (perror("malloc error"), NULL);
+	ft_strlcpy(new_str, str1, new_str_len);
+	ft_strlcat(new_str, str2, new_str_len);
+	ft_strlcat(new_str, str3, new_str_len);
+	return (new_str);
+}
+
+char	*concat_two_strings(char *str1, char *str2)
+{
+	size_t	new_str_len;
+	char	*new_str;
+
+	new_str_len = ft_strlen(str1) + ft_strlen(str2) + 1;
+	new_str = (char *)malloc(sizeof(char) * new_str_len);
+	if (!new_str)
+		return (perror("malloc error"), NULL);
+	ft_strlcpy(new_str, str1, new_str_len);
+	ft_strlcat(new_str, str2, new_str_len);
+	return (new_str);
 }

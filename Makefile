@@ -6,7 +6,7 @@
 #    By: junsan <junsan@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    CreateCd: 2024/05/11 19:03:01 by junsan            #+#    #+#             #
-#    Updated: 2024/08/08 09:53:28 by junsan           ###   ########.fr        #
+#    Updated: 2024/08/08 10:50:12 by junsan           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -43,7 +43,8 @@ PRINT_DIR = $(SRC_DIR)/print
 OBJ_DIR = obj
 
 SRC 	= minishell.c process_input.c
-INIT	= init_minishell.c env_init.c increment_shlvl.c env_utils.c env_utils_2.c
+INIT	= init_minishell.c env_init.c increment_shlvl.c env_utils.c env_utils_2.c	\
+		env_utils_3.c
 PARSING	= parsing.c arg_parse.c parse_subshell.c parse_logical.c parse_pipe.c 		\
 		parse_phrase.c parse_redirection.c parse_cmd.c								\
 		/utils/parsing_utils.c /utils/tokenize_utils.c /utils/tokenize_utils_2.c	\

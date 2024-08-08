@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 13:25:12 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/07 12:10:14 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/08 10:30:54 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@
 # define HEREDOC_TMP "heredoc_tmp"
 # define DEV_NULL_PATH "/dev/null"
 # define BASE_PATH '.'
-# define INIT_UNDER_SCORE "env"
+# define LOC_MINISHELL "/./minishell"
 
 extern volatile sig_atomic_t	g_heredoc_interrupted;
 
