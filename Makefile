@@ -6,7 +6,7 @@
 #    By: junsan <junsan@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    CreateCd: 2024/05/11 19:03:01 by junsan            #+#    #+#             #
-#    Updated: 2024/08/08 10:50:12 by junsan           ###   ########.fr        #
+#    Updated: 2024/08/08 13:24:24 by junsan           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,7 +31,7 @@ CFLAGS 	:= -Wall -Wextra -Werror -g3
 SRC_DIR = src
 PARSING_DIR = $(SRC_DIR)/parsing
 TOKENIZE_DIR = $(PARSING_DIR)/tokenize
-VALIIDATION_DIR = $(PARSING_DIR)/utils/validation
+VALIIDATION_DIR = $(PARSING_DIR)/validation
 BUILT_IN_DIR = $(SRC_DIR)/built_in
 UTILS_DIR = $(SRC_DIR)/utils
 INIT_DIR = $(SRC_DIR)/init

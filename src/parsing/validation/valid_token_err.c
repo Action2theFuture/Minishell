@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/28 17:14:53 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/01 11:09:34 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/08 13:27:02 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,6 +101,9 @@ bool	check_subshell_err(t_token *head)
 		}
 		if (get_type(cur->data) == LOGICAL || get_type(cur->data) == PIPE)
 			found_redir = false;
+		if ((get_type(cur->data) == SUBSHELL && cur->data[0] == ')') && \
+			(cur->next && cur->next->type == CMD))
+			return (true);
 		cur = cur->next;
 	}
 	return (false);
