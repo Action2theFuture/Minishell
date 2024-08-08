@@ -6,7 +6,7 @@
 #    By: junsan <junsan@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    CreateCd: 2024/05/11 19:03:01 by junsan            #+#    #+#             #
-#    Updated: 2024/08/08 13:24:24 by junsan           ###   ########.fr        #
+#    Updated: 2024/08/08 14:34:13 by junsan           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,7 +37,7 @@ UTILS_DIR = $(SRC_DIR)/utils
 INIT_DIR = $(SRC_DIR)/init
 SIGNAL_DIR = $(SRC_DIR)/signal
 EXECUTE_DIR = $(SRC_DIR)/exec
-EXPANSION_AND_QUOTES_DIR = $(EXECUTE_DIR)/utils/expansion_and_quotes
+EXPANSION_AND_QUOTES_DIR = $(EXECUTE_DIR)/expansion_and_quotes
 PRINT_DIR = $(SRC_DIR)/print
 
 OBJ_DIR = obj
