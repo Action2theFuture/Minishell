@@ -6,7 +6,7 @@
 #    By: junsan <junsan@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    CreateCd: 2024/05/11 19:03:01 by junsan            #+#    #+#             #
-#    Updated: 2024/08/07 12:17:09 by junsan           ###   ########.fr        #
+#    Updated: 2024/08/08 09:53:28 by junsan           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -45,7 +45,7 @@ OBJ_DIR = obj
 SRC 	= minishell.c process_input.c
 INIT	= init_minishell.c env_init.c increment_shlvl.c env_utils.c env_utils_2.c
 PARSING	= parsing.c arg_parse.c parse_subshell.c parse_logical.c parse_pipe.c 		\
-		parse_phrase.c parse_redirection.c parse_phrase_parts.c						\
+		parse_phrase.c parse_redirection.c parse_cmd.c								\
 		/utils/parsing_utils.c /utils/tokenize_utils.c /utils/tokenize_utils_2.c	\
 		/utils/type_redir_functions.c /utils/type_functions.c /utils/get_type.c 	\
 		/utils/subshell_utils.c /utils/parsing_utils_2.c 							\
@@ -55,7 +55,7 @@ TOKENIZE = tokenize.c handler_operators_and_spaces.c handle_quotes.c 				\
 VALIIDATION = valid_token.c valid_token_utils.c valid_token_err.c 					\
 		valid_token_err_2.c
 UTILS	= string_utils.c string_utils_2.c quotes_str.c error_utils.c 				\
-		subshell_and_quote_str.c
+		string_utils_3.c subshell_and_quote_str.c
 SIGNAL	= handler_signal.c handler_heredoc_signal.c
 EXECUTE = execute.c redir.c get_file_list.c dispatch_cmd.c launch_process_cmd.c 	\
 		launch_process_pipe.c execution_pipe.c subshell.c							\
