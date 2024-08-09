@@ -6,11 +6,21 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/13 19:45:20 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/06 15:37:11 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/09 11:47:21 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static char	jump_to_next_chr(const char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i] && ft_isspace(str[i]))
+		i++;
+	return (str[i]);
+}
 
 static bool	is_syntax_error(t_token *head)
 {
@@ -29,7 +39,7 @@ int	add_depth_token(const char **input, int *depth, t_token **tokens)
 	{
 		if (is_syntax_error(*tokens))
 			return (SYNTAX_ERROR);
-		if (*(*input + 1) == '(')
+		if (jump_to_next_chr(*input + 1) == '(')
 			return (SYNTAX_ERROR);
 		if (*(*input - 1) == '$')
 			return (SYNTAX_ERROR);
@@ -39,7 +49,7 @@ int	add_depth_token(const char **input, int *depth, t_token **tokens)
 	}
 	else if (*depth > 0 && **input == ')')
 	{
-		if (*(*input + 1) == ')')
+		if (jump_to_next_chr(*input + 1) == ')')
 			return (SYNTAX_ERROR);
 		add_token(tokens, ")", 1);
 		(*input)++;
@@ -53,7 +63,7 @@ int	handle_open_subshell(\
 {
 	if (is_syntax_error(*list))
 		return (SYNTAX_ERROR);
-	if (*(*input + 1) == '(')
+	if (jump_to_next_chr(*input + 1) == '(')
 		return (SYNTAX_ERROR);
 	add_token(list, "(", 1);
 	(*depth)++;
@@ -67,8 +77,7 @@ int	handle_close_subshell(\
 {
 	if (*depth > 0)
 	{
-		printf("456\n");
-		if (*(*input + 1) == ')')
+		if (jump_to_next_chr(*input + 1) == ')')
 			return (SYNTAX_ERROR);
 		while (ft_isspace(**input))
 			(*input)++;
