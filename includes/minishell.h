@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/11 19:22:19 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/08 10:44:47 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/08 14:38:54 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 # include <errno.h>  // perror
 # include <fcntl.h>  // open, read
 # include <limits.h>
-# include <readline/history.h>
+# include <readline/history.h> 
 // add_history, rl_clear_history, rl_on_new_line, rl_replace_line, rl_redisplay
 # include <readline/readline.h> // readline
 # include <signal.h>

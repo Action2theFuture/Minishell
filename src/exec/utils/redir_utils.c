@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 18:20:15 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/06 11:45:16 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/09 10:13:46 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,6 @@ int	open_file_with_mode(char *file, int mode)
 		fd = open(file, O_WRONLY | O_CREAT | O_APPEND, 0644);
 	else
 		return (-1);
-	if (fd == -1)
-		return (fd_log_error(NULL, file, strerror(errno)), -1);
 	return (fd);
 }
 

@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/31 19:17:41 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/06 21:28:12 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/09 10:10:12 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static int	check_if_dir(const char *path)
 	}
 	if (S_ISDIR(path_stat.st_mode))
 	{
-		fd_log_error((char *)path, NULL, "is a directory");
+		fd_log_error((char *)path, NULL, "Is a Directory");
 		return (FAILURE);
 	}
 	return (SUCCESS);
