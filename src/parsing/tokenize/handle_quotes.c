@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/13 19:44:46 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/06 17:07:57 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/10 14:10:47 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ static int	calculate_token_len(const char **input, int *i)
 		!ft_strchr(SHELL_METACHARS, (*input)[*i]))
 			(*i)++;
 		if (prev_i == *i)
-			return (SYNTAX_ERROR);
+			break ;
 		extra_quotes_idx = 0;
 		if (are_quotes_balanced(&(*input)[*i], &extra_quotes_idx))
 			*i += extra_quotes_idx;
@@ -76,7 +76,6 @@ int	handle_quotes(\
 	const char **input, const char **start, t_token **list)
 {
 	int			i;
-	int			status;
 
 	i = 0;
 	*start = *input;
@@ -89,9 +88,7 @@ int	handle_quotes(\
 	}
 	else
 	{
-		status = calculate_token_len(input, &i);
-		if (status != SUCCESS)
-			return (status);
+		calculate_token_len(input, &i);
 		add_token(list, *input, i);
 		*input += i;
 		*start = *input;

@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 13:09:24 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/08 10:01:03 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/10 12:55:10 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,8 @@ char					*remove_nested_subshell(t_token **token);
 // collect_data_until_subshell.c
 void					ensure_capacity(\
 		char **data_in_subshell, size_t *capacity, size_t space_needed);
-char					*collect_data_until_subshell(t_token **token);
+char					*collect_data_until_subshell(\
+		t_token **token, int subshell_status);
 
 // type_redir_functions.c
 bool					is_input_redirection(const char *data);

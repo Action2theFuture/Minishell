@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 13:25:12 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/08 10:30:54 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/10 12:54:48 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,8 @@ typedef enum subshell_type
 {
 	OPEN,
 	CLOSE,
+	SINGLE,
+	NESTED,
 }	t_subshell_type;
 
 typedef enum type_dir

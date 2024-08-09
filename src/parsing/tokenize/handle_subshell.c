@@ -6,12 +6,13 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/13 19:45:20 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/09 11:47:21 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/10 14:05:32 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+// exaple : (           ( (spaces between parenthes)
 static char	jump_to_next_chr(const char *str)
 {
 	int	i;
