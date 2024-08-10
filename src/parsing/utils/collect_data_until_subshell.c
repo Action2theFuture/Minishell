@@ -6,33 +6,11 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 11:20:27 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/10 13:05:46 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/10 15:34:09 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-void	ensure_capacity(\
-	char **data_in_subshell, size_t *capacity, size_t space_needed)
-{
-	char	*new_data;
-
-	while (space_needed > *capacity)
-	{
-		*capacity *= 2;
-		new_data = (char *)malloc(sizeof(char) * (*capacity));
-		if (!new_data)
-		{
-			free(*data_in_subshell);
-			*data_in_subshell = NULL;
-			perror("malloc error");
-			return ;
-		}
-		ft_strlcpy(new_data, *data_in_subshell, *capacity);
-		free(*data_in_subshell);
-		*data_in_subshell = new_data;
-	}
-}
 
 static void	append_token_data(\
 char **data_in_subshell, size_t *total_len, size_t *capacity, t_token **token)
@@ -116,16 +94,17 @@ size_t *total_len, size_t *capacity, char *data_in_subshell, t_token **token)
 	depth = 0;
 	while (*token)
 	{
-		append_token_data_for_nested(&data_in_subshell, total_len, capacity, token);
+		append_token_data_for_nested(\
+						&data_in_subshell, total_len, capacity, token);
 		if (data_in_subshell == NULL)
 			return (NULL);
 		if ((*token)->type == SUBSHELL && (*token)->data[0] == '(')
 			depth++;
 		else if ((*token)->type == SUBSHELL && (*token)->data[0] == ')')
 			depth--;
+		*token = (*token)->next;
 		if (depth == 0)
 			break ;
-		*token = (*token)->next;
 	}
 	return (data_in_subshell);
 }

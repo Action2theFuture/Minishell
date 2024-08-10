@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 13:25:12 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/10 12:54:48 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/10 15:10:03 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,7 @@ typedef enum type
 {
 	ROOT = -1,
 	SUBSHELL = 100,
+	NESTED_SUBSHELL = 100,
 	ARGS = 22,
 	CMD = 20,
 	FILE_NAME = 18,
