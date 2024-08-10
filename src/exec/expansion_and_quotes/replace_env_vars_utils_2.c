@@ -6,16 +6,35 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/26 21:57:01 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/05 18:30:50 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/08 11:04:58 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+static char	*get_under_score_var(t_handler_info *h_info)
+{
+	char	*env_value;
+	char	*under_score_var;
+
+	env_value = NULL;
+	under_score_var = NULL;
+	if (!h_info->info->env->last_arg->content)
+	{
+		under_score_var = find_var_in_env("_", h_info->info->env);
+		if (under_score_var)
+			env_value = ft_strdup(under_score_var);
+	}
+	else
+		env_value = ft_strdup(h_info->info->env->last_arg->content);
+	return (env_value);
+}
+
 void	handle_expansion_var_without_quotes(t_handler_info *h_info, char c)
 {
 	char	*env_value;
 
+	env_value = NULL;
 	if (c == '?')
 	{
 		env_value = process_replace_expansion_var(h_info->info);
@@ -28,14 +47,13 @@ void	handle_expansion_var_without_quotes(t_handler_info *h_info, char c)
 	}
 	else if (c == '_')
 	{
-		env_value = NULL;
-		if (!h_info->info->env->last_arg->content)
-			env_value = ft_strdup(INIT_UNDER_SCORE);
-		else
-			env_value = ft_strdup(h_info->info->env->last_arg->content);
-		ft_strlcat(h_info->new_str, env_value, MAX_ARGS);
-		h_info->new_str_len += ft_strlen(env_value);
-		free(env_value);
+		env_value = get_under_score_var(h_info);
+		if (env_value)
+		{
+			ft_strlcat(h_info->new_str, env_value, MAX_ARGS);
+			h_info->new_str_len += ft_strlen(env_value);
+			free(env_value);
+		}
 	}
 	h_info->i++;
 }

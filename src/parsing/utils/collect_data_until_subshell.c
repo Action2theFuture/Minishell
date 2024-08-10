@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 11:20:27 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/29 19:16:15 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/09 10:53:03 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,17 +59,12 @@ char **data_in_subshell, size_t *total_len, size_t *capacity, t_token **token)
 static char	*append_data_until_subshell(\
 size_t *total_len, size_t *capacity, char *data_in_subshell, t_token **token)
 {
-	int		logical_cnt;
-
-	logical_cnt = 0;
-	while (*token && (*token)->type != SUBSHELL && logical_cnt < 2)
+	while (*token && (*token)->type != SUBSHELL)
 	{
 		append_token_data(&data_in_subshell, total_len, capacity, token);
 		if (data_in_subshell == NULL)
 			return (NULL);
 		*token = (*token)->next;
-		if (*token && (*token)->type == LOGICAL)
-			logical_cnt++;
 	}
 	return (data_in_subshell);
 }

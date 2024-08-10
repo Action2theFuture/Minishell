@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/28 17:14:53 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/01 11:09:34 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/09 11:37:53 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,10 +49,11 @@ bool	check_redir_err(t_token *head)
 
 static bool	is_operator_err(t_token *prev, t_token *cur, t_token *next)
 {
-	(void)prev;
 	if (is_operator(cur->data))
 	{
 		if (!prev)
+			return (true);
+		if (prev->type && prev->type == PIPE && cur->type && cur->type == PIPE)
 			return (true);
 		if (!next)
 			return (true);
@@ -83,25 +84,28 @@ bool	check_operator_before_after_err(t_token *head)
 	return (false);
 }
 
+// error ( ( ls ))
+
 bool	check_subshell_err(t_token *head)
 {
-	t_token	*cur;
-	bool	found_redir;
+	bool	is_found_redir;
 
-	found_redir = false;
-	cur = head;
-	while (cur)
+	is_found_redir = false;
+	while (head)
 	{
-		if (get_type(cur->data) == REDIRECTION)
-			found_redir = true;
-		if (get_type(cur->data) == SUBSHELL && cur->data[0] == '(')
+		if (get_type(head->data) == REDIRECTION)
+			is_found_redir = true;
+		if (get_type(head->data) == SUBSHELL && head->data[0] == '(')
 		{
-			if (found_redir)
+			if (is_found_redir)
 				return (true);
 		}
-		if (get_type(cur->data) == LOGICAL || get_type(cur->data) == PIPE)
-			found_redir = false;
-		cur = cur->next;
+		if (get_type(head->data) == LOGICAL || get_type(head->data) == PIPE)
+			is_found_redir = false;
+		if (get_type(head->data) == SUBSHELL && head->data[0] == ')' && \
+			head->next && head->next->type == CMD)
+			return (true);
+		head = head->next;
 	}
 	return (false);
 }

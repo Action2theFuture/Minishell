@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 13:09:24 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/29 18:26:57 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/08 10:01:03 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,28 +38,20 @@ bool					parse_pipe(t_token **token, t_ast **node);
 
 // parse_phrase.c
 bool					parse_phrase(t_token **token, t_ast **node);
-bool					parse_phrase_part(\
-		t_token **token, t_ast **node, \
-		bool (*parse_func)(t_token **, t_ast **, t_ast **));
 
-// parse_phrase_part.c
+// parse_cmd.c
 bool					parse_cmd(t_token **token, t_ast **node);
-bool					parse_redirection_part(\
-		t_token **token, t_ast **phrase_node, t_ast **node);
-bool					parse_cmd_part(\
+bool					parse_cmd_with_redir(\
 		t_token **token, t_ast **phrase_node, t_ast **node);
 
 // parse_redirection.c
 bool					parse_redirection(t_token **token, t_ast **node);
 bool					parse_io_redirection(t_token **token, t_ast **node);
+bool					parse_redirection_with_cmd(\
+		t_token **token, t_ast **phrase_node, t_ast **node);
 
 // parse_subshell.c
 bool					parse_subshell(t_token **token, t_ast **node);
-
-// parsing_quotes_in_cmd.c
-char					*remove_all_quotes(const char *input);
-char					**parse_cmd_line_with_quotes(\
-		const char *input, int *cnt);
 
 // type_functions.c
 bool					is_logical_operator(const char *token);

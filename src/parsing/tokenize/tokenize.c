@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/25 15:39:22 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/01 14:08:20 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/06 15:16:46 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,10 +51,8 @@ int	tokenize(const char *input, t_token **tokens)
 		err = process_character(&input, &start, &depth, tokens);
 		if (err != -1)
 			return (err);
-		if (*input)
+		if (ft_isspace(*input))
 			input++;
 	}
-	if (input > start)
-		add_token(tokens, start, input - start);
 	return (-1);
 }

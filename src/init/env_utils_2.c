@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/15 23:01:48 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/31 11:01:52 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/08 11:13:36 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,15 +35,24 @@ void	add_env(t_env **head, const char *str)
 	t_env	*new_node;
 	char	*name;
 	char	*content;
+	char	*cur_dir;
+	char	*loc_minishell;
 
 	name = NULL;
 	content = NULL;
+	cur_dir = getcwd(NULL, 0);
+	if (!cur_dir)
+	{
+		perror("getcwd error");
+		return ;
+	}
+	loc_minishell = concat_two_strings(cur_dir, LOC_MINISHELL);
 	env_split(str, &name, &content);
 	if (name[0] == '_')
-		new_node = new_env("_", "env");
+		new_node = new_env("_", loc_minishell);
 	else
 		new_node = new_env(name, content);
-	(free(name), free(content));
+	(free(name), free(content), free(cur_dir), free(loc_minishell));
 	if (!name || !content || !new_node)
 		return ;
 	insert_env_node(head, new_node);
@@ -87,22 +96,24 @@ static t_env	*initialize_env_var(const char *name, const char *content)
 void	*init_pwd_oldpwd_under_score(t_env *head)
 {
 	char	*cur_dir;
+	char	*loc_minishell;
 
 	cur_dir = getcwd(NULL, 0);
 	if (!cur_dir)
 		return (perror("getcwd error"), NULL);
+	loc_minishell = concat_two_strings(cur_dir, LOC_MINISHELL);
 	head->pwd = initialize_env_var("PWD", cur_dir);
 	if (!head->pwd)
-		return (perror("malloc error"), free(head), free(cur_dir), NULL);
+		return (perror("malloc error"), free(head), \
+		free(cur_dir), free(loc_minishell), NULL);
 	head->old_pwd = initialize_env_var("OLDPWD", NULL);
 	if (!head->old_pwd)
 		return (perror("malloc error"), \
-		free(head), free(head->pwd), free(cur_dir), NULL);
-	head->last_arg = initialize_env_var("_", INIT_UNDER_SCORE);
+		free(head), free(head->pwd), free(cur_dir), free(loc_minishell), NULL);
+	head->last_arg = initialize_env_var("_", loc_minishell);
 	if (!head->last_arg)
 		return (perror("malloc error"), \
-		free(head), free(head->pwd), free(head->old_pwd), free(cur_dir), NULL);
-	free(cur_dir);
-	cur_dir = NULL;
-	return (NULL);
+		free(head), free(head->pwd), free(head->old_pwd), \
+		free(cur_dir), free(loc_minishell), NULL);
+	return (free(cur_dir), free(loc_minishell), NULL);
 }

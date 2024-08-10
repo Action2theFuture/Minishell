@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/11 19:22:19 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/02 12:31:47 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/08 14:38:54 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 # include <errno.h>  // perror
 # include <fcntl.h>  // open, read
 # include <limits.h>
-# include <readline/history.h>
+# include <readline/history.h> 
 // add_history, rl_clear_history, rl_on_new_line, rl_replace_line, rl_redisplay
 # include <readline/readline.h> // readline
 # include <signal.h>
@@ -68,6 +68,9 @@ void					add_env(t_env **head, const char *str);
 void					add_env_by_name(\
 		t_env *head, const char *name, const char *content);
 void					*init_pwd_oldpwd_under_score(t_env *head);
+
+// env_utils_3.c
+char					*find_var_in_env(char *name, t_env *head);
 
 // increment_shlvl.c
 int						increment_shlvl(t_env *env);

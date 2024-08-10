@@ -6,13 +6,14 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/25 22:45:45 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/05 21:01:24 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/09 11:12:28 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-//print_tree(root, 10);
+// print_tree(root, 10);
+// print_token(tokens);
 static void	parse_and_execute(\
 		t_token *tokens, t_env *env, int *exit_status, int *err)
 {

@@ -6,7 +6,7 @@
 #    By: junsan <junsan@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    CreateCd: 2024/05/11 19:03:01 by junsan            #+#    #+#             #
-#    Updated: 2024/08/05 18:45:31 by junsan           ###   ########.fr        #
+#    Updated: 2024/08/08 14:34:13 by junsan           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,31 +31,32 @@ CFLAGS 	:= -Wall -Wextra -Werror -g3
 SRC_DIR = src
 PARSING_DIR = $(SRC_DIR)/parsing
 TOKENIZE_DIR = $(PARSING_DIR)/tokenize
-VALIIDATION_DIR = $(PARSING_DIR)/utils/validation
+VALIIDATION_DIR = $(PARSING_DIR)/validation
 BUILT_IN_DIR = $(SRC_DIR)/built_in
 UTILS_DIR = $(SRC_DIR)/utils
 INIT_DIR = $(SRC_DIR)/init
 SIGNAL_DIR = $(SRC_DIR)/signal
 EXECUTE_DIR = $(SRC_DIR)/exec
-EXPANSION_AND_QUOTES_DIR = $(EXECUTE_DIR)/utils/expansion_and_quotes
+EXPANSION_AND_QUOTES_DIR = $(EXECUTE_DIR)/expansion_and_quotes
 PRINT_DIR = $(SRC_DIR)/print
 
 OBJ_DIR = obj
 
 SRC 	= minishell.c process_input.c
-INIT	= init_minishell.c env_init.c increment_shlvl.c env_utils.c env_utils_2.c
+INIT	= init_minishell.c env_init.c increment_shlvl.c env_utils.c env_utils_2.c	\
+		env_utils_3.c
 PARSING	= parsing.c arg_parse.c parse_subshell.c parse_logical.c parse_pipe.c 		\
-		parse_phrase.c parse_redirection.c parse_phrase_parts.c						\
+		parse_phrase.c parse_redirection.c parse_cmd.c								\
 		/utils/parsing_utils.c /utils/tokenize_utils.c /utils/tokenize_utils_2.c	\
 		/utils/type_redir_functions.c /utils/type_functions.c /utils/get_type.c 	\
 		/utils/subshell_utils.c /utils/parsing_utils_2.c 							\
-		/utils/collect_data_until_subshell.c /utils/parsing_quotes_in_cmd.c
+		/utils/collect_data_until_subshell.c
 TOKENIZE = tokenize.c handler_operators_and_spaces.c handle_quotes.c 				\
 		handle_subshell.c
 VALIIDATION = valid_token.c valid_token_utils.c valid_token_err.c 					\
 		valid_token_err_2.c
 UTILS	= string_utils.c string_utils_2.c quotes_str.c error_utils.c 				\
-		subshell_and_quote_str.c
+		string_utils_3.c subshell_and_quote_str.c
 SIGNAL	= handler_signal.c handler_heredoc_signal.c
 EXECUTE = execute.c redir.c get_file_list.c dispatch_cmd.c launch_process_cmd.c 	\
 		launch_process_pipe.c execution_pipe.c subshell.c							\
@@ -65,7 +66,7 @@ EXECUTE = execute.c redir.c get_file_list.c dispatch_cmd.c launch_process_cmd.c 
 		/utils/fd_utils.c  /utils/list_to_array.c /utils/args_utils.c 				\
 		/utils/get_absolute_path.c /utils/get_path_type.c /utils/find_cmd_in_path.c	\
 		/utils/quotes_utils.c /utils/get_bin_path.c /utils/here_doc.c				\
-		/utils/redirect_to_null.c													
+		/utils/redirect_to_null.c /utils/add_string_to_array.c													
 EXPANSION_AND_QUOTES = var_expansion_with_args.c replace_env_vars.c					\
 		replace_env_vars_utils.c replace_env_vars_utils_2.c							\
 		handler_replace_env_vars.c handler_under_score.c							\
@@ -113,7 +114,8 @@ OBJ_FILES_SPINNER_PID=
 
 $(OBJ_DIR)/%.o: %.c
 	@mkdir -p $(@D)
-	@$(CC) $(CFLAGS) $(IFLAGS) -c $< -o $@ > /dev/null 2>&1
+	#@$(CC) $(CFLAGS) $(IFLAGS) -c $< -o $@ > /dev/null 2>&1
+	@$(CC) $(CFLAGS) $(IFLAGS) -c $< -o $@
 
 $(LIBFT): 
 	@echo "$(COLOR_YELLOW)Compliling $(NAME)...$(COLOR_RESET)"

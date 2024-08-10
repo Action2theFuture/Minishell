@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/23 17:08:10 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/05 19:12:43 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/06 21:22:19 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ int	launch_process_cmd(char *cmd, char **args, t_info *info)
 	if (env == NULL)
 		return (perror("Empty env"), 1);
 	if (pid == 0)
-		execute_cmd(cmd, args, info, env);
+		(execute_cmd(cmd, args, info, env));
 	else
 		monitor_child_task(cmd, pid, info);
 	if (env)

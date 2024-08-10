@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/04 13:40:54 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/05 10:18:54 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/07 14:20:07 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,8 @@ static char	*replace_env_vars_from_here_doc(const char *str, t_info *info)
 		ft_strlcat(res, tmp, len * 2 + 1), res);
 }
 
+// limiter -> "EOF" - not Expansion env vars
+// limiter -> EOF - Expansion env vars
 static int	process_line_and_write(\
 		int infile, char *line, char *limiter, t_info *info)
 {
@@ -84,12 +86,9 @@ static int	process_line_and_write(\
 
 	env_var = NULL;
 	if (ft_strncmp(line, limiter, ft_strlen(limiter)) == 0)
-	{
-		free(line);
-		line = NULL;
-		return (0);
-	}
-	env_var = replace_env_vars_from_here_doc(line, info);
+		return (free(line), line = NULL, 0);
+	if (info->is_expansion_heredoc)
+		env_var = replace_env_vars_from_here_doc(line, info);
 	if (env_var)
 	{
 		write(infile, env_var, ft_strlen(env_var));
@@ -97,30 +96,31 @@ static int	process_line_and_write(\
 	}
 	else
 		write(infile, line, ft_strlen(line));
+	write(infile, "\n", 1);
 	return (1);
 }
 
 int	here_doc(int infile, char *limiter, t_info *info)
 {
-	char	*line;
+	char				*line;
 
-	(set_heredoc_signal_handler(), g_heredoc_interrupted = 0);
+	set_heredoc_signal_handler();
+	g_heredoc_interrupted = 0;
 	info->is_heredoc = true;
 	while (1)
 	{
-		ft_putstr_fd("heredoc> ", STDOUT_FILENO);
-		line = get_next_line(STDIN_FILENO);
+		line = readline("heredoc> ");
 		if (line == NULL || g_heredoc_interrupted || \
 			!process_line_and_write(infile, line, limiter, info))
-		{
-			if (line == NULL && !g_heredoc_interrupted)
-				write(STDOUT_FILENO, "\n", 1);
 			break ;
-		}
 		(free(line), line = NULL);
 	}
+	set_signal_handler(SIGNAL_HANDLER);
 	if (g_heredoc_interrupted)
+	{
+		(ft_putstr_fd("^C\n", STDERR_FILENO), rl_redisplay());
 		return (free(line), cleanup_tmp_file(), FAILURE);
+	}
 	if (infile != -1)
 		close(infile);
 	info->stdin_fd = open(HEREDOC_TMP, O_RDONLY, 0644);
