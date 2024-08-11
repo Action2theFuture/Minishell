@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 11:20:27 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/10 15:34:09 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/11 18:24:39 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,8 @@ size_t *total_len, size_t *capacity, char *data_in_subshell, t_token **token)
 		if (data_in_subshell == NULL)
 			return (NULL);
 		*token = (*token)->next;
-		if ((have_logical && (*token) && (*token)->type == LOGICAL) || \
-			(have_pipe && (*token) && (*token)->type == PIPE))
+		if ((have_logical || have_pipe) && (*token) && \
+			((*token)->type == LOGICAL || (*token)->type == PIPE))
 		{
 			if ((*token)->next && (*token)->next->type == SUBSHELL)
 				break ;
@@ -79,11 +79,6 @@ char **data_in_subshell, size_t *total_len, size_t *capacity, t_token **token)
 		return ;
 	ft_strlcat(*data_in_subshell, (*token)->data, *capacity);
 	*total_len += data_len;
-	if ((*token)->next)
-	{
-		ft_strlcat(*data_in_subshell, " ", *capacity);
-		(*total_len)++;
-	}
 }
 
 static char	*append_data_until_nested_subshell(\
@@ -105,6 +100,8 @@ size_t *total_len, size_t *capacity, char *data_in_subshell, t_token **token)
 		*token = (*token)->next;
 		if (depth == 0)
 			break ;
+		ft_strlcat(data_in_subshell, " ", *capacity);
+		(*total_len)++;
 	}
 	return (data_in_subshell);
 }
