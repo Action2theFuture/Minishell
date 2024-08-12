@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 13:25:12 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/11 10:14:37 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/12 21:55:31 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -191,6 +191,7 @@ typedef struct s_info
 	int					exit_status;
 	int					status;
 	struct s_ast		*root;
+	struct s_token		*token;
 	struct s_env		*env;
 	struct s_quote_info	*quote_info;
 }						t_info;

@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/27 19:38:46 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/11 20:35:43 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/12 21:55:59 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,15 +24,15 @@ static void	process_nested_subshell_node(t_ast *node, t_info *info)
 
 	tokens_in_subshell = NULL;
 	nested_subshell_node = NULL;
-	init_info(&subshell_info, info->env, node);
 	tokenize(node->data, &tokens_in_subshell);
 	token_head = tokens_in_subshell;
 	parse_subshell(&tokens_in_subshell, &nested_subshell_node);
-	process_subshell_node(nested_subshell_node, &subshell_info);
-	printf("-------------------after nested---------------------------------\n");
-	free_token(token_head);
-	free_tree(nested_subshell_node);
-	info->exit_status = subshell_info.exit_status;
+	init_info(&subshell_info, info->env, nested_subshell_node);
+	subshell_info.token = token_head;
+	info->exit_status = process_subshell_node(\
+			nested_subshell_node, &subshell_info);
+	free_token(subshell_info.token);
+	free_tree(subshell_info.root);
 	clear_info(&subshell_info);
 }
 

@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 12:04:00 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/07 12:10:45 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/12 21:55:39 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ static void	init_pointers(t_info *info, t_env *env, t_ast *root)
 	info->env = env;
 	info->root = root;
 	info->quote_info = NULL;
+	info->token = NULL;
 }
 
 void	init_info(t_info *info, t_env *env, t_ast *root)

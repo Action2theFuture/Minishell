@@ -6,21 +6,47 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/13 19:45:20 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/10 14:05:32 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/12 22:08:57 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 // exaple : (           ( (spaces between parenthes)
-static char	jump_to_next_chr(const char *str)
+static bool	is_surrounded_by_parentheses(const char *str, int n)
 {
+	int open_count;
+	int	len;
 	int	i;
-
+	int	j;
+	int	k;
+    
+	len = (int)ft_strlen(str);
 	i = 0;
-	while (str[i] && ft_isspace(str[i]))
+	while (i < len && str[i] == '(')
 		i++;
-	return (str[i]);
+	if (i < n)
+		return (false);
+	j = len - 1;
+	while (j >= 0 && str[j] == ')')
+		j--;
+	if (len - j - 1 < n)
+		return (false);
+	open_count = 0;
+	k = i;
+	while (k <= j)
+	{
+		if (str[k] == '(')
+			open_count++;
+		else if (str[k] == ')')
+		{
+			open_count--;
+			if (open_count < 0)
+				return (false);
+		}
+		k++;
+    }
+	return (true);
 }
 
 static bool	is_syntax_error(t_token *head)
@@ -40,7 +66,7 @@ int	add_depth_token(const char **input, int *depth, t_token **tokens)
 	{
 		if (is_syntax_error(*tokens))
 			return (SYNTAX_ERROR);
-		if (jump_to_next_chr(*input + 1) == '(')
+		if (is_surrounded_by_parentheses(*input, 2))
 			return (SYNTAX_ERROR);
 		if (*(*input - 1) == '$')
 			return (SYNTAX_ERROR);
@@ -50,8 +76,6 @@ int	add_depth_token(const char **input, int *depth, t_token **tokens)
 	}
 	else if (*depth > 0 && **input == ')')
 	{
-		if (jump_to_next_chr(*input + 1) == ')')
-			return (SYNTAX_ERROR);
 		add_token(tokens, ")", 1);
 		(*input)++;
 		(*depth)--;
@@ -64,7 +88,7 @@ int	handle_open_subshell(\
 {
 	if (is_syntax_error(*list))
 		return (SYNTAX_ERROR);
-	if (jump_to_next_chr(*input + 1) == '(')
+	if (is_surrounded_by_parentheses(*input, 2))
 		return (SYNTAX_ERROR);
 	add_token(list, "(", 1);
 	(*depth)++;
@@ -78,8 +102,6 @@ int	handle_close_subshell(\
 {
 	if (*depth > 0)
 	{
-		if (jump_to_next_chr(*input + 1) == ')')
-			return (SYNTAX_ERROR);
 		while (ft_isspace(**input))
 			(*input)++;
 		add_token(list, ")", 1);

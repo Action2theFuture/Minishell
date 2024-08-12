@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 17:49:41 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/11 20:39:37 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/12 20:21:42 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ static t_ast	*parse_open_subshell(const char *data_in_subshell)
 static t_ast	*create_nested_subshell_node(char *data_in_subshell)
 {
 	t_token	*tokens_in_subshell;
+	t_token	*token_head;
 	t_ast	*subshell_node;
 	int		type;
 
@@ -52,7 +53,9 @@ static t_ast	*create_nested_subshell_node(char *data_in_subshell)
 	{
 		type = SUBSHELL;
 		tokenize(data_in_subshell, &tokens_in_subshell);
+		token_head = tokens_in_subshell;
 		parse_phrase(&tokens_in_subshell, &subshell_node);
+		free_token(token_head);
 	}
 	return (subshell_node);
 }
