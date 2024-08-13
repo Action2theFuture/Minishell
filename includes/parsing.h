@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 13:09:24 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/13 11:54:35 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/13 12:48:59 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,9 +66,6 @@ bool					is_file_name(const char *token);
 
 // subshell_utils.c
 char					*remove_nested_subshell(t_token **token);
-
-// subshell_utils_@.c
-bool					is_surrounded_by_parentheses(const char *str, int n);
 
 // collect_data_until_subshell.c
 char					*collect_data_until_subshell(\

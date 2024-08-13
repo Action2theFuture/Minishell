@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/13 19:45:20 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/13 11:52:32 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/13 12:19:57 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,6 @@ int	add_depth_token(const char **input, int *depth, t_token **tokens)
 	{
 		if (is_syntax_error(*tokens))
 			return (SYNTAX_ERROR);
-		if (is_surrounded_by_parentheses(*input, 2))
-			return (SYNTAX_ERROR);
 		if (*(*input - 1) == '$')
 			return (SYNTAX_ERROR);
 		add_token(tokens, "(", 1);
@@ -50,8 +48,6 @@ int	handle_open_subshell(\
 	const char **input, int *depth, const char **start, t_token **list)
 {
 	if (is_syntax_error(*list))
-		return (SYNTAX_ERROR);
-	if (is_surrounded_by_parentheses(*input, 2))
 		return (SYNTAX_ERROR);
 	add_token(list, "(", 1);
 	(*depth)++;
