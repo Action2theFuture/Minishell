@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/13 19:26:43 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/12 20:16:13 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/13 11:49:52 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,21 +68,22 @@ static int	process_subshell_token(\
 	data_in_subshell = NULL;
 	subshell_data = (*token)->data;
 	subshell_type = (*token)->type;
-	if (*depth > 0 && subshell_data[0] == ')')
+	if (*depth == 0 && subshell_data[0] == '(' && \
+			(*token)->next && (*token)->next->type == SUBSHELL)
+		return ((*depth)++, *token = (*token)->next, \
+		*subshell_node = new_node("(", SUBSHELL), OPEN);
+	else if (*depth > 0 && subshell_data[0] == ')')
 		return (*token = (*token)->next, (*depth)--, \
 		*subshell_node = new_node(")", SUBSHELL), CLOSE);
 	else if (*depth > 0 && subshell_data[0] != ')')
 		return (*subshell_node = process_nested_subshell(token), NESTED);
-	else
-	{
-		data_in_subshell = collect_and_tokenize_subshell_data(\
-									NULL, token, SINGLE);
-		if (!data_in_subshell)
-			return (-1);
-		if (subshell_type == SUBSHELL && subshell_data[0] == '(')
-			return ((*depth)++, \
-		*subshell_node = handler_parse_subshell(data_in_subshell, OPEN), OPEN);
-	}
+	data_in_subshell = collect_and_tokenize_subshell_data(\
+						NULL, token, SINGLE);
+	if (!data_in_subshell)
+		return (-1);
+	if (subshell_type == SUBSHELL && subshell_data[0] == '(')
+		return ((*depth)++, \
+	*subshell_node = handler_parse_subshell(data_in_subshell, OPEN), OPEN);
 	return (-1);
 }
 
@@ -95,7 +96,7 @@ static bool	handle_subshell_node(\
 		attach_to_tree(*node, subshell_node, LEFT);
 	else
 	{
-		if (!(*node)->left->left)
+		if ((*node)->left && !(*node)->left->left)
 			(*node)->left->left = subshell_node;
 		else
 		{

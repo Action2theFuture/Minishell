@@ -6,7 +6,7 @@
 #    By: junsan <junsan@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    CreateCd: 2024/05/11 19:03:01 by junsan            #+#    #+#             #
-#    Updated: 2024/08/10 17:59:51 by junsan           ###   ########.fr        #
+#    Updated: 2024/08/13 11:58:11 by junsan           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -49,7 +49,7 @@ PARSING	= parsing.c arg_parse.c parse_subshell.c parse_logical.c parse_pipe.c 		
 		parse_phrase.c parse_redirection.c parse_cmd.c								\
 		/utils/parsing_utils.c /utils/tokenize_utils.c /utils/tokenize_utils_2.c	\
 		/utils/type_redir_functions.c /utils/type_functions.c /utils/get_type.c 	\
-		/utils/subshell_utils.c /utils/parsing_utils_2.c 							\
+		/utils/subshell_utils.c /utils/subshell_utils_2.c /utils/parsing_utils_2.c 	\
 		/utils/collect_data_until_subshell.c /utils/ensure_capacity.c				\
 		/utils/handler_parse_subshell.c
 TOKENIZE = tokenize.c handler_operators_and_spaces.c handle_quotes.c 				\

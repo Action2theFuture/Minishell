@@ -6,48 +6,11 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/13 19:45:20 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/12 22:08:57 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/13 11:52:32 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-// exaple : (           ( (spaces between parenthes)
-static bool	is_surrounded_by_parentheses(const char *str, int n)
-{
-	int open_count;
-	int	len;
-	int	i;
-	int	j;
-	int	k;
-    
-	len = (int)ft_strlen(str);
-	i = 0;
-	while (i < len && str[i] == '(')
-		i++;
-	if (i < n)
-		return (false);
-	j = len - 1;
-	while (j >= 0 && str[j] == ')')
-		j--;
-	if (len - j - 1 < n)
-		return (false);
-	open_count = 0;
-	k = i;
-	while (k <= j)
-	{
-		if (str[k] == '(')
-			open_count++;
-		else if (str[k] == ')')
-		{
-			open_count--;
-			if (open_count < 0)
-				return (false);
-		}
-		k++;
-    }
-	return (true);
-}
 
 static bool	is_syntax_error(t_token *head)
 {
