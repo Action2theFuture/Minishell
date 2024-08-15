@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/13 11:22:54 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/29 11:10:26 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/11 10:16:09 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,8 @@ static const char	*get_type_str(int type)
 		return ("FILE_NAME");
 	else if (type == ARGS)
 		return ("ARGS");
+	else if (type == NESTED_SUBSHELL)
+		return ("NESTED_SUBSHELL");
 	return (get_type_str_redir(type));
 }
 

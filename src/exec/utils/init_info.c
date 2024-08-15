@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 12:04:00 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/07 12:10:45 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/15 13:33:40 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,9 @@ static void	init_pointers(t_info *info, t_env *env, t_ast *root)
 	info->redir_args = NULL;
 	info->env = env;
 	info->root = root;
+	info->nested_subshell_root = NULL;
 	info->quote_info = NULL;
+	info->token = NULL;
 }
 
 void	init_info(t_info *info, t_env *env, t_ast *root)

@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 13:09:24 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/08 10:01:03 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/13 12:48:59 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,10 @@ bool					parse_redirection_with_cmd(\
 // parse_subshell.c
 bool					parse_subshell(t_token **token, t_ast **node);
 
+// handler_parse_subshell.c
+t_ast					*handler_parse_subshell(\
+		char *data_in_subshell, int subshell_status);
+
 // type_functions.c
 bool					is_logical_operator(const char *token);
 bool					is_pipe_operator(const char *token);
@@ -64,9 +68,12 @@ bool					is_file_name(const char *token);
 char					*remove_nested_subshell(t_token **token);
 
 // collect_data_until_subshell.c
+char					*collect_data_until_subshell(\
+		t_token **token, int subshell_status);
+
+// ensure_capacity.c
 void					ensure_capacity(\
 		char **data_in_subshell, size_t *capacity, size_t space_needed);
-char					*collect_data_until_subshell(t_token **token);
 
 // type_redir_functions.c
 bool					is_input_redirection(const char *data);

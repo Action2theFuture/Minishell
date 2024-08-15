@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 13:25:12 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/08 10:30:54 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/15 13:28:10 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,8 @@ typedef enum subshell_type
 {
 	OPEN,
 	CLOSE,
+	SINGLE,
+	NESTED,
 }	t_subshell_type;
 
 typedef enum type_dir
@@ -95,6 +97,7 @@ typedef enum type
 {
 	ROOT = -1,
 	SUBSHELL = 100,
+	NESTED_SUBSHELL = 101,
 	ARGS = 22,
 	CMD = 20,
 	FILE_NAME = 18,
@@ -188,6 +191,8 @@ typedef struct s_info
 	int					exit_status;
 	int					status;
 	struct s_ast		*root;
+	struct s_ast		*nested_subshell_root;
+	struct s_token		*token;
 	struct s_env		*env;
 	struct s_quote_info	*quote_info;
 }						t_info;

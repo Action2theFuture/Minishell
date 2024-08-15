@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/27 19:38:46 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/09 10:48:12 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/15 13:35:19 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,35 +15,51 @@
 static void	process_logical_node_in_subshell(t_ast *node, t_info *info);
 static void	traverse_tree_in_subshell(t_ast *node, t_info *info);
 
-static void	handle_special_nodes(t_ast	*node, t_info *info)
+static void	process_nested_subshell_node(t_ast *node, t_info *info)
 {
 	t_info	subshell_info;
+	t_token	*tokens_in_subshell;
+	t_token	*token_head;
+	t_ast	*nested_subshell_node;
 
-	if (node->type == LOGICAL)
-		process_logical_node_in_subshell(node, info);
-	else if (node->type == PIPE)
-		process_pipe_node(node, info);
-	else if (node->type == SUBSHELL)
+	tokens_in_subshell = NULL;
+	nested_subshell_node = NULL;
+	tokenize(node->data, &tokens_in_subshell);
+	token_head = tokens_in_subshell;
+	if (!parse_subshell(&tokens_in_subshell, &nested_subshell_node))
 	{
-		init_info(&subshell_info, info->env, node);
-		traverse_tree_in_subshell(node->left, &subshell_info);
-		info->exit_status = subshell_info.exit_status;
-		clear_info(&subshell_info);
+		free_token(tokens_in_subshell);
+		return ;
 	}
+	init_info(&subshell_info, info->env, info->root);
+	subshell_info.nested_subshell_root = nested_subshell_node;
+	subshell_info.token = token_head;
+	info->exit_status = process_subshell_node(\
+			nested_subshell_node, &subshell_info);
+	free_token(subshell_info.token);
+	free_tree(subshell_info.nested_subshell_root);
+	clear_info(&subshell_info);
 }
 
 static void	traverse_tree_in_subshell(t_ast *node, t_info *info)
 {
 	if (node == NULL)
 		return ;
-	if (node->type == LOGICAL || node->type == PIPE || \
-		node->type == SUBSHELL)
-		handle_special_nodes(node, info);
+	if (node->type == LOGICAL)
+		process_logical_node_in_subshell(node, info);
+	else if (node->type == PIPE)
+		process_pipe_node(node, info);
 	else if (node->type != PIPE && node->type != LOGICAL)
 	{
 		if (node->type == PHRASE && info->status == SUCCESS)
 		{
 			process_phrase_node(node, info);
+			if (!node->left)
+				return ;
+		}
+		else if (node->type == NESTED_SUBSHELL && info->status == SUCCESS)
+		{
+			process_nested_subshell_node(node, info);
 			if (!node->left)
 				return ;
 		}

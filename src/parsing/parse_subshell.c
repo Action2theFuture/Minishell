@@ -6,103 +6,137 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/13 19:26:43 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/09 11:20:44 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/13 11:49:52 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static t_token	*collect_and_tokenize_subshell_data(t_token **token)
+static char	*collect_and_tokenize_subshell_data(\
+						char **remainder, t_token **token, int subshell_status)
 {
-	t_token	*tokens_in_subshell;
 	char	*data_in_subshell;
 
-	tokens_in_subshell = NULL;
-	*token = (*token)->next;
-	data_in_subshell = collect_data_until_subshell(token);
-	tokenize(data_in_subshell, &tokens_in_subshell);
-	free(data_in_subshell);
-	return (tokens_in_subshell);
+	if (*token && (*token)->type != SUBSHELL)
+	{
+		*remainder = (*token)->data;
+		*token = (*token)->next;
+	}
+	if (subshell_status == SINGLE)
+		*token = (*token)->next;
+	data_in_subshell = collect_data_until_subshell(token, subshell_status);
+	return (data_in_subshell);
 }
 
-static t_ast	*parse_single_subshell(\
-		t_token *tokens_in_subshell, int subshell_status)
+static t_ast	*process_nested_subshell(t_token **token)
 {
-	t_token	*token_head;
 	t_ast	*subshell_node;
-	t_ast	*logical_node;
-
-	logical_node = NULL;
-	subshell_node = NULL;
-	token_head = tokens_in_subshell;
-	parse_logical(&tokens_in_subshell, &logical_node);
-	free_token(token_head);
-	if (subshell_status == OPEN)
-		subshell_node = new_node("(", SUBSHELL);
-	else
-		subshell_node = new_node(")", SUBSHELL);
-	if (!subshell_node)
-		return (free_tree(logical_node), NULL);
-	subshell_node->left = logical_node;
-	return (subshell_node);
-}
-
-static t_ast	*create_subshell_node(t_token **token, char **subshell)
-{
-	t_token	*tokens_in_subshell;
-	t_ast	*subshell_node;
+	t_ast	*remainder_node;
+	char	*data_in_subshell;
+	char	*remainder;
 
 	subshell_node = NULL;
-	*subshell = (*token)->data;
-	tokens_in_subshell = collect_and_tokenize_subshell_data(token);
-	if (!tokens_in_subshell)
+	remainder = NULL;
+	remainder_node = NULL;
+	data_in_subshell = collect_and_tokenize_subshell_data(\
+								&remainder, token, NESTED);
+	if (!data_in_subshell)
 		return (NULL);
-	if ((*subshell)[0] == '(')
-		subshell_node = parse_single_subshell(tokens_in_subshell, OPEN);
-	else if ((*subshell)[0] == ')')
-		subshell_node = parse_single_subshell(tokens_in_subshell, CLOSE);
+	subshell_node = handler_parse_subshell(data_in_subshell, NESTED);
+	if (remainder)
+	{
+		remainder_node = new_node(remainder, get_type(remainder));
+		remainder_node->left = subshell_node;
+		return (remainder_node);
+	}
 	return (subshell_node);
 }
 
-static bool	process_subshell_token(t_token **token, t_ast **cur_node)
+/*
+// depth which is more than 1 is nested shell
+	if (*depth > 0 && subshell_data[0] == ')') -> subshell close
+	else if (*depth > 0 && subshell_data[0] != ')') -> nested shell
+	else -> subshell open
+*/
+static int	process_subshell_token(\
+					t_token **token, t_ast **subshell_node, int *depth)
 {
-	t_ast	*subshell_node;
-	char	*subshell;
+	char	*subshell_data;
+	char	*data_in_subshell;
+	int		subshell_type;
 
-	subshell_node = NULL;
-	if (*token && (*token)->type == SUBSHELL)
-		subshell_node = create_subshell_node(token, &subshell);
-	if (!subshell_node)
-		return (false);
-	if (!(*cur_node))
-		*cur_node = subshell_node;
+	data_in_subshell = NULL;
+	subshell_data = (*token)->data;
+	subshell_type = (*token)->type;
+	if (*depth == 0 && subshell_data[0] == '(' && \
+			(*token)->next && (*token)->next->type == SUBSHELL)
+		return ((*depth)++, *token = (*token)->next, \
+		*subshell_node = new_node("(", SUBSHELL), OPEN);
+	else if (*depth > 0 && subshell_data[0] == ')')
+		return (*token = (*token)->next, (*depth)--, \
+		*subshell_node = new_node(")", SUBSHELL), CLOSE);
+	else if (*depth > 0 && subshell_data[0] != ')')
+		return (*subshell_node = process_nested_subshell(token), NESTED);
+	data_in_subshell = collect_and_tokenize_subshell_data(\
+						NULL, token, SINGLE);
+	if (!data_in_subshell)
+		return (-1);
+	if (subshell_type == SUBSHELL && subshell_data[0] == '(')
+		return ((*depth)++, \
+	*subshell_node = handler_parse_subshell(data_in_subshell, OPEN), OPEN);
+	return (-1);
+}
+
+static bool	handle_subshell_node(\
+	t_ast **node, t_ast *subshell_node, int subshell_status)
+{
+	if (!*node)
+		*node = subshell_node;
+	else if (subshell_status == CLOSE)
+		attach_to_tree(*node, subshell_node, LEFT);
 	else
-		attach_to_tree(*cur_node, subshell_node, LEFT);
+	{
+		if ((*node)->left && !(*node)->left->left)
+			(*node)->left->left = subshell_node;
+		else
+		{
+			subshell_node->right = (*node)->left;
+			(*node)->left = subshell_node;
+		}
+	}
 	return (true);
 }
 
+/*
+//The first node can have the next new node 
+//only if both the left and right sides have it, 
+//so after checking the first node, we add the subshell node to the next node
+	if (!(*node)->left->left)
+		(*node)->left->left = subshell_node;
+	else
+	{
+		subshell_node->right = (*node)->left;
+		(*node)->left = subshell_node;
+	}
+*/
 bool	parse_subshell(t_token **token, t_ast **node)
 {
-	t_ast	*cur_node;
+	t_ast	*subshell_node;
 	int		depth;
+	int		subshell_status;
 
-	cur_node = NULL;
 	depth = 0;
-	while (*token && (*token)->type == SUBSHELL)
+	subshell_node = NULL;
+	subshell_status = -1;
+	while (*token)
 	{
-		if (*token && (*token)->data[0] == '(')
-			depth++;
-		if (*token && (*token)->data[0] == ')')
-			depth--;
+		subshell_status = process_subshell_token(token, &subshell_node, &depth);
+		if (subshell_status == -1)
+			return (free_tree(*node), false);
+		if (!handle_subshell_node(node, subshell_node, subshell_status))
+			return (free_tree(*node), false);
 		if (depth == 0)
-		{
-			while (*token && (*token)->data[0] == ')')
-				*token = (*token)->next;
 			break ;
-		}
-		if (!process_subshell_token(token, &cur_node))
-			return (free_tree(cur_node), false);
 	}
-	*node = cur_node;
 	return (true);
 }

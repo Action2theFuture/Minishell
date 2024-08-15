@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 13:11:43 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/29 09:19:34 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/13 12:49:27 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,5 +59,6 @@ bool					check_subshell_err(t_token *head);
 // valid_token_err_2.c
 bool					check_logical_err(t_token *head);
 bool					is_cmd_valid(const char *cmd);
+bool					is_surrounded_by_double_parentheses(t_token *head);
 
 #endif // TOKENIZE_H
