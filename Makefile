@@ -6,7 +6,7 @@
 #    By: junsan <junsan@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    CreateCd: 2024/05/11 19:03:01 by junsan            #+#    #+#             #
-#    Updated: 2024/08/13 12:36:20 by junsan           ###   ########.fr        #
+#    Updated: 2024/08/15 16:41:28 by junsan           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -60,7 +60,7 @@ UTILS	= string_utils.c string_utils_2.c quotes_str.c error_utils.c 				\
 		string_utils_3.c subshell_and_quote_str.c
 SIGNAL	= handler_signal.c handler_heredoc_signal.c
 EXECUTE = execute.c redir.c get_file_list.c dispatch_cmd.c launch_process_cmd.c 	\
-		launch_process_pipe.c execution_pipe.c subshell.c							\
+		launch_process_pipe.c execution_pipe.c subshell.c nested_subshell.c			\
 		process_execute.c process_redir.c process_execute_pipe.c					\
 		/utils/redir_utils.c /utils/init_info.c /utils/info_utils.c 				\
 		/utils/get_file_list_utils.c												\
