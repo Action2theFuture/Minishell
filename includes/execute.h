@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 13:12:49 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/07 12:17:55 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/15 16:35:35 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,5 +136,9 @@ int						here_doc(int infile, char *limiter, t_info *info);
 
 // subshell.c
 int						process_subshell_node(t_ast *node, t_info *info);
+void					traverse_tree_in_subshell(t_ast *node, t_info *info);
+
+// nested_subshell.c
+void					start_nested_subshell_node(t_ast *node, t_info *info);
 
 #endif // EXECUTE_H
