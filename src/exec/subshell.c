@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/27 19:38:46 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/15 13:35:19 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/15 16:00:06 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,38 @@
 static void	process_logical_node_in_subshell(t_ast *node, t_info *info);
 static void	traverse_tree_in_subshell(t_ast *node, t_info *info);
 
-static void	process_nested_subshell_node(t_ast *node, t_info *info)
+static int	process_nested_subshell_node(\
+			t_ast *nested_subshell_node, t_token *token, \
+			t_info *subshell_info, t_info *info)
+{
+	pid_t	pid;
+	t_ast	*subshell_node;
+
+	subshell_node = nested_subshell_node->left;
+	subshell_info->nested_subshell_root = nested_subshell_node;
+	subshell_info->token = token;
+	pid = fork();
+	if (pid == -1)
+		return (fd_log_error("fork_error", NULL, NULL));
+	if (pid == 0)
+	{
+		if (backup_stdio(info) == FAILURE)
+			fd_log_error(NULL, NULL, strerror(errno));
+		set_signal_handler(DFL);
+		traverse_tree_in_subshell(subshell_node, subshell_info);
+		if (restore_stdio(info) == FAILURE)
+			fd_log_error(NULL, NULL, strerror(errno));
+		free_tree(subshell_info->nested_subshell_root);
+		free_token(subshell_info->token);
+		cleanup_and_exit(info->exit_status, NULL, NULL, info);
+	}
+	else
+		wait_for_child_task(info);
+	cleanup_tmp_file();
+	return (info->exit_status);
+}
+
+static void	start_nested_subshell_node(t_ast *node, t_info *info)
 {
 	t_info	subshell_info;
 	t_token	*tokens_in_subshell;
@@ -32,10 +63,8 @@ static void	process_nested_subshell_node(t_ast *node, t_info *info)
 		return ;
 	}
 	init_info(&subshell_info, info->env, info->root);
-	subshell_info.nested_subshell_root = nested_subshell_node;
-	subshell_info.token = token_head;
-	info->exit_status = process_subshell_node(\
-			nested_subshell_node, &subshell_info);
+	info->exit_status = process_nested_subshell_node(\
+			nested_subshell_node, token_head, &subshell_info, info);
 	free_token(subshell_info.token);
 	free_tree(subshell_info.nested_subshell_root);
 	clear_info(&subshell_info);
@@ -59,7 +88,7 @@ static void	traverse_tree_in_subshell(t_ast *node, t_info *info)
 		}
 		else if (node->type == NESTED_SUBSHELL && info->status == SUCCESS)
 		{
-			process_nested_subshell_node(node, info);
+			start_nested_subshell_node(node, info);
 			if (!node->left)
 				return ;
 		}
