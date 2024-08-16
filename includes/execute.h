@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 13:12:49 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/15 16:35:35 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/17 11:30:53 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 void					execute(t_ast *root, t_env *env, int *exit_status);
 void					traverse_tree(t_ast *node, t_info *info);
 void					categorize_tree(t_ast *node, t_info *info);
+void					prepare_subshell_node(t_ast *node, t_info *info);
 
 // process_execute.c
 void					process_logical_node(t_ast *node, t_info *info);
@@ -140,5 +141,9 @@ void					traverse_tree_in_subshell(t_ast *node, t_info *info);
 
 // nested_subshell.c
 void					start_nested_subshell_node(t_ast *node, t_info *info);
+
+// cleanup_and_exit.
+void					cleanup_and_exit(\
+				int status, char **args, char **env, t_info *info);
 
 #endif // EXECUTE_H

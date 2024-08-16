@@ -6,7 +6,7 @@
 #    By: junsan <junsan@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    CreateCd: 2024/05/11 19:03:01 by junsan            #+#    #+#             #
-#    Updated: 2024/08/15 19:38:12 by junsan           ###   ########.fr        #
+#    Updated: 2024/08/17 11:54:58 by junsan           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -67,7 +67,8 @@ EXECUTE = execute.c redir.c get_file_list.c dispatch_cmd.c launch_process_cmd.c 
 		/utils/fd_utils.c  /utils/list_to_array.c /utils/args_utils.c 				\
 		/utils/get_absolute_path.c /utils/get_path_type.c /utils/find_cmd_in_path.c	\
 		/utils/quotes_utils.c /utils/get_bin_path.c /utils/here_doc.c				\
-		/utils/redirect_to_null.c /utils/add_string_to_array.c													
+		/utils/redirect_to_null.c /utils/add_string_to_array.c 						\
+		/utils/cleanup_and_exit.c													
 EXPANSION_AND_QUOTES = var_expansion_with_args.c replace_env_vars.c					\
 		replace_env_vars_utils.c replace_env_vars_utils_2.c							\
 		handler_replace_env_vars.c handler_under_score.c							\

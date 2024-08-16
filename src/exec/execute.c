@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 18:34:10 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/09 10:51:18 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/17 11:54:02 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,23 @@ void	categorize_tree(t_ast *node, t_info *info)
 		process_phrase_node(node, info);
 }
 
-static void	handle_subshell_node(t_ast *node, t_info *info)
+void	copy_pipe_info(t_info *dest, t_info *src)
+{
+	dest->is_pipe = src->is_pipe;
+	dest->is_re_pipe = src->is_re_pipe;
+	dest->stdin_pipe = src->stdin_pipe;
+	dest->has_multiple_pipes = src->has_multiple_pipes;
+	dest->pipe_loc = src->pipe_loc;
+}
+
+void	prepare_subshell_node(t_ast *node, t_info *info)
 {
 	t_info	subshell_info;
 	t_ast	*cur;
 
 	init_info(&subshell_info, info->env, info->root);
+	if (info->is_pipe)
+		copy_pipe_info(&subshell_info, info);
 	subshell_info.in_subshell = true;
 	info->exit_status = process_subshell_node(node, &subshell_info);
 	info->in_subshell = false;
@@ -41,6 +52,8 @@ static void	handle_subshell_node(t_ast *node, t_info *info)
 		}
 		cur = cur->left;
 	}
+	if (subshell_info.is_pipe)
+		copy_pipe_info(info, &subshell_info);
 }
 
 void	traverse_tree(t_ast *node, t_info *info)
@@ -53,7 +66,7 @@ void	traverse_tree(t_ast *node, t_info *info)
 		process_pipe_node(node, info);
 	else if (node->type == SUBSHELL && ft_strncmp(node->data, "(", 1) == 0 \
 			&& info->status == SUCCESS)
-		handle_subshell_node(node, info);
+		prepare_subshell_node(node, info);
 	else if (node->type != PIPE && node->type != LOGICAL && \
 		node->type != SUBSHELL)
 	{
