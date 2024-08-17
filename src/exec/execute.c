@@ -6,11 +6,47 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 18:34:10 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/17 11:54:02 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/17 19:04:51 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static void	copy_pipe_info(t_info *dest, t_info *src)
+{
+	dest->is_pipe = src->is_pipe;
+	dest->is_re_pipe = src->is_re_pipe;
+	dest->stdin_pipe = src->stdin_pipe;
+	dest->has_multiple_pipes = src->has_multiple_pipes;
+}
+
+/*
+Put is_last to true if the subshell comes 
+at the end of the pipeline or by itself
+reason -> 
+In process_subshell_or_phrase_node, 
+to determine whether a subshell is part of a pipeline or not
+*/
+void	prepare_subshell_node(t_ast *node, t_info *info)
+{
+	t_info	subshell_info;
+
+	init_info(&subshell_info, info->env, info->root);
+	subshell_info.in_subshell = true;
+	if (info->is_pipe)
+	{
+		copy_pipe_info(&subshell_info, info);
+		subshell_info.pipe_loc = FIRST;
+		if (info->pipe_loc == LAST)
+			subshell_info.is_last = true;
+	}
+	else
+		subshell_info.is_last = true;
+	info->exit_status = process_subshell_node(node, &subshell_info);
+	if (subshell_info.is_pipe)
+		copy_pipe_info(info, &subshell_info);
+	clear_info(&subshell_info);
+}
 
 void	categorize_tree(t_ast *node, t_info *info)
 {
@@ -19,41 +55,6 @@ void	categorize_tree(t_ast *node, t_info *info)
 		info->in_subshell = false;
 	if (node->type == PHRASE && info->status == SUCCESS)
 		process_phrase_node(node, info);
-}
-
-void	copy_pipe_info(t_info *dest, t_info *src)
-{
-	dest->is_pipe = src->is_pipe;
-	dest->is_re_pipe = src->is_re_pipe;
-	dest->stdin_pipe = src->stdin_pipe;
-	dest->has_multiple_pipes = src->has_multiple_pipes;
-	dest->pipe_loc = src->pipe_loc;
-}
-
-void	prepare_subshell_node(t_ast *node, t_info *info)
-{
-	t_info	subshell_info;
-	t_ast	*cur;
-
-	init_info(&subshell_info, info->env, info->root);
-	if (info->is_pipe)
-		copy_pipe_info(&subshell_info, info);
-	subshell_info.in_subshell = true;
-	info->exit_status = process_subshell_node(node, &subshell_info);
-	info->in_subshell = false;
-	clear_info(&subshell_info);
-	cur = node;
-	while (cur)
-	{
-		if (cur->data && cur->data[0] == ')')
-		{
-			traverse_tree(cur->left, info);
-			break ;
-		}
-		cur = cur->left;
-	}
-	if (subshell_info.is_pipe)
-		copy_pipe_info(info, &subshell_info);
 }
 
 void	traverse_tree(t_ast *node, t_info *info)
