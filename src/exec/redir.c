@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 12:01:59 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/06 20:22:41 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/15 19:34:01 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,17 +50,17 @@ static bool	is_valid_ambiguous_redirect(const char *str1, const char *str2)
 
 static int	process_io_node(t_ast *node, t_info *info)
 {
-	t_ast	*io_node;
+	t_ast	*io_type_node;
 	char	**args;
 	char	*first_arg;
 	int		status;
 
 	status = SUCCESS;
-	io_node = node->left;
+	io_type_node = node->left;
 	args = ft_split(node->right->data, ARR_SEP);
 	first_arg = ft_strdup(args[0]);
 	expand_and_strip_quotes_in_args(args, info);
-	if (io_node->type == IN_HEREDOC)
+	if (io_type_node->type == IN_HEREDOC)
 		status = handle_ft_redirection(first_arg, node, info);
 	else
 	{
@@ -83,7 +83,7 @@ int	handle_io_redirection(t_ast *node, t_info *info)
 
 	status = SUCCESS;
 	close_fds(info);
-	while (node && status == SUCCESS)
+	while (node && node->type == IO && status == SUCCESS)
 	{
 		status = process_io_node(node, info);
 		if (status > SUCCESS)

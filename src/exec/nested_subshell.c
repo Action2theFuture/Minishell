@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/15 16:31:43 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/15 16:39:52 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/15 19:16:02 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ static int	process_nested_subshell_node(\
 	subshell_node = nested_subshell_node->left;
 	subshell_info->nested_subshell_root = nested_subshell_node;
 	subshell_info->token = token;
+	subshell_info->in_subshell = true;
 	pid = fork();
 	if (pid == -1)
 		return (fd_log_error("fork_error", NULL, NULL));
