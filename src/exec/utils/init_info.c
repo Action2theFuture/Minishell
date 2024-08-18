@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 12:04:00 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/17 17:02:23 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/18 19:44:17 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ static void	init_flags(t_info *info)
 	info->is_pipe = false;
 	info->is_re_pipe = false;
 	info->is_heredoc = false;
+	info->is_redirection = false;
 	info->is_expansion_heredoc = false;
 	info->is_last = false;
 	info->pipe_loc = -1;

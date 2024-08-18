@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 22:12:12 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/17 18:24:45 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/18 19:49:23 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ static void	process_io_redirections(t_ast *redir_node, t_info *info)
 		info->is_re_pipe = true;
 		info->pipe_loc = LAST;
 	}
+	info->is_redirection = true;
 }
 
 // left is redir, right is args
@@ -63,4 +64,5 @@ void	process_phrase_node(t_ast *node, t_info *info)
 	(free_args(info->redir_args), info->redir_args = NULL, restore_fds(info));
 	if (info->is_heredoc)
 		(redirect_input_to_empty(), info->is_heredoc = false);
+	info->is_redirection = false;
 }
