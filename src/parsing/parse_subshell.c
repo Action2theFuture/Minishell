@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/13 19:26:43 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/13 11:49:52 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/19 16:16:38 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ static int	process_subshell_token(\
 		return (*token = (*token)->next, (*depth)--, \
 		*subshell_node = new_node(")", SUBSHELL), CLOSE);
 	else if (*depth > 0 && subshell_data[0] != ')')
-		return (*subshell_node = process_nested_subshell(token), NESTED);
+		return (*subshell_node = process_nested_subshell(token),  NESTED);
 	data_in_subshell = collect_and_tokenize_subshell_data(\
 						NULL, token, SINGLE);
 	if (!data_in_subshell)
