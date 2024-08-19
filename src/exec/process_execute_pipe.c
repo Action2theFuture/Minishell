@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 10:22:38 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/17 19:25:32 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/19 11:09:12 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,9 +68,14 @@ static void	handle_pipe_segment(t_ast *pipe_node, t_info *info)
 {
 	info->pipe_loc = FIRST;
 	process_subshell_or_phrase_node(pipe_node->right, info);
-	info->pipe_loc = LAST;
-	if (pipe_node->parent && pipe_node->parent->type == PIPE)
-		info->pipe_loc = MIDDLE;
+	if (info->pipe_loc == LAST)
+		info->pipe_loc = FIRST;
+	else
+	{
+		info->pipe_loc = LAST;
+		if (pipe_node->parent && pipe_node->parent->type == PIPE)
+			info->pipe_loc = MIDDLE;
+	}
 	process_subshell_or_phrase_node(pipe_node->left, info);
 	if (pipe_node->parent && pipe_node->parent->type == PIPE)
 		process_pipe_segment(pipe_node, info);

@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 21:28:11 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/18 20:04:48 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/19 11:14:21 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,6 @@ void	first_pipe(char *cmd, char **env, char **args, t_info *info)
 
 	if (info->pid == 0)
 	{
-		if (info->is_redirection && info->tmp_pipe[2] != -1)
-			(close(info->tmp_pipe[2]), info->tmp_pipe[2] = -1);
 		if (info->tmp_pipe[2] != -1)
 			dup2(info->tmp_pipe[2], STDOUT_FILENO);
 		close_tmp_pipe(info->tmp_pipe);
@@ -71,8 +69,10 @@ void	middle_pipe(char *cmd, char **env, char **args, t_info *info)
 
 	if (info->pid == 0)
 	{
-		dup2(info->tmp_pipe[0], STDIN_FILENO);
-		dup2(info->tmp_pipe[2], STDOUT_FILENO);
+		if (info->tmp_pipe[0] != -1)
+			dup2(info->tmp_pipe[0], STDIN_FILENO);
+		if (info->tmp_pipe[2] != -1)
+			dup2(info->tmp_pipe[2], STDOUT_FILENO);
 		close_tmp_pipe(info->tmp_pipe);
 		init_builtin(arr_built_in);
 		built_in = handler_builtin(cmd);
@@ -114,4 +114,5 @@ void	last_pipe(char *cmd, char **env, char **args, t_info *info)
 		else
 			execute_cmd_with_pipe(cmd, args, info, env);
 	}
+	close_tmp_pipe(info->tmp_pipe);
 }
