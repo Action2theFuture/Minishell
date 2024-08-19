@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/27 19:38:46 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/17 11:37:37 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/17 18:56:31 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,8 +73,11 @@ int	process_subshell_node(t_ast *node, t_info *info)
 {
 	pid_t	pid;
 	t_ast	*subshell_node;
+	int		pipe_fd[2];
 
 	subshell_node = node->left;
+	if (pipe(pipe_fd) == -1)
+		perror("pipe error");
 	pid = fork();
 	if (pid == -1)
 		return (fd_log_error("fork_error", NULL, NULL));
@@ -86,10 +89,11 @@ int	process_subshell_node(t_ast *node, t_info *info)
 		traverse_tree_in_subshell(subshell_node, info);
 		if (restore_stdio(info) == FAILURE)
 			fd_log_error(NULL, NULL, strerror(errno));
+		(close(pipe_fd[1]), info->stdin_pipe = pipe_fd[0]);
 		cleanup_and_exit(info->exit_status, NULL, NULL, info);
 	}
 	else
-		wait_for_child_task(info);
-	cleanup_tmp_file();
-	return (info->exit_status);
+		(wait_for_child_task(info), \
+		close(pipe_fd[0]), info->stdin_pipe = pipe_fd[1]);
+	return (cleanup_tmp_file(), info->exit_status);
 }

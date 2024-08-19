@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/13 19:25:32 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/08 09:58:41 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/17 22:17:15 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,11 @@ bool	parse_redirection_with_cmd(
 	return (true);
 }
 
+// << eof cat > test.txt
+// Deletes this function 
+// because the command that follows the argument value will not be executed 
+// because the argument value is entered as an argument
+/*
 static void	handle_redirection_token(\
 			t_token **token, t_ast **node, t_ast *io_redirection_node)
 {
@@ -76,11 +81,11 @@ static void	handle_redirection_token(\
 		}
 		else
 		{
-			io_redirection_node->right = new_node((*token)->data, ARGS);
-			*token = (*token)->next;
+			// io_redirection_node->right = new_node((*token)->data, ARGS);
+			// *token = (*token)->next;
 		}
 	}
-}
+}*/
 
 bool	parse_io_redirection(t_token **token, t_ast **node)
 {
@@ -94,7 +99,11 @@ bool	parse_io_redirection(t_token **token, t_ast **node)
 		io_redirection_node->parent = *node;
 		*node = new_node((*token)->data, get_type_redir((*token)->data));
 		*token = (*token)->next;
-		handle_redirection_token(token, node, io_redirection_node);
+		if (*token && (*token)->type == CMD)
+		{
+			io_redirection_node->right = new_node((*token)->data, ARGS);
+			*token = (*token)->next;
+		}
 		io_redirection_node->left = *node;
 		*node = io_redirection_node;
 	}

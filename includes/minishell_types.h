@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 13:25:12 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/15 13:28:10 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/18 19:44:01 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,6 +168,8 @@ typedef struct s_info
 	bool				is_re_pipe;
 	bool				is_heredoc;
 	bool				is_expansion_heredoc;
+	bool				is_last;
+	bool				is_redirection;
 	bool				has_multiple_pipes;
 	bool				pipe_exists;
 	bool				in_subshell;

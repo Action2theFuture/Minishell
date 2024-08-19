@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 21:28:11 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/17 11:26:09 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/19 12:42:34 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,9 @@
 static void	execute_cmd_with_pipe(\
 				char *cmd, char **args, t_info *info, char **env)
 {
+	if ((ft_strlen(cmd) == ft_strlen("./minishell")) && \
+		ft_strncmp(cmd, "./minishell", 11) == 0 && info->pipe_loc != LAST)
+		cleanup_and_exit(SUCCESS, args, env, info);
 	if (ft_strlen(cmd) == 1 && ft_strncmp(cmd, ".", 1) == 0)
 		cleanup_and_exit(execve_log_error(cmd, errno), args, env, info);
 	if (ft_strlen(cmd) == 4 && ft_strncmp(cmd, "true", 4) == 0)
@@ -43,7 +46,8 @@ void	first_pipe(char *cmd, char **env, char **args, t_info *info)
 
 	if (info->pid == 0)
 	{
-		dup2(info->tmp_pipe[2], STDOUT_FILENO);
+		if (info->tmp_pipe[2] != -1)
+			dup2(info->tmp_pipe[2], STDOUT_FILENO);
 		close_tmp_pipe(info->tmp_pipe);
 		init_builtin(arr_built_in);
 		built_in = handler_builtin(cmd);
@@ -68,8 +72,10 @@ void	middle_pipe(char *cmd, char **env, char **args, t_info *info)
 
 	if (info->pid == 0)
 	{
-		dup2(info->tmp_pipe[0], STDIN_FILENO);
-		dup2(info->tmp_pipe[2], STDOUT_FILENO);
+		if (info->tmp_pipe[0] != -1)
+			dup2(info->tmp_pipe[0], STDIN_FILENO);
+		if (info->tmp_pipe[2] != -1)
+			dup2(info->tmp_pipe[2], STDOUT_FILENO);
 		close_tmp_pipe(info->tmp_pipe);
 		init_builtin(arr_built_in);
 		built_in = handler_builtin(cmd);
@@ -95,7 +101,8 @@ void	last_pipe(char *cmd, char **env, char **args, t_info *info)
 
 	if (info->pid == 0)
 	{
-		dup2(info->tmp_pipe[0], STDIN_FILENO);
+		if (info->tmp_pipe[0] != -1)
+			dup2(info->tmp_pipe[0], STDIN_FILENO);
 		close_tmp_pipe(info->tmp_pipe);
 		init_builtin(arr_built_in);
 		built_in = handler_builtin(cmd);
@@ -110,4 +117,5 @@ void	last_pipe(char *cmd, char **env, char **args, t_info *info)
 		else
 			execute_cmd_with_pipe(cmd, args, info, env);
 	}
+	close_tmp_pipe(info->tmp_pipe);
 }

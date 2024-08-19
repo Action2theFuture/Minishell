@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 10:07:54 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/07 14:19:12 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/19 10:07:24 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,9 @@ static int	start_heredoc(char *limiter, t_info *info)
 	info->is_expansion_heredoc = false;
 	if (status == FAILURE)
 		info->is_heredoc = false;
-	close(info->tmp_fd);
+	if (dup2(info->tmp_fd, STDOUT_FILENO) == -1)
+		return (fd_log_error("Dup tmp_fd error!", NULL, NULL));
+	(close(info->tmp_fd), info->tmp_fd = -1);
 	return (status);
 }
 
@@ -77,10 +79,10 @@ int	input_redir(char *arg, t_ast *node, t_info *info)
 		info->stdin_fd = pipe_fd[0];
 	}
 	if (info->stdin_fd == -1)
-		return (FAILURE);
+		return (fd_log_error(NULL, arg, strerror(errno)));
 	if (dup2(info->stdin_fd, STDIN_FILENO) == -1)
 		return (fd_log_error("Dup stdin_fd error!", NULL, NULL));
-	return (close(info->stdin_fd), status);
+	return (close(info->stdin_fd), info->stdin_fd = -1, status);
 }
 
 int	output_redir(char *arg, t_ast *node, t_info *info)
