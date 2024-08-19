@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 22:12:12 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/19 11:17:31 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/19 15:46:41 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,11 @@ static void	process_io_redirections(t_ast *redir_node, t_info *info)
 		free_args(info->redir_args);
 	if (redir_node->right && info->exit_status == SUCCESS)
 		info->exit_status = handle_io_redirection(redir_node->right, info);
+	if (info->pipe_loc == FIRST || info->pipe_loc == MIDDLE)
+	{
+		info->is_re_pipe = true;
+		info->pipe_loc = LAST;
+	}
 	info->is_redirection = true;
 }
 
