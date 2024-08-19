@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 17:58:55 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/06 21:14:36 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/19 18:26:56 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,6 @@ static void	determine_and_set_path(const char *cmd, t_info *info)
 		info->path = get_absolute_path(cmd);
 	else if (path_type == PATH_COMMAND)
 		info->path = find_cmd_in_path(cmd, info->env);
-	else if (path_type == PATH_INVALID)
-		info->path = get_bin_path(cmd);
 }
 
 char	**merge_args_and_add_spaces(char **cmd, char **args, int cmd_cnt)

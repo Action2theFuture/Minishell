@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 14:48:24 by junsan            #+#    #+#             */
-/*   Updated: 2024/07/03 09:29:34 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/19 17:26:59 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int	del_node(t_env **lst, const char *to_unset)
 	prev = NULL;
 	while (cur)
 	{
-		if (strcmp(cur->name, to_unset) == 0)
+		if (ft_strncmp(cur->name, to_unset, ft_strlen(to_unset)) == 0)
 		{
 			if (prev == NULL)
 				*lst = cur->next;
@@ -62,7 +62,7 @@ int	ft_unset(const char *cmd, const char **args, t_env *list)
 	int	i;
 
 	(void)cmd;
-	i = 0;
+	i = 1;
 	if (!args || !list)
 		return (FAILURE);
 	while (args[i])
