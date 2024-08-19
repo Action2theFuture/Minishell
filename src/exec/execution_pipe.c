@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 21:28:11 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/19 11:14:21 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/19 12:42:34 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,9 @@
 static void	execute_cmd_with_pipe(\
 				char *cmd, char **args, t_info *info, char **env)
 {
+	if ((ft_strlen(cmd) == ft_strlen("./minishell")) && \
+		ft_strncmp(cmd, "./minishell", 11) == 0 && info->pipe_loc != LAST)
+		cleanup_and_exit(SUCCESS, args, env, info);
 	if (ft_strlen(cmd) == 1 && ft_strncmp(cmd, ".", 1) == 0)
 		cleanup_and_exit(execve_log_error(cmd, errno), args, env, info);
 	if (ft_strlen(cmd) == 4 && ft_strncmp(cmd, "true", 4) == 0)
