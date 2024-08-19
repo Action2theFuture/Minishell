@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/13 19:26:43 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/19 18:27:24 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/19 22:14:41 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,15 +16,23 @@ static char	*collect_and_tokenize_subshell_data(\
 						char **remainder, t_token **token, int subshell_status)
 {
 	char	*data_in_subshell;
+	bool	is_pipe_or_logical[2];
 
-	if (*token && (*token)->type != SUBSHELL)
+	is_pipe_or_logical[0] = false;
+	is_pipe_or_logical[1] = false;
+	if (*token && ((*token)->type == PIPE || (*token)->type == LOGICAL))
 	{
+		if ((*token)->type == PIPE)
+			is_pipe_or_logical[0] = true;
+		if ((*token)->type == LOGICAL)
+			is_pipe_or_logical[1] = true;
 		*remainder = (*token)->data;
 		*token = (*token)->next;
 	}
-	if (subshell_status == SINGLE)
+	if (subshell_status == SINGLE && ((*token)->type == SUBSHELL))
 		*token = (*token)->next;
-	data_in_subshell = collect_data_until_subshell(token, subshell_status);
+	data_in_subshell = collect_data_until_subshell(\
+			token, subshell_status, is_pipe_or_logical);
 	return (data_in_subshell);
 }
 
@@ -57,6 +65,7 @@ static t_ast	*process_nested_subshell(t_token **token)
 	if (*depth > 0 && subshell_data[0] == ')') -> subshell close
 	else if (*depth > 0 && subshell_data[0] != ')') -> nested shell
 	else -> subshell open
+	if it is nest is not, it is single
 */
 static int	process_subshell_token(\
 					t_token **token, t_ast **subshell_node, int *depth)

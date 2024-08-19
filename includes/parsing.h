@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 13:09:24 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/13 12:48:59 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/19 22:13:36 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ char					*remove_nested_subshell(t_token **token);
 
 // collect_data_until_subshell.c
 char					*collect_data_until_subshell(\
-		t_token **token, int subshell_status);
+		t_token **token, int subshell_status, bool *is_pipe_or_logical);
 
 // ensure_capacity.c
 void					ensure_capacity(\
