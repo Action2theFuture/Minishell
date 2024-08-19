@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 12:06:08 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/01 15:28:52 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/19 17:17:36 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static void	handler_sigquit(pid_t pid)
 		ft_putstr_fd("  \b\b", STDERR_FILENO);
 	}
 	else
-		ft_putstr_fd("^\\Quit: 3\n", STDERR_FILENO);
+		ft_putstr_fd("^\\Quit (core dumped)\n", STDERR_FILENO);
 }
 
 static void	signal_handler(int signo)
