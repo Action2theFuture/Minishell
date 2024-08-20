@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/04 13:40:54 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/07 14:20:07 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/20 19:41:24 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,8 @@ static int	process_line_and_write(\
 	char	*env_var;
 
 	env_var = NULL;
-	if (ft_strncmp(line, limiter, ft_strlen(limiter)) == 0)
+	if (ft_strncmp(line, limiter, ft_strlen(line)) == 0 && \
+		ft_strlen(line) == ft_strlen(limiter))
 		return (free(line), line = NULL, 0);
 	if (info->is_expansion_heredoc)
 		env_var = replace_env_vars_from_here_doc(line, info);
