@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/23 19:45:39 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/05 17:58:53 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/20 08:36:52 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,10 +43,10 @@ int	execve_log_error(char *cmd, int error)
 	}
 	else if (error == EACCES)
 		ft_putstr_fd("Permission denied.\n", STDERR_FILENO);
-	else if (error == ENOENT)
-		ft_putstr_fd("No such file or directory\n", STDERR_FILENO);
 	else if (error == EFAULT)
 		ft_putstr_fd("command not found\n", STDERR_FILENO);
+	else if (error == ENOENT)
+		ft_putstr_fd("No such file or directory\n", STDERR_FILENO);
 	else
 	{
 		ft_putstr_fd("An unknown error occurred ", STDERR_FILENO);

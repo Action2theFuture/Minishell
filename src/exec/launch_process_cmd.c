@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/23 17:08:10 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/19 17:45:37 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/20 08:39:11 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static void	execute_cmd(\
 		cleanup_and_exit(FAILURE, args, env, info);
 	if (ft_strlen(args[0]) > 2 && args[0][0] == '.' && args[0][1] == '/'
 		&& execve(cmd, args, env) == -1)
-		cleanup_and_exit(125 + execve_log_error(cmd, errno), args, env, info);
+		cleanup_and_exit(125 + execve_log_error(cmd, ENOENT), args, env, info);
 	else if (info->path)
 	{
 		if (execve(info->path, args, env) == -1)
@@ -32,7 +32,7 @@ static void	execute_cmd(\
 		(free(info->path), info->path = NULL);
 	}
 	if (execve(cmd, args, env) == -1)
-		cleanup_and_exit(126 + execve_log_error(cmd, errno), args, env, info);
+		cleanup_and_exit(126 + execve_log_error(cmd, EFAULT), args, env, info);
 }
 
 static int	monitor_child_task(char *cmd, pid_t pid, t_info *info)

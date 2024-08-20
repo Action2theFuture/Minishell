@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 11:20:27 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/19 22:15:01 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/20 08:40:51 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,6 @@ size_t *total_len_and_capacity, char *data_in_subshell, t_token **token)
 	return (data_in_subshell);
 }
 
-
 // total_len_and_capacity 
 // -> first ele is total_len, second ele is capacity
 char	*collect_data_until_subshell(\
@@ -126,5 +125,5 @@ char	*collect_data_until_subshell(\
 		return (append_data_until_nested_subshell(\
 						total_len_and_capacity, data_in_subshell, token));
 	return (append_data_until_subshell(\
-			total_len_and_capacity, data_in_subshell, token, is_pipe_or_logical));
+	total_len_and_capacity, data_in_subshell, token, is_pipe_or_logical));
 }
