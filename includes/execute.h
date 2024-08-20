@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 13:12:49 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/17 11:30:53 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/20 08:50:44 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,9 +60,6 @@ char					*find_cmd_in_path(const char *cmd, t_env *env);
 
 // get_absolute_path.c
 char					*get_absolute_path(const char *path);
-
-// get_bin_path.c
-char					*get_bin_path(const char *cmd);
 
 // fd_utils.c
 int						backup_stdio(t_info *info);
