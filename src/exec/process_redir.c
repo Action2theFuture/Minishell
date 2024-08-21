@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 10:07:54 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/21 08:15:05 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/21 11:29:57 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,6 @@ static int	start_heredoc(char *limiter, t_info *info)
 		status = here_doc(info->stdin_fd, limiter, info);
 	}
 	info->is_expansion_heredoc = false;
-	if (status == FAILURE)
-		info->is_heredoc = false;
 	if (dup2(info->tmp_fd, STDOUT_FILENO) == -1)
 		return (fd_log_error("Dup tmp_fd error!", NULL, NULL));
 	(close(info->tmp_fd), info->tmp_fd = -1);
@@ -75,14 +73,14 @@ int	input_redir(char *arg, t_ast *node, t_info *info)
 		if (write(pipe_fd[1], \
 			arg, ft_strlen(arg)) == -1)
 			return (fd_log_error(NULL, arg, strerror(errno)));
-		close(pipe_fd[1]);
-		info->stdin_fd = pipe_fd[0];
+		(close(pipe_fd[1]), info->stdin_fd = pipe_fd[0]);
 	}
 	if (info->stdin_fd == -1)
 		return (fd_log_error(NULL, arg, strerror(errno)));
 	if (dup2(info->stdin_fd, STDIN_FILENO) == -1)
 		return (fd_log_error("Dup stdin_fd error!", NULL, NULL));
-	return (status);
+	return (info->is_input_redir = true, \
+	close(info->stdin_fd), info->stdin_fd = -1, status);
 }
 
 int	output_redir(char *arg, t_ast *node, t_info *info)

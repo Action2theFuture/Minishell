@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/04 13:40:54 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/20 19:41:24 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/21 11:27:53 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,6 @@ int	here_doc(int infile, char *limiter, t_info *info)
 
 	set_heredoc_signal_handler();
 	g_heredoc_interrupted = 0;
-	info->is_heredoc = true;
 	while (1)
 	{
 		line = readline("heredoc> ");

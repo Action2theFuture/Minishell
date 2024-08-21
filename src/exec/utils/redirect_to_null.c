@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 10:03:13 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/04 19:56:37 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/21 10:50:56 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,5 +82,21 @@ int	redirect_stdin_to_empty(int *stdin_fd)
 	}
 	close(pipe_fd[1]);
 	*stdin_fd = pipe_fd[0];
+	return (SUCCESS);
+}
+
+int	redirect_copy_stdout_to_fd(int stdin_fd)
+{
+	char	buffer[1024];
+	ssize_t	bytes_read;
+
+	bytes_read = read(STDOUT_FILENO, buffer, sizeof(buffer));
+	while (bytes_read > 0)
+	{
+		write(stdin_fd, buffer, bytes_read);
+		bytes_read = read(STDOUT_FILENO, buffer, sizeof(buffer));
+	}
+	if (bytes_read == -1)
+		return (perror("read failed"), FAILURE);
 	return (SUCCESS);
 }
