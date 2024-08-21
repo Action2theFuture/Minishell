@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/04 13:40:54 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/07 14:20:07 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/21 11:27:53 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,8 @@ static int	process_line_and_write(\
 	char	*env_var;
 
 	env_var = NULL;
-	if (ft_strncmp(line, limiter, ft_strlen(limiter)) == 0)
+	if (ft_strncmp(line, limiter, ft_strlen(line)) == 0 && \
+		ft_strlen(line) == ft_strlen(limiter))
 		return (free(line), line = NULL, 0);
 	if (info->is_expansion_heredoc)
 		env_var = replace_env_vars_from_here_doc(line, info);
@@ -106,7 +107,6 @@ int	here_doc(int infile, char *limiter, t_info *info)
 
 	set_heredoc_signal_handler();
 	g_heredoc_interrupted = 0;
-	info->is_heredoc = true;
 	while (1)
 	{
 		line = readline("heredoc> ");

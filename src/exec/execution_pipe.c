@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 21:28:11 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/19 15:42:09 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/20 20:52:28 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static void	execute_cmd_with_pipe(\
 		cleanup_and_exit(FAILURE, args, env, info);
 	if (ft_strlen(args[0]) > 2 && args[0][0] == '.' && args[0][1] == '/'
 		&& execve(cmd, args, env) == -1)
-		cleanup_and_exit(125 + execve_log_error(cmd, errno), args, env, info);
+		cleanup_and_exit(125 + execve_log_error(cmd, ENOENT), args, env, info);
 	else if (info->path)
 	{
 		if (execve(info->path, args, env) == -1)
@@ -35,7 +35,7 @@ static void	execute_cmd_with_pipe(\
 		(free(info->path), info->path = NULL);
 	}
 	if (execve(cmd, args, env) == -1)
-		cleanup_and_exit(126 + execve_log_error(cmd, errno), args, env, info);
+		cleanup_and_exit(126 + execve_log_error(cmd, EFAULT), args, env, info);
 }
 
 void	first_pipe(char *cmd, char **env, char **args, t_info *info)

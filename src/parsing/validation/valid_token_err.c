@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/28 17:14:53 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/09 11:37:53 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/21 09:27:03 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,9 @@ static bool	is_operator_err(t_token *prev, t_token *cur, t_token *next)
 		if (!prev)
 			return (true);
 		if (prev->type && prev->type == PIPE && cur->type && cur->type == PIPE)
+			return (true);
+		if (cur->type && (cur->type == PIPE || cur->type == LOGICAL) && next && \
+			next->type && next->type == SUBSHELL && next->data[0] == ')')
 			return (true);
 		if (!next)
 			return (true);

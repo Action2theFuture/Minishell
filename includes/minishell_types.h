@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 13:25:12 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/18 19:44:01 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/21 11:26:28 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -166,7 +166,7 @@ typedef struct s_info
 	pid_t				pid;
 	bool				is_pipe;
 	bool				is_re_pipe;
-	bool				is_heredoc;
+	bool				is_input_redir;
 	bool				is_expansion_heredoc;
 	bool				is_last;
 	bool				is_redirection;
