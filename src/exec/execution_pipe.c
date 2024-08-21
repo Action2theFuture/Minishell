@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 21:28:11 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/20 20:52:28 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/21 12:09:43 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,16 +96,14 @@ void	last_pipe(char *cmd, char **env, char **args, t_info *info)
 {
 	int		status;
 	int		built_in;
-	int		(*arr_built_in[7])(\
-			const char *, const char **, t_env *);
+	int		(*arr_built_in[7])(const char *, const char **, t_env *);
 
 	if (info->pid == 0)
 	{
 		if (info->tmp_pipe[0] != -1)
 			dup2(info->tmp_pipe[0], STDIN_FILENO);
 		close_tmp_pipe(info->tmp_pipe);
-		init_builtin(arr_built_in);
-		built_in = handler_builtin(cmd);
+		(init_builtin(arr_built_in), built_in = handler_builtin(cmd));
 		if (built_in != NONE)
 		{
 			if (built_in == EXIT)
@@ -114,6 +112,8 @@ void	last_pipe(char *cmd, char **env, char **args, t_info *info)
 			(const char *)cmd, (const char **)args, info->env));
 			cleanup_and_exit(status, args, env, info);
 		}
+		else if (cmd == NULL)
+			cleanup_and_exit(info->exit_status, args, env, info);
 		else
 			execute_cmd_with_pipe(cmd, args, info, env);
 	}
