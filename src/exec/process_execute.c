@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 22:12:12 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/20 21:09:46 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/21 08:20:23 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,9 @@ static void	process_io_redirections(t_ast *redir_node, t_info *info)
 }
 
 // left is redir, right is args
+// why launch_process_pipe is added
+// ->  Child process does not terminate without this conditional 
+// if there is no command, only redirection
 void	process_phrase_node(t_ast *node, t_info *info)
 {
 	t_ast	*redir_node;
@@ -70,8 +73,12 @@ void	process_phrase_node(t_ast *node, t_info *info)
 		status = dispatch_cmd(cmd_node, info);
 	info->exit_status = status;
 	if (redir_node)
+	{
 		(redirect_output_to_null(), redirect_input_to_null(), \
 		info->is_redirection = false);
+		if (cmd_node == NULL && info->pipe_loc == LAST)
+			(launch_process_pipe(NULL, NULL, info), info->stdin_pipe = info->stdin_fd);
+	}
 	(free_args(info->redir_args), info->redir_args = NULL, restore_fds(info));
 	if (info->is_heredoc)
 		(redirect_input_to_empty(), info->is_heredoc = false);

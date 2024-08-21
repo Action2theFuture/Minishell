@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 10:07:54 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/20 21:00:00 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/21 08:15:05 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ int	input_redir(char *arg, t_ast *node, t_info *info)
 		return (fd_log_error(NULL, arg, strerror(errno)));
 	if (dup2(info->stdin_fd, STDIN_FILENO) == -1)
 		return (fd_log_error("Dup stdin_fd error!", NULL, NULL));
-	return (close(info->stdin_fd), info->stdin_fd = -1, status);
+	return (status);
 }
 
 int	output_redir(char *arg, t_ast *node, t_info *info)
@@ -114,6 +114,10 @@ int	handle_ft_redirection(char *arg, t_ast *node, t_info *info)
 	t_ast	*io_node;
 
 	io_node = node->left;
+	if (info->stdin_fd != -1)
+		(close(info->stdin_fd), info->stdin_fd = -1);
+	if (info->stdout_fd != -1)
+		(close(info->stdout_fd), info->stdout_fd = -1);
 	if (io_node->type == IN_REDIR || io_node->type == IN_HEREDOC || \
 		io_node->type == IN_HERESTR)
 	{
