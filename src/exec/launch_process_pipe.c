@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 08:49:20 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/21 11:16:38 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/21 11:58:56 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,6 @@ static void	execute_child_process(\
 		middle_pipe(cmd, env, args, info);
 	else if (info->pipe_loc == LAST)
 		last_pipe(cmd, env, args, info);
-	exit(info->exit_status);
 }
 
 static void	close_pipe_ends(t_info *info)
