@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/04 13:40:54 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/21 11:27:53 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/22 19:28:59 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ static int	process_line_and_write(\
 	char	*env_var;
 
 	env_var = NULL;
-	if (ft_strncmp(line, limiter, ft_strlen(line)) == 0 && \
+	if (ft_strncmp(line, limiter, ft_strlen(limiter)) == 0 && \
 		ft_strlen(line) == ft_strlen(limiter))
 		return (free(line), line = NULL, 0);
 	if (info->is_expansion_heredoc)
@@ -103,24 +103,24 @@ static int	process_line_and_write(\
 
 int	here_doc(int infile, char *limiter, t_info *info)
 {
-	char				*line;
+	char	*line;
+	char	*limiter_without_quotes;
 
 	set_heredoc_signal_handler();
 	g_heredoc_interrupted = 0;
+	limiter_without_quotes = remove_shell_quotes(limiter);
 	while (1)
 	{
 		line = readline("heredoc> ");
 		if (line == NULL || g_heredoc_interrupted || \
-			!process_line_and_write(infile, line, limiter, info))
+			!process_line_and_write(infile, line, limiter_without_quotes, info))
 			break ;
 		(free(line), line = NULL);
 	}
-	set_signal_handler(SIGNAL_HANDLER);
+	(free(limiter_without_quotes), set_signal_handler(SIGNAL_HANDLER));
 	if (g_heredoc_interrupted)
-	{
-		(ft_putstr_fd("^C\n", STDERR_FILENO), rl_redisplay());
-		return (free(line), cleanup_tmp_file(), FAILURE);
-	}
+		return (ft_putstr_fd("^C\n", STDERR_FILENO), rl_redisplay(), \
+		free(line), cleanup_tmp_file(), FAILURE);
 	if (infile != -1)
 		close(infile);
 	info->stdin_fd = open(HEREDOC_TMP, O_RDONLY, 0644);
