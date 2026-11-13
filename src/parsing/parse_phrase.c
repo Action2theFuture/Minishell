@@ -12,9 +12,8 @@
 
 #include "minishell.h"
 
-static bool	parse_phrase_part(
-	t_token **token, t_ast **node,
-	bool (*parse_func)(t_token **, t_ast **, t_ast **))
+static bool	parse_phrase_part(t_token **token, t_ast **node,
+		bool (*parse_func)(t_token **, t_ast **, t_ast **))
 {
 	t_ast	*phrase_node;
 
@@ -38,8 +37,7 @@ bool	parse_phrase(t_token **token, t_ast **node)
 		*node = subshell_node;
 	if (*token && (*token)->type == REDIRECTION)
 	{
-		if (!parse_phrase_part(\
-				token, node, parse_redirection_with_cmd))
+		if (!parse_phrase_part(token, node, parse_redirection_with_cmd))
 			return (free(subshell_node), false);
 	}
 	else if (*token && (*token)->type == CMD)

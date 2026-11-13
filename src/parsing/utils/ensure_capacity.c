@@ -12,8 +12,8 @@
 
 #include "minishell.h"
 
-void	ensure_capacity(\
-	char **data_in_subshell, size_t *capacity, size_t space_needed)
+void	ensure_capacity(char **data_in_subshell, size_t *capacity,
+		size_t space_needed)
 {
 	char	*new_data;
 

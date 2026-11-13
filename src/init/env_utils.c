@@ -6,7 +6,7 @@
 /*   By: junsan <junsan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/23 18:04:20 by junsan            #+#    #+#             */
-/*   Updated: 2024/08/08 11:13:45 by junsan           ###   ########.fr       */
+/*   Updated: 2024/08/21 12:30:00 by junsan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	env_split(const char *str, char **name, char **content)
 		i++;
 	if (str[i] != '=')
 	{
-		*name = (char *)str;
+		*name = ft_strdup(str);
 		*content = NULL;
 		return ;
 	}
@@ -105,9 +105,13 @@ size_t	env_size(t_env *head)
 
 bool	is_check_key(const char *name, t_env *env)
 {
+	size_t	len;
+
+	len = ft_strlen(name);
 	while (env)
 	{
-		if (ft_strncmp(env->name, name, ft_strlen(name)) == 0)
+		if (ft_strlen(env->name) == len && ft_strncmp(env->name, name,
+				len) == 0)
 			return (true);
 		env = env->next;
 	}

@@ -24,7 +24,8 @@
 # define DELIMS "|&<>"
 # define SHELL_METACHARS "\"\'()&|<>"
 # define SHELL_OPERATORS "()&|<>"
-# define ARR_SEP '`'
+# define CHAR_SEP '\x1f'
+# define STR_SEP "\x1f"
 # define ASCII_ART_PATH "assets/ascii_art_colossal"
 # define HEREDOC_TMP "heredoc_tmp"
 # define DEV_NULL_PATH "/dev/null"
@@ -37,27 +38,27 @@ typedef enum fd_type
 {
 	READ_END = 0,
 	WRITE_END = 1,
-}	t_fd_type;
+}								t_fd_type;
 
 typedef enum signal_type
 {
 	SIGNAL_HANDLER,
 	IGN,
 	DFL,
-}	t_signal_type;
+}								t_signal_type;
 
 typedef enum pipe_loc
 {
 	FIRST,
 	MIDDLE,
 	LAST,
-}	t_pipe_loc;
+}								t_pipe_loc;
 
 typedef enum tree_direction
 {
 	LEFT,
 	RIGHT,
-}						t_tree_direction;
+}								t_tree_direction;
 
 typedef enum subshell_type
 {
@@ -65,33 +66,33 @@ typedef enum subshell_type
 	CLOSE,
 	SINGLE,
 	NESTED,
-}	t_subshell_type;
+}								t_subshell_type;
 
 typedef enum type_dir
 {
 	IS_DIRECTORY = 126,
 	CMD_NOT_FOUND = 127,
-}						t_type_dir;
+}								t_type_dir;
 
 typedef enum type_descriptor
 {
 	READ,
 	WRITE,
 	APPEND,
-}						t_type_descriptor;
+}								t_type_descriptor;
 
 typedef enum status
 {
 	SUCCESS = 0,
 	FAILURE = 1,
 	MALLOC_ERR,
-}						t_status;
+}								t_status;
 
 typedef enum type_logical
 {
 	AND,
 	OR,
-}						t_type_logical;
+}								t_type_logical;
 
 typedef enum type
 {
@@ -112,7 +113,7 @@ typedef enum type
 	OUT_REDIR = 10,
 	OUT_APPEND = 11,
 	NOT_REDIR = 12,
-}						t_type;
+}								t_type;
 
 typedef enum error
 {
@@ -120,7 +121,7 @@ typedef enum error
 	TOKEN_ERROR,
 	PARSE_ERROR,
 	SYNTAX_ERROR,
-}						t_error;
+}								t_error;
 
 typedef enum path_type
 {
@@ -128,7 +129,7 @@ typedef enum path_type
 	PATH_RELATIVE,
 	PATH_COMMAND,
 	PATH_INVALID
-}						t_path_type;
+}								t_path_type;
 
 typedef enum built_in
 {
@@ -140,137 +141,137 @@ typedef enum built_in
 	ENV,
 	EXIT,
 	NONE,
-}						t_built_in;
+}								t_built_in;
 
 typedef struct s_env
 {
-	char				*name;
-	char				*content;
-	struct s_env		*pwd;
-	struct s_env		*old_pwd;
-	struct s_env		*next;
-	struct s_env		*last_arg;
-}						t_env;
+	char						*name;
+	char						*content;
+	struct s_env				*pwd;
+	struct s_env				*old_pwd;
+	struct s_env				*next;
+	struct s_env				*last_arg;
+}								t_env;
 
 typedef struct s_quote_info
 {
-	bool	in_single_quotes;
-	bool	in_double_quotes;
-	size_t	new_str_len;
-	size_t	tmp_str_len;
-	char	tmp_str[MAX_ARGS];
-}	t_quote_info;
+	bool						in_single_quotes;
+	bool						in_double_quotes;
+	size_t						new_str_len;
+	size_t						tmp_str_len;
+	char						tmp_str[MAX_ARGS];
+}								t_quote_info;
 
 typedef struct s_info
 {
-	pid_t				pid;
-	bool				is_pipe;
-	bool				is_re_pipe;
-	bool				is_input_redir;
-	bool				is_expansion_heredoc;
-	bool				is_last;
-	bool				is_redirection;
-	bool				has_multiple_pipes;
-	bool				pipe_exists;
-	bool				in_subshell;
-	char				**redir_args;
-	char				*path;
-	char				**args;
-	int					child_pids[MAX_PIPES];
-	int					stdin_fd;
-	int					stdout_fd;
-	int					backup_stdin;
-	int					backup_stdout;
-	int					origin_stdin_fd;
-	int					origin_stdout_fd;
-	int					stdin_backup;
-	int					stdout_backup;
-	int					pipe[2];
-	int					tmp_pipe[3];
-	int					pipe_loc;
-	int					stdin_pipe;
-	int					tmp_fd;
-	int					exit_status;
-	int					status;
-	struct s_ast		*root;
-	struct s_ast		*nested_subshell_root;
-	struct s_token		*token;
-	struct s_env		*env;
-	struct s_quote_info	*quote_info;
-}						t_info;
+	pid_t						pid;
+	bool						is_pipe;
+	bool						is_re_pipe;
+	bool						is_input_redir;
+	bool						is_expansion_heredoc;
+	bool						is_last;
+	bool						is_redirection;
+	bool						has_multiple_pipes;
+	bool						pipe_exists;
+	bool						in_subshell;
+	char						**redir_args;
+	char						*path;
+	char						**args;
+	int							child_pids[MAX_PIPES];
+	int							stdin_fd;
+	int							stdout_fd;
+	int							backup_stdin;
+	int							backup_stdout;
+	int							origin_stdin_fd;
+	int							origin_stdout_fd;
+	int							stdin_backup;
+	int							stdout_backup;
+	int							pipe[2];
+	int							tmp_pipe[3];
+	int							pipe_loc;
+	int							stdin_pipe;
+	int							tmp_fd;
+	int							exit_status;
+	int							status;
+	struct s_ast				*root;
+	struct s_ast				*nested_subshell_root;
+	struct s_token				*token;
+	struct s_env				*env;
+	struct s_quote_info			*quote_info;
+}								t_info;
 
 typedef struct s_handler_info
 {
-	char	*new_str;
-	size_t	new_str_len;
-	size_t	var_len;
-	int		i;
-	bool	in_single_quotes;
-	bool	in_double_quotes;
-	t_info	*info;
-	char	var[MAX_ARGS];
-}	t_handler_info;
+	char						*new_str;
+	size_t						new_str_len;
+	size_t						var_len;
+	int							i;
+	bool						in_single_quotes;
+	bool						in_double_quotes;
+	t_info						*info;
+	char						var[MAX_ARGS];
+}								t_handler_info;
 
 typedef struct s_token
 {
-	int					num;
-	char				*data;
-	t_type				type;
-	struct s_token		*next;
-}						t_token;
+	int							num;
+	char						*data;
+	t_type						type;
+	struct s_token				*next;
+}								t_token;
 
 typedef struct s_token_list
 {
-	t_token				*head;
-	t_token				*tail;
-}						t_token_list;
+	t_token						*head;
+	t_token						*tail;
+}								t_token_list;
 
 typedef struct s_ast
 {
-	char				*data;
-	t_type				type;
-	t_token				*token;
-	struct s_ast		*parent;
-	struct s_ast		*left;
-	struct s_ast		*right;
-}						t_ast;
+	char						*data;
+	t_type						type;
+	t_token						*token;
+	struct s_ast				*parent;
+	struct s_ast				*left;
+	struct s_ast				*right;
+}								t_ast;
 
 typedef struct s_cmd_list
 {
-	char				*cmd;
-	struct s_cmd_list	*prev;
-	struct s_cmd_list	*next;
-}						t_cmd_list;
+	char						*cmd;
+	struct s_cmd_list			*prev;
+	struct s_cmd_list			*next;
+}								t_cmd_list;
 
 typedef struct s_file_list
 {
-	char				**names;
-	size_t				count;
-}						t_file_list;
+	char						**names;
+	size_t						count;
+}								t_file_list;
 
 typedef struct s_env_var
 {
-	const char	*str;
-	bool		is_value_expansion;
-	bool		in_double_quotes;
-	char		*res;
-	t_info		*info;
-	size_t		i;
-	size_t		j;
-}	t_env_var;
+	const char					*str;
+	bool						is_value_expansion;
+	bool						in_double_quotes;
+	char						*res;
+	t_info						*info;
+	size_t						i;
+	size_t						j;
+}								t_env_var;
 
 typedef struct s_visited_paths
 {
-	char	**paths;
-	int		count;
-	int		capacity;
-}	t_visited_paths;
+	char						**paths;
+	int							count;
+	int							capacity;
+}								t_visited_paths;
 
 typedef struct s_expand_info
 {
-	char					**matches;
-	int						cnt;
-	int						capacity;
-	struct s_expand_info	*next;
-}	t_expand_info;
+	char						**matches;
+	int							cnt;
+	int							capacity;
+	struct s_expand_info		*next;
+}								t_expand_info;
 #endif // MINISHELL_TYPES_H

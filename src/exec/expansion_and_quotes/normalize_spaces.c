@@ -14,7 +14,7 @@
 
 static int	skip_initial_spaces(const char *str)
 {
-	int		i;
+	int	i;
 
 	i = 0;
 	while (ft_isspace((unsigned char)str[i]))
@@ -22,10 +22,9 @@ static int	skip_initial_spaces(const char *str)
 	return (i);
 }
 
-static void	remove_trailing_space(char	*result, int *result_idx)
+static void	remove_trailing_space(char *result, int *result_idx)
 {
-	if (*result_idx > 0 && \
-		ft_isspace((unsigned char)result[*result_idx - 1]))
+	if (*result_idx > 0 && ft_isspace((unsigned char)result[*result_idx - 1]))
 		(*result_idx)--;
 	result[*result_idx] = '\0';
 }

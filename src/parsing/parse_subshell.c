@@ -12,8 +12,8 @@
 
 #include "minishell.h"
 
-static char	*collect_and_tokenize_subshell_data(\
-						char **remainder, t_token **token, int subshell_status)
+static char	*collect_and_tokenize_subshell_data(char **remainder,
+		t_token **token, int subshell_status)
 {
 	char	*data_in_subshell;
 	bool	is_pipe_or_logical[2];
@@ -31,8 +31,8 @@ static char	*collect_and_tokenize_subshell_data(\
 	}
 	if (subshell_status == SINGLE && ((*token)->type == SUBSHELL))
 		*token = (*token)->next;
-	data_in_subshell = collect_data_until_subshell(\
-			token, subshell_status, is_pipe_or_logical);
+	data_in_subshell = collect_data_until_subshell(token, subshell_status,
+			is_pipe_or_logical);
 	return (data_in_subshell);
 }
 
@@ -46,8 +46,8 @@ static t_ast	*process_nested_subshell(t_token **token)
 	subshell_node = NULL;
 	remainder = NULL;
 	remainder_node = NULL;
-	data_in_subshell = collect_and_tokenize_subshell_data(\
-								&remainder, token, NESTED);
+	data_in_subshell = collect_and_tokenize_subshell_data(&remainder, token,
+			NESTED);
 	if (!data_in_subshell)
 		return (NULL);
 	subshell_node = handler_parse_subshell(data_in_subshell, NESTED);
@@ -67,8 +67,8 @@ static t_ast	*process_nested_subshell(t_token **token)
 	else -> subshell open
 	if it is nest is not, it is single
 */
-static int	process_subshell_token(\
-					t_token **token, t_ast **subshell_node, int *depth)
+static int	process_subshell_token(t_token **token, t_ast **subshell_node,
+		int *depth)
 {
 	char	*subshell_data;
 	char	*data_in_subshell;
@@ -77,27 +77,27 @@ static int	process_subshell_token(\
 	data_in_subshell = NULL;
 	subshell_data = (*token)->data;
 	subshell_type = (*token)->type;
-	if (*depth == 0 && subshell_data[0] == '(' && \
-			(*token)->next && (*token)->next->type == SUBSHELL)
-		return ((*depth)++, *token = (*token)->next, \
-		*subshell_node = new_node("(", SUBSHELL), OPEN);
+	if (*depth == 0 && subshell_data[0] == '(' && (*token)->next
+		&& (*token)->next->type == SUBSHELL)
+		return ((*depth)++, *token = (*token)->next,
+			*subshell_node = new_node("(", SUBSHELL), OPEN);
 	else if (*depth > 0 && subshell_data[0] == ')')
-		return (*token = (*token)->next, (*depth)--, \
-		*subshell_node = new_node(")", SUBSHELL), CLOSE);
+		return (*token = (*token)->next, (*depth)--,
+			*subshell_node = new_node(")", SUBSHELL), CLOSE);
 	else if (*depth > 0 && subshell_data[0] != ')')
 		return (*subshell_node = process_nested_subshell(token), NESTED);
-	data_in_subshell = collect_and_tokenize_subshell_data(\
-						NULL, token, SINGLE);
+	data_in_subshell = collect_and_tokenize_subshell_data(NULL, token, SINGLE);
 	if (!data_in_subshell)
 		return (-1);
 	if (subshell_type == SUBSHELL && subshell_data[0] == '(')
-		return ((*depth)++, \
-	*subshell_node = handler_parse_subshell(data_in_subshell, OPEN), OPEN);
+		return ((*depth)++,
+			*subshell_node = handler_parse_subshell(data_in_subshell, OPEN),
+			OPEN);
 	return (-1);
 }
 
-static bool	handle_subshell_node(\
-	t_ast **node, t_ast *subshell_node, int subshell_status)
+static bool	handle_subshell_node(t_ast **node, t_ast *subshell_node,
+		int subshell_status)
 {
 	if (!*node)
 		*node = subshell_node;
@@ -117,8 +117,8 @@ static bool	handle_subshell_node(\
 }
 
 /*
-//The first node can have the next new node 
-//only if both the left and right sides have it, 
+//The first node can have the next new node
+//only if both the left and right sides have it,
 //so after checking the first node, we add the subshell node to the next node
 	if (!(*node)->left->left)
 		(*node)->left->left = subshell_node;

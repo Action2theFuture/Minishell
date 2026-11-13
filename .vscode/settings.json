@@ -1,5 +1,11 @@
 {
 	"files.associations": {
 		"minishell.h": "c"
+	},
+	"[c]": {
+		"editor.defaultFormatter": "keyhr.42-c-format",
+		"editor.formatOnSave": true,
+		"editor.insertSpaces": false,
+		"editor.tabSize": 4
 	}
 }

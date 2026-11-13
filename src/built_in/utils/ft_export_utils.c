@@ -32,8 +32,8 @@ bool	var_if_exist(const char *name, t_env *lst)
 {
 	while (lst)
 	{
-		if ((ft_strlen(name) == ft_strlen(lst->name)) && \
-			ft_strncmp(name, lst->name, ft_strlen(lst->name)) == 0)
+		if ((ft_strlen(name) == ft_strlen(lst->name)) && ft_strncmp(name,
+				lst->name, ft_strlen(lst->name)) == 0)
 			return (true);
 		lst = lst->next;
 	}

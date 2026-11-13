@@ -12,6 +12,28 @@
 
 #include "minishell.h"
 
+// dispatch_cmd.c 상단에 추가 (단일 환경변수 명령어가 공백을 포함할 때 분할)
+static char	**split_expanded_cmd_if_needed(char **chunk, const char *raw_cmd)
+{
+	char	**split_cmd;
+	char	**new_chunk;
+
+	if (!chunk || !chunk[0] || !raw_cmd)
+		return (chunk);
+	if (ft_strchr(raw_cmd, '$') && !ft_strchr(raw_cmd, '\'')
+			&& !ft_strchr(raw_cmd, '\"') && ft_strchr(chunk[0], ' '))
+	{
+		split_cmd = ft_split(chunk[0], ' ');
+		if (!split_cmd)
+			return (chunk);
+		new_chunk = merge_args_and_add_spaces(split_cmd, &chunk[1],
+				count_strings(split_cmd));
+		free_args(chunk);
+		return (new_chunk);
+	}
+	return (chunk);
+}
+
 static void	determine_and_set_path(const char *cmd, t_info *info)
 {
 	t_path_type	path_type;
@@ -49,12 +71,12 @@ char	**merge_args_and_add_spaces(char **cmd, char **args, int cmd_cnt)
 	return (new_args);
 }
 
-static char	**prepare_cmd(\
-			char **args, t_ast *cmd_node, t_ast *args_node, t_info *info)
+static char	**prepare_cmd(char **args, t_ast *cmd_node, t_ast *args_node,
+		t_info *info)
 {
-	char		**chunk;
-	char		**parsed_cmd;
-	int			cmd_cnt;
+	char	**chunk;
+	char	**parsed_cmd;
+	int		cmd_cnt;
 
 	args = NULL;
 	chunk = NULL;
@@ -62,17 +84,18 @@ static char	**prepare_cmd(\
 	parsed_cmd = add_string_to_array(&cmd_cnt, cmd_node->data);
 	if (args_node)
 	{
-		args = ft_split(args_node->data, ARR_SEP);
+		args = ft_split(args_node->data, CHAR_SEP);
 		chunk = merge_args_and_add_spaces(parsed_cmd, args, cmd_cnt);
 		free_args(args);
 	}
 	else
 		chunk = allocate_null_and_cmd_chunk(parsed_cmd, cmd_cnt);
 	if (info->redir_args)
-		chunk = merge_args_and_add_spaces(\
-				chunk, info->redir_args, count_strings(chunk));
+		chunk = merge_args_and_add_spaces(chunk, info->redir_args,
+				count_strings(chunk));
 	expand_wildcard(&chunk);
 	expand_and_strip_quotes_in_args(chunk, info);
+	chunk = split_expanded_cmd_if_needed(chunk, cmd_node->data);
 	determine_and_set_path(chunk[0], info);
 	fetch_last_arg(chunk, info);
 	return (chunk);
@@ -80,9 +103,9 @@ static char	**prepare_cmd(\
 
 static int	start_execute(char **chunk, t_info *info)
 {
-	int		status;
-	int		built_in;
-	int		(*arr_built_in[7])(const char *, const char **, t_env *);
+	int	status;
+	int	built_in;
+	int	(*arr_built_in[7])(const char *, const char **, t_env *);
 
 	info->args = chunk;
 	if (info->is_pipe)
@@ -96,8 +119,8 @@ static int	start_execute(char **chunk, t_info *info)
 			if (built_in == EXIT)
 				status = ft_exit(info);
 			else
-				status = arr_built_in[built_in](\
-				(const char *)chunk[0], (const char **)chunk, info->env);
+				status = arr_built_in[built_in]((const char *)chunk[0],
+						(const char **)chunk, info->env);
 		}
 		else
 			status = launch_process_cmd(chunk[0], chunk, info);
@@ -107,7 +130,7 @@ static int	start_execute(char **chunk, t_info *info)
 	return (free_args(chunk), status);
 }
 
-int	dispatch_cmd(t_ast	*node, t_info *info)
+int	dispatch_cmd(t_ast *node, t_info *info)
 {
 	t_ast	*cmd_node;
 	t_ast	*args_node;

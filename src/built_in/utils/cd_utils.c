@@ -18,16 +18,17 @@ int	chdir_to_home(t_env *env)
 	char	*home_path;
 
 	head = env;
+	home_path = NULL;
 	while (env)
 	{
-		if (ft_strncmp(env->name, "HOME", 4) == 0)
+		if (ft_strncmp(env->name, "HOME", 4) == 0 && ft_strlen(env->name) == 4)
 		{
 			home_path = env->content;
 			break ;
 		}
 		env = env->next;
 	}
-	if (chdir(home_path) == -1)
+	if (!home_path || chdir(home_path) == -1)
 	{
 		ft_putstr_fd("cd : HOME not set\n", 2);
 		return (FAILURE);

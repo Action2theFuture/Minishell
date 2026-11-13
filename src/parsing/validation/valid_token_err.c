@@ -19,8 +19,8 @@ static bool	is_redir_err(t_token *prev, t_token *cur, t_token *next)
 	{
 		if (get_type_redir(cur->data) == NOT_REDIR)
 			return (true);
-		if (!next || is_operator(next->data) || \
-			is_redirection_operator(next->data))
+		if (!next || is_operator(next->data)
+			|| is_redirection_operator(next->data))
 			return (true);
 	}
 	return (false);
@@ -55,8 +55,8 @@ static bool	is_operator_err(t_token *prev, t_token *cur, t_token *next)
 			return (true);
 		if (prev->type && prev->type == PIPE && cur->type && cur->type == PIPE)
 			return (true);
-		if (cur->type && (cur->type == PIPE || cur->type == LOGICAL) && next && \
-			next->type && next->type == SUBSHELL && next->data[0] == ')')
+		if (cur->type && (cur->type == PIPE || cur->type == LOGICAL) && next
+			&& next->type && next->type == SUBSHELL && next->data[0] == ')')
 			return (true);
 		if (!next)
 			return (true);
@@ -105,8 +105,8 @@ bool	check_subshell_err(t_token *head)
 		}
 		if (get_type(head->data) == LOGICAL || get_type(head->data) == PIPE)
 			is_found_redir = false;
-		if (get_type(head->data) == SUBSHELL && head->data[0] == ')' && \
-			head->next && head->next->type == CMD)
+		if (get_type(head->data) == SUBSHELL && head->data[0] == ')'
+			&& head->next && head->next->type == CMD)
 			return (true);
 		head = head->next;
 	}

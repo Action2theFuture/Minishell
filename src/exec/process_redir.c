@@ -18,19 +18,13 @@ static int	start_heredoc(char *limiter, t_info *info)
 	int		status;
 
 	info->stdin_fd = open_file_with_mode(HEREDOC_TMP, WRITE);
-	if (ft_strlen(limiter) > 1 && \
-		((limiter[0] == '\'' && limiter[ft_strlen(limiter) - 1] == '\'') || \
-		(limiter[0] == '"' && limiter[ft_strlen(limiter) - 1] == '"')))
-	{
-		parsed_limiter = remove_shell_quotes(limiter);
-		status = here_doc(info->stdin_fd, parsed_limiter, info);
-		free(parsed_limiter);
-	}
+	if (ft_strchr(limiter, '\'') || ft_strchr(limiter, '"'))
+		info->is_expansion_heredoc = false;
 	else
-	{
 		info->is_expansion_heredoc = true;
-		status = here_doc(info->stdin_fd, limiter, info);
-	}
+	parsed_limiter = remove_shell_quotes(limiter);
+	status = here_doc(info->stdin_fd, parsed_limiter, info);
+	free(parsed_limiter);
 	info->is_expansion_heredoc = false;
 	if (dup2(info->tmp_fd, STDOUT_FILENO) == -1)
 		return (fd_log_error("Dup tmp_fd error!", NULL, NULL));
@@ -65,13 +59,14 @@ int	input_redir(char *arg, t_ast *node, t_info *info)
 	if (io_node->type == IN_REDIR)
 		info->stdin_fd = open_file_with_mode(arg, READ);
 	else if (io_node->type == IN_HEREDOC)
+	{
 		status = here_doc_redir(arg, info);
+		if (status != SUCCESS)
+			return (status);
+	}
 	else if (io_node->type == IN_HERESTR)
 	{
-		if (pipe(pipe_fd) == -1)
-			return (fd_log_error(NULL, arg, strerror(errno)));
-		if (write(pipe_fd[1], \
-			arg, ft_strlen(arg)) == -1)
+		if (pipe(pipe_fd) == -1 || write(pipe_fd[1], arg, ft_strlen(arg)) == -1)
 			return (fd_log_error(NULL, arg, strerror(errno)));
 		(close(pipe_fd[1]), info->stdin_fd = pipe_fd[0]);
 	}
@@ -79,8 +74,8 @@ int	input_redir(char *arg, t_ast *node, t_info *info)
 		return (fd_log_error(NULL, arg, strerror(errno)));
 	if (dup2(info->stdin_fd, STDIN_FILENO) == -1)
 		return (fd_log_error("Dup stdin_fd error!", NULL, NULL));
-	return (info->is_input_redir = true, \
-	close(info->stdin_fd), info->stdin_fd = -1, status);
+	return (info->is_input_redir = true, close(info->stdin_fd), info->stdin_fd =
+		-1, status);
 }
 
 int	output_redir(char *arg, t_ast *node, t_info *info)
@@ -109,20 +104,22 @@ int	output_redir(char *arg, t_ast *node, t_info *info)
 
 int	handle_ft_redirection(char *arg, t_ast *node, t_info *info)
 {
-	t_ast	*io_node;
+	t_ast *io_node;
+	int status;
 
 	io_node = node->left;
 	if (info->stdin_fd != -1)
 		(close(info->stdin_fd), info->stdin_fd = -1);
 	if (info->stdout_fd != -1)
 		(close(info->stdout_fd), info->stdout_fd = -1);
-	if (io_node->type == IN_REDIR || io_node->type == IN_HEREDOC || \
-		io_node->type == IN_HERESTR)
+	if (io_node->type == IN_REDIR || io_node->type == IN_HEREDOC
+		|| io_node->type == IN_HERESTR)
 	{
 		if (io_node->type == IN_REDIR && (access(arg, F_OK) == -1))
-			return (fd_log_error(NULL, arg, strerror(errno)), 127);
-		if (input_redir(arg, node, info) == FAILURE)
-			return (FAILURE);
+			return (fd_log_error(NULL, arg, strerror(errno)), FAILURE);
+		status = input_redir(arg, node, info);
+		if (status != SUCCESS)
+			return (status);
 	}
 	else if (io_node->type == OUT_REDIR || io_node->type == OUT_APPEND)
 	{

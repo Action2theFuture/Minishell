@@ -10,8 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
 #include "get_next_line.h"
+#include "libft.h"
 
 char	*gnl_strchr(const char *s, size_t len)
 {

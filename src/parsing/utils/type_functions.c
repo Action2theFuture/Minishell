@@ -14,8 +14,7 @@
 
 bool	is_logical_operator(const char *token)
 {
-	return (ft_strncmp(token, "&&", 2) == 0 || \
-		ft_strncmp(token, "||", 2) == 0);
+	return (ft_strncmp(token, "&&", 2) == 0 || ft_strncmp(token, "||", 2) == 0);
 }
 
 bool	is_pipe_operator(const char *token)
@@ -30,10 +29,9 @@ bool	is_redirection_operator(const char *token)
 	cnt = count_repeated_chars(token, token[0]);
 	if (cnt <= 2)
 	{
-		return (ft_strncmp(token, "<", 1) == 0 || \
-			ft_strncmp(token, "<<", 2) == 0 || \
-			ft_strncmp(token, ">", 1) == 0 || \
-			ft_strncmp(token, ">>", 2) == 0);
+		return (ft_strncmp(token, "<", 1) == 0 || ft_strncmp(token, "<<",
+				2) == 0 || ft_strncmp(token, ">", 1) == 0 || ft_strncmp(token,
+				">>", 2) == 0);
 	}
 	else if (cnt == 3)
 		return (ft_strncmp(token, "<<<", 3) == 0);

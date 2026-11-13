@@ -12,8 +12,8 @@
 
 #include "minishell.h"
 
-static void	handle_repeated_operators(\
-				const char **input, const char **start, t_token **list)
+static void	handle_repeated_operators(const char **input, const char **start,
+		t_token **list)
 {
 	int	cnt;
 
@@ -81,8 +81,8 @@ static void	merge_last_two_tokens(t_token **head)
 // The reason for hand;e quotes is because examples like abc"defg"abc
 static void	handle_cmd(const char **input, const char **start, t_token **list)
 {
-	while (**input && \
-	!ft_strchr(SHELL_METACHARS, **input) && !ft_isspace(**input))
+	while (**input && !ft_strchr(SHELL_METACHARS, **input)
+		&& !ft_isspace(**input))
 		(*input)++;
 	if (*input > *start)
 	{
@@ -99,8 +99,8 @@ static void	handle_cmd(const char **input, const char **start, t_token **list)
 }
 
 // DELIMS "|&<>"
-void	handle_operators_and_spaces(\
-	const char **input, const char **start, t_token **list)
+void	handle_operators_and_spaces(const char **input, const char **start,
+		t_token **list)
 {
 	const char	*delims;
 

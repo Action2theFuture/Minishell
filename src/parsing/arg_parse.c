@@ -44,14 +44,14 @@ static void	file_data(char *data, t_token **token)
 	while (*token && (*token)->type == CMD)
 	{
 		len = ft_strlen((*token)->data);
-		if (len > 0 && \
-			!(len == 2 && (*token)->data[0] == '"' && (*token)->data[1] == '"'))
+		if (len > 0 && !(len == 2 && (*token)->data[0] == '"'
+				&& (*token)->data[1] == '"'))
 		{
 			ft_strlcpy(ptr, (*token)->data, len + 1);
 			ptr += ft_strlen((*token)->data);
 			if ((*token)->next && (*token)->next->type == CMD)
 			{
-				*ptr = ARR_SEP;
+				*ptr = CHAR_SEP;
 				ptr++;
 			}
 		}

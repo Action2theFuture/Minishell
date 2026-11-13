@@ -41,20 +41,19 @@ static int	handle_cd_errors(int cnt)
 
 int	ft_cd(const char *cmd, const char **args, t_env *env)
 {
-	int		cnt;
+	int	cnt;
 
 	cnt = count_args(args);
 	(void)cmd;
 	init_oldpwd_node(env);
 	if (!args[1])
-		return (chdir_to_home(env), SUCCESS);
+		return (chdir_to_home(env));
 	if (handle_cd_errors(cnt) == FAILURE)
 		return (FAILURE);
 	if (!change_dir(args[1], env))
 		return (FAILURE);
 	return (SUCCESS);
 }
-
 // void	modify_pwd_in_env(t_env *env, char *str)
 // {
 // 	char	*new_pwd;

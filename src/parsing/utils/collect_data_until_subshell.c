@@ -12,8 +12,8 @@
 
 #include "minishell.h"
 
-static void	append_token_data(\
-char **data_in_subshell, size_t *total_len_and_capacity, t_token **token)
+static void	append_token_data(char **data_in_subshell,
+		size_t *total_len_and_capacity, t_token **token)
 {
 	size_t	data_len;
 	size_t	space_needed;
@@ -34,9 +34,8 @@ char **data_in_subshell, size_t *total_len_and_capacity, t_token **token)
 	}
 }
 
-static char	*append_data_until_subshell(\
-size_t *total_len_and_capacity, char *data_in_subshell, \
-t_token **token, bool *is_pipe_or_logical)
+static char	*append_data_until_subshell(size_t *total_len_and_capacity,
+		char *data_in_subshell, t_token **token, bool *is_pipe_or_logical)
 {
 	bool	have_logical;
 	bool	have_pipe;
@@ -49,8 +48,8 @@ t_token **token, bool *is_pipe_or_logical)
 		if (data_in_subshell == NULL)
 			return (NULL);
 		*token = (*token)->next;
-		if ((have_logical || have_pipe) && (*token) && \
-			((*token)->type == LOGICAL || (*token)->type == PIPE))
+		if ((have_logical || have_pipe) && (*token)
+			&& ((*token)->type == LOGICAL || (*token)->type == PIPE))
 		{
 			if ((*token)->next && (*token)->next->type == SUBSHELL)
 				break ;
@@ -65,8 +64,8 @@ t_token **token, bool *is_pipe_or_logical)
 	return (data_in_subshell);
 }
 
-static void	append_token_data_for_nested(\
-char **data_in_subshell, size_t *total_len_and_capacity, t_token **token)
+static void	append_token_data_for_nested(char **data_in_subshell,
+		size_t *total_len_and_capacity, t_token **token)
 {
 	size_t	data_len;
 	size_t	space_needed;
@@ -82,16 +81,16 @@ char **data_in_subshell, size_t *total_len_and_capacity, t_token **token)
 	total_len_and_capacity[0] += data_len;
 }
 
-static char	*append_data_until_nested_subshell(\
-size_t *total_len_and_capacity, char *data_in_subshell, t_token **token)
+static char	*append_data_until_nested_subshell(size_t *total_len_and_capacity,
+		char *data_in_subshell, t_token **token)
 {
 	int	depth;
 
 	depth = 0;
 	while (*token)
 	{
-		append_token_data_for_nested(\
-						&data_in_subshell, total_len_and_capacity, token);
+		append_token_data_for_nested(&data_in_subshell, total_len_and_capacity,
+			token);
 		if (data_in_subshell == NULL)
 			return (NULL);
 		if ((*token)->type == SUBSHELL && (*token)->data[0] == '(')
@@ -107,10 +106,10 @@ size_t *total_len_and_capacity, char *data_in_subshell, t_token **token)
 	return (data_in_subshell);
 }
 
-// total_len_and_capacity 
+// total_len_and_capacity
 // -> first ele is total_len, second ele is capacity
-char	*collect_data_until_subshell(\
-		t_token **token, int subshell_status, bool *is_pipe_or_logical)
+char	*collect_data_until_subshell(t_token **token, int subshell_status,
+		bool *is_pipe_or_logical)
 {
 	size_t	total_len_and_capacity[2];
 	char	*data_in_subshell;
@@ -122,8 +121,8 @@ char	*collect_data_until_subshell(\
 		return (NULL);
 	data_in_subshell[0] = '\0';
 	if (subshell_status == NESTED && (*token)->type == SUBSHELL)
-		return (append_data_until_nested_subshell(\
-						total_len_and_capacity, data_in_subshell, token));
-	return (append_data_until_subshell(\
-	total_len_and_capacity, data_in_subshell, token, is_pipe_or_logical));
+		return (append_data_until_nested_subshell(total_len_and_capacity,
+				data_in_subshell, token));
+	return (append_data_until_subshell(total_len_and_capacity, data_in_subshell,
+			token, is_pipe_or_logical));
 }

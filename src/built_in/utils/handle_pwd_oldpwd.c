@@ -32,13 +32,15 @@ void	update_pwd_oldpwd(t_env *env, const char *new_pwd)
 	env->pwd->content = ft_strdup((char *)new_pwd);
 	while (cur)
 	{
-		if (ft_strncmp(cur->name, "OLDPWD", 6) == 0)
+		if (ft_strncmp(cur->name, "OLDPWD", 7) == 0)
 		{
 			if (cur->content)
 				free(cur->content);
-			cur->content = ft_strdup(env->old_pwd->content);
+			cur->content = NULL;
+			if (env->old_pwd->content)
+				cur->content = ft_strdup(env->old_pwd->content);
 		}
-		else if (ft_strncmp(cur->name, "PWD", 3) == 0)
+		else if (ft_strncmp(cur->name, "PWD", 4) == 0)
 		{
 			if (cur->content)
 				free(cur->content);

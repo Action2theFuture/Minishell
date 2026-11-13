@@ -21,8 +21,8 @@ static void	get_current_directory(char *path, size_t size)
 	}
 }
 
-static void	join_paths(\
-	const char *path_1, const char *path_2, char *result, size_t size)
+static void	join_paths(const char *path_1, const char *path_2, char *result,
+		size_t size)
 {
 	ft_strlcpy(result, path_1, size);
 	ft_strlcat(result, "/", size);
@@ -35,13 +35,16 @@ static void	process_component(const char *cpn, char *r_path, size_t size)
 
 	if (ft_strncmp(cpn, "..", 2) == 0 && cpn[2] == '\0')
 	{
-		last_slash = ft_strchr(r_path, '/');
-		if (last_slash)
+		last_slash = ft_strrchr(r_path, '/');
+		if (last_slash && last_slash != r_path)
 			*last_slash = '\0';
+		else if (last_slash == r_path)
+			*(last_slash + 1) = '\0';
 	}
 	else if (ft_strncmp(cpn, ".", 1) != 0 || cpn[1] != '\0')
 	{
-		ft_strlcat(r_path, "/", size);
+		if (ft_strlen(r_path) != 1 || r_path[0] != '/')
+			ft_strlcat(r_path, "/", size);
 		ft_strlcat(r_path, cpn, size);
 	}
 }
@@ -84,8 +87,8 @@ char	*get_absolute_path(const char *path)
 	else
 		join_paths(cur_dir, path, tmp_path, sizeof(tmp_path));
 	get_resolve_path(tmp_path, resolve_path, sizeof(resolve_path));
-	absolute_path = (char *)malloc(\
-								sizeof(char) * (ft_strlen(resolve_path) + 1));
+	absolute_path = (char *)malloc(sizeof(char) * (ft_strlen(resolve_path)
+				+ 1));
 	if (absolute_path == NULL)
 	{
 		perror("Error alocating memory");

@@ -19,8 +19,8 @@ static void	remove_consecutive_double_quotes(char *str)
 	int	j;
 
 	len = ft_strlen(str);
-	if ((len == 2 && ft_strncmp(str, "\"\"", 2) == 0) || \
-		(len == 1 && ft_strncmp(str, "\"", 1) == 0))
+	if ((len == 2 && ft_strncmp(str, "\"\"", 2) == 0) || (len == 1
+			&& ft_strncmp(str, "\"", 1) == 0))
 	{
 		str[0] = '\0';
 		return ;
@@ -37,7 +37,7 @@ static void	remove_consecutive_double_quotes(char *str)
 
 void	remove_consecutive_double_quotes_from_args(char **args)
 {
-	int		i;
+	int	i;
 
 	if (args == NULL || args[0] == NULL)
 		return ;
@@ -48,28 +48,28 @@ void	remove_consecutive_double_quotes_from_args(char **args)
 
 void	remove_double_quotes_from_args(char **args)
 {
-	int		i;
+	int	i;
 
 	if (args == NULL || args[0] == NULL)
 		return ;
 	i = -1;
 	while (args[++i])
 	{
-		while (args[i][0] == '\"' && args[i][ft_strlen(args[i] - 1)] == '\"')
+		while (args[i][0] == '\"' && args[i][ft_strlen(args[i]) - 1] == '\"')
 			remove_surrounding_double_quotes(args[i]);
 	}
 }
 
 void	remove_single_quotes_from_args(char **args)
 {
-	int		i;
+	int	i;
 
 	if (args == NULL || args[0] == NULL)
 		return ;
 	i = -1;
 	while (args[++i])
 	{
-		while (args[i][0] == '\'' && args[i][ft_strlen(args[i] - 1)] == '\'')
+		while (args[i][0] == '\'' && args[i][ft_strlen(args[i]) - 1] == '\'')
 			remove_surrounding_single_quotes(args[i]);
 	}
 }

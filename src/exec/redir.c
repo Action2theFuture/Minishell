@@ -22,8 +22,8 @@ static void	process_redir_args(char **args, t_info *info)
 		new_redir_args = copy_str_arr(&args[1]);
 		if (info->redir_args)
 		{
-			merged_args = merge_args_and_add_spaces(\
-			info->redir_args, new_redir_args, count_strings(info->redir_args));
+			merged_args = merge_args_and_add_spaces(info->redir_args,
+					new_redir_args, count_strings(info->redir_args));
 			free_args(new_redir_args);
 			info->redir_args = merged_args;
 		}
@@ -52,34 +52,36 @@ static int	process_io_node(t_ast *node, t_info *info)
 {
 	t_ast	*io_type_node;
 	char	**args;
-	char	*first_arg;
+	char	*raw_first_arg;
 	int		status;
 
 	status = SUCCESS;
 	io_type_node = node->left;
-	args = ft_split(node->right->data, ARR_SEP);
-	first_arg = ft_strdup(args[0]);
+	args = ft_split(node->right->data, CHAR_SEP);
+	if (!args || !args[0])
+		return (free_args(args), FAILURE);
+	raw_first_arg = ft_strdup(args[0]);
+	if (!raw_first_arg)
+		return (free_args(args), FAILURE);
 	expand_and_strip_quotes_in_args(args, info);
 	if (io_type_node->type == IN_HEREDOC)
-		status = handle_ft_redirection(first_arg, node, info);
+		status = handle_ft_redirection(raw_first_arg, node, info);
 	else
 	{
-		if (is_valid_ambiguous_redirect(first_arg, args[0]))
-			status = handle_ft_redirection(first_arg, node, info);
+		if (args[0] && is_valid_ambiguous_redirect(raw_first_arg, args[0]))
+			status = handle_ft_redirection(args[0], node, info);
 		else
-			status = fd_log_error(first_arg, NULL, "ambiguous redirect");
+			status = fd_log_error(raw_first_arg, NULL, "ambiguous redirect");
 	}
 	process_redir_args(args, info);
 	free_args(args);
-	if (first_arg)
-		free(first_arg);
+	free(raw_first_arg);
 	return (status);
 }
-
 // first ele in args is file name or heredoc limiter
 int	handle_io_redirection(t_ast *node, t_info *info)
 {
-	int		status;
+	int	status;
 
 	status = SUCCESS;
 	close_fds(info);

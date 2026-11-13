@@ -15,15 +15,15 @@
 
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 42
-# endif 
+# endif
 
 # ifndef FD_MAX
 #  define FD_MAX 1024
 # endif
 
+# include <stddef.h>
 # include <stdlib.h>
 # include <unistd.h>
-# include <stddef.h>
 
 char	*gnl_strchr(const char *s, size_t len);
 char	*gnl_strjoin(char *s1, char *s2, size_t len, size_t rd);

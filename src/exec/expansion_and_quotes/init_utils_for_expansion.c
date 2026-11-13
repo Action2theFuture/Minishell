@@ -12,8 +12,8 @@
 
 #include "minishell.h"
 
-void	init_env_var(\
-	const char *str, char *res, t_env_var *env_var, t_info *info)
+void	init_env_var(const char *str, char *res, t_env_var *env_var,
+		t_info *info)
 {
 	env_var->str = str;
 	env_var->res = res;
@@ -24,8 +24,7 @@ void	init_env_var(\
 	env_var->in_double_quotes = false;
 }
 
-void	init_handler_info(\
-			t_handler_info *h_info, char *new_str, t_info *info)
+void	init_handler_info(t_handler_info *h_info, char *new_str, t_info *info)
 {
 	h_info->new_str = new_str;
 	h_info->new_str_len = 0;

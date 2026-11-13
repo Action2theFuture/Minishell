@@ -65,8 +65,8 @@ void	process_quotes_in_arg(char *str)
 			remove_surrounding_double_quotes(str);
 		else if (len >= 2 && str[0] == '\'' && str[len - 1] == '\'')
 			remove_surrounding_single_quotes(str);
-		else if (len >= 4 && str[0] == '\'' && str[len - 1] == '\'' && \
-			str[1] == '"' && str[len - 2] == '"')
+		else if (len >= 4 && str[0] == '\'' && str[len - 1] == '\''
+			&& str[1] == '"' && str[len - 2] == '"')
 			remove_double_quotes_inside_single_quotes(str);
 		else
 			break ;

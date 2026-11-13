@@ -57,9 +57,9 @@ char	*trim_first_last(char *str)
 
 bool	is_operator(const char *cmd)
 {
-	return ((ft_strncmp(cmd, "|", 1) == 0 && ft_strlen(cmd) == 1) || \
-		(ft_strncmp(cmd, "&&", 2) == 0 && ft_strlen(cmd) == 2) || \
-		(ft_strncmp(cmd, "||", 2) == 0 && ft_strlen(cmd) == 2));
+	return ((ft_strncmp(cmd, "|", 1) == 0 && ft_strlen(cmd) == 1)
+		|| (ft_strncmp(cmd, "&&", 2) == 0 && ft_strlen(cmd) == 2)
+		|| (ft_strncmp(cmd, "||", 2) == 0 && ft_strlen(cmd) == 2));
 }
 
 bool	is_special_char(char c)

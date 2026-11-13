@@ -50,8 +50,8 @@ static int	get_file_list_size(const char *path)
 	entry = readdir(dir);
 	while (entry)
 	{
-		if (ft_strncmp(entry->d_name, ".", 1) != 0 && \
-			ft_strncmp(entry->d_name, "..", 2) != 0)
+		if (ft_strncmp(entry->d_name, ".", 1) != 0 && ft_strncmp(entry->d_name,
+				"..", 2) != 0)
 			file_count++;
 		entry = readdir(dir);
 	}
@@ -95,9 +95,9 @@ const char	*get_path(const char *full_path)
 
 t_file_list	*get_file_list(const char *path)
 {
-	t_file_list		*file_list;
-	DIR				*dir;
-	int				file_count;
+	t_file_list	*file_list;
+	DIR			*dir;
+	int			file_count;
 
 	file_list = (t_file_list *)malloc(sizeof(t_file_list));
 	if (file_list == NULL)

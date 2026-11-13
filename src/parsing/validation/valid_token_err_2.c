@@ -47,13 +47,11 @@ bool	is_surrounded_by_double_parentheses(t_token *head)
 		return (false);
 	while (head)
 	{
-		if (head->type == SUBSHELL && head->data[0] == '(' && \
-			head->next && head->next->type == SUBSHELL && \
-			head->next->data[0] == '(')
+		if (head->type == SUBSHELL && head->data[0] == '(' && head->next
+			&& head->next->type == SUBSHELL && head->next->data[0] == '(')
 			have_open_paren = true;
-		if (head->type == SUBSHELL && head->data[0] == ')' && \
-			head->next && head->next->type == SUBSHELL && \
-			head->next->data[0] == ')')
+		if (head->type == SUBSHELL && head->data[0] == ')' && head->next
+			&& head->next->type == SUBSHELL && head->next->data[0] == ')')
 		{
 			if (have_open_paren)
 				return (true);

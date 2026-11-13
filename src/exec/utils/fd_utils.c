@@ -25,13 +25,13 @@ int	restore_fds(t_info *info)
 {
 	if (info->backup_stdin != -1 && info->backup_stdout != -1)
 	{
-		if (dup2(info->backup_stdin, STDIN_FILENO) == -1 || \
-			dup2(info->backup_stdout, STDOUT_FILENO) == -1)
+		if (dup2(info->backup_stdin, STDIN_FILENO) == -1
+			|| dup2(info->backup_stdout, STDOUT_FILENO) == -1)
 			return (fd_log_error("Dup Restore fd error", NULL, NULL));
 		close(info->backup_stdin);
 		close(info->backup_stdout);
 		info->backup_stdin = -1;
-		info->backup_stdin = -1;
+		info->backup_stdout = -1;
 	}
 	else if (info->backup_stdout != -1)
 	{
@@ -50,7 +50,7 @@ int	backup_stdio(t_info *info)
 	if (info->origin_stdin_fd == -1)
 		return (fd_log_error("Dup origin_stdin_fd error", NULL, NULL));
 	info->origin_stdout_fd = dup(STDOUT_FILENO);
-	if (info->origin_stdin_fd == -1)
+	if (info->origin_stdout_fd == -1)
 		return (fd_log_error("Dup origin_stdout_fd error", NULL, NULL));
 	return (SUCCESS);
 }

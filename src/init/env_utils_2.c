@@ -104,16 +104,15 @@ void	*init_pwd_oldpwd_under_score(t_env *head)
 	loc_minishell = concat_two_strings(cur_dir, LOC_MINISHELL);
 	head->pwd = initialize_env_var("PWD", cur_dir);
 	if (!head->pwd)
-		return (perror("malloc error"), free(head), \
-		free(cur_dir), free(loc_minishell), NULL);
+		return (perror("malloc error"), free(head), free(cur_dir),
+			free(loc_minishell), NULL);
 	head->old_pwd = initialize_env_var("OLDPWD", NULL);
 	if (!head->old_pwd)
-		return (perror("malloc error"), \
-		free(head->pwd), free(head), free(cur_dir), free(loc_minishell), NULL);
+		return (perror("malloc error"), free(head->pwd), free(head),
+			free(cur_dir), free(loc_minishell), NULL);
 	head->last_arg = initialize_env_var("_", loc_minishell);
 	if (!head->last_arg)
-		return (perror("malloc error"), \
-		free(head->pwd), free(head->old_pwd), free(head), \
-		free(cur_dir), free(loc_minishell), NULL);
+		return (perror("malloc error"), free(head->pwd), free(head->old_pwd),
+			free(head), free(cur_dir), free(loc_minishell), NULL);
 	return (free(cur_dir), free(loc_minishell), NULL);
 }

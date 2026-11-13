@@ -27,15 +27,15 @@ void	*ft_memchr(const void *ptr, int value, size_t num)
 }
 /*#include <stdio.h>
 
-int main() {
+int	main(void) {
   char* pch;
   char str[] = "Example string";
   pch = (char*)ft_memchr(str, 'p', ft_strlen(str));
 
   if (pch != NULL)
-    printf("'p' found at position %ld.\n", pch - str + 1);
+	printf("'p' found at position %ld.\n", pch - str + 1);
   else
-    printf("'p' not found.\n");
+	printf("'p' not found.\n");
 
-  return 0;
+  return (0);
 }*/

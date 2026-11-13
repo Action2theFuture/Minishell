@@ -34,4 +34,8 @@ void	clear_info(t_info *info)
 		close(info->origin_stdin_fd);
 	if (info->origin_stdout_fd != -1)
 		close(info->origin_stdout_fd);
+	if (info->stdin_backup != -1)
+		close(info->stdin_backup);
+	if (info->stdout_backup != -1)
+		close(info->stdout_backup);
 }

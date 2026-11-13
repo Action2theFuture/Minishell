@@ -21,10 +21,10 @@ static void	copy_pipe_info(t_info *dest, t_info *src)
 }
 
 /*
-Put is_last to true if the subshell comes 
+Put is_last to true if the subshell comes
 at the end of the pipeline or by itself
-reason -> 
-In process_subshell_or_phrase_node, 
+reason ->
+In process_subshell_or_phrase_node,
 to determine whether a subshell is part of a pipeline or not
 */
 void	prepare_subshell_node(t_ast *node, t_info *info)
@@ -50,8 +50,9 @@ void	prepare_subshell_node(t_ast *node, t_info *info)
 
 void	categorize_tree(t_ast *node, t_info *info)
 {
-	if (info->in_subshell == true && node->type == PHRASE && \
-		info->status == SUCCESS && (node->left && node->left->type == PHRASE))
+	if (info->in_subshell == true && node->type == PHRASE
+		&& info->status == SUCCESS && (node->left
+			&& node->left->type == PHRASE))
 		info->in_subshell = false;
 	if (node->type == PHRASE && info->status == SUCCESS)
 		process_phrase_node(node, info);
@@ -65,11 +66,11 @@ void	traverse_tree(t_ast *node, t_info *info)
 		process_logical_node(node, info);
 	else if (node->type == PIPE)
 		process_pipe_node(node, info);
-	else if (node->type == SUBSHELL && ft_strncmp(node->data, "(", 1) == 0 \
-			&& info->status == SUCCESS)
+	else if (node->type == SUBSHELL && ft_strncmp(node->data, "(", 1) == 0
+		&& info->status == SUCCESS)
 		prepare_subshell_node(node, info);
-	else if (node->type != PIPE && node->type != LOGICAL && \
-		node->type != SUBSHELL)
+	else if (node->type != PIPE && node->type != LOGICAL
+		&& node->type != SUBSHELL)
 	{
 		categorize_tree(node, info);
 		if (node->left)

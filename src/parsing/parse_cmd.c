@@ -48,7 +48,8 @@ static bool	parse_additional_args(t_token **token, t_ast *cmd_node)
 		cmd_node->right = new_node(arg_tokens, ARGS);
 	else
 	{
-		new_data = concat_three_strings(cmd_node->right->data, "`", arg_tokens);
+		new_data = concat_three_strings(cmd_node->right->data, STR_SEP,
+				arg_tokens);
 		free(cmd_node->right->data);
 		cmd_node->right->data = new_data;
 	}
