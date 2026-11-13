@@ -30,8 +30,8 @@ char	**add_string_to_array(int *size, const char *str)
 	return (new_array);
 }
 
-static bool	handle_quotes_in_str(\
-			const char **ptr, bool *in_single_quotes, bool *in_double_quotes)
+static bool	handle_quotes_in_str(const char **ptr, bool *in_single_quotes,
+		bool *in_double_quotes)
 {
 	if (**ptr == '\'' && !(*in_double_quotes))
 	{

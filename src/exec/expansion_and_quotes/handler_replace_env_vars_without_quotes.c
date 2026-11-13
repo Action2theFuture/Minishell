@@ -25,8 +25,8 @@ static void	hadle_dollar_sign(t_handler_info *h_info, const char *input)
 	}
 }
 
-char	*handler_dollar_sign_wihout_quotes(\
-		char *new_str, char *input, t_info *info)
+char	*handler_dollar_sign_wihout_quotes(char *new_str, char *input,
+		t_info *info)
 {
 	t_handler_info	h_info;
 
@@ -34,11 +34,9 @@ char	*handler_dollar_sign_wihout_quotes(\
 	h_info.new_str[0] = '\0';
 	while (input[h_info.i])
 	{
-		if (!h_info.in_single_quotes && \
-			input[h_info.i] == '$' && input[h_info.i + 1] && \
-			((ft_isalnum(input[h_info.i + 1]) || \
-			input[h_info.i + 1] == '_' || \
-			input[h_info.i + 1] == '?')))
+		if (!h_info.in_single_quotes && input[h_info.i] == '$' && input[h_info.i
+			+ 1] && ((ft_isalnum(input[h_info.i + 1]) || input[h_info.i
+					+ 1] == '_' || input[h_info.i + 1] == '?')))
 			hadle_dollar_sign(&h_info, input);
 		else
 		{

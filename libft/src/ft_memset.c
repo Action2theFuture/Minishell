@@ -29,9 +29,9 @@ void	*ft_memset(void *ptr, int value, size_t num)
 /*
 #include <stdio.h>
 
-int main() {
+int	main(void) {
   char str[] = "almost every programmer should know memset!";
   ft_memset(str, '-', 6);
   puts(str);
-  return 0;
+  return (0);
 }*/

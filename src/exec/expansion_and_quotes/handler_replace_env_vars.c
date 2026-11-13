@@ -46,10 +46,9 @@ static void	handle_simple_var(t_env_var *env_var, char *var_name)
 	char	*var_value;
 
 	env_var->i++;
-	extract_var_name(\
-			env_var->str, &(env_var->i), var_name);
-	var_value = process_replace_env_vars(\
-				var_name, env_var->info, env_var->is_value_expansion);
+	extract_var_name(env_var->str, &(env_var->i), var_name);
+	var_value = process_replace_env_vars(var_name, env_var->info,
+			env_var->is_value_expansion);
 	if (var_value)
 		copy_var_value(var_value, env_var->res, &(env_var->j));
 }
@@ -58,23 +57,19 @@ void	handle_dollar_sign(t_env_var *env_var)
 {
 	char	var_name[MAX_ARGS];
 
-	if (env_var->str[env_var->i] == '$' && \
-			(env_var->str[env_var->i + 1] == '\0' || \
-			env_var->str[env_var->i + 1] == ' ' || \
-			env_var->str[env_var->i + 1] == '\t' || \
-			env_var->str[env_var->i + 1] == '\n'))
+	if (env_var->str[env_var->i] == '$' && (env_var->str[env_var->i + 1] == '\0'
+			|| env_var->str[env_var->i + 1] == ' ' || env_var->str[env_var->i
+			+ 1] == '\t' || env_var->str[env_var->i + 1] == '\n'))
 		env_var->res[env_var->j++] = env_var->str[env_var->i++];
-	else if (env_var->str[env_var->i] == '$' && \
-		env_var->str[env_var->i + 1] == '?')
+	else if (env_var->str[env_var->i] == '$' && env_var->str[env_var->i
+		+ 1] == '?')
 		handle_expansion_var(env_var, '?');
-	else if (env_var->str[env_var->i] == '$' && \
-			(ft_isalnum(env_var->str[env_var->i + 1]) || \
-			(env_var->str[env_var->i + 1] == '_' && \
-			env_var->str[env_var->i + 2])))
+	else if (env_var->str[env_var->i] == '$'
+		&& (ft_isalnum(env_var->str[env_var->i + 1]) || (env_var->str[env_var->i
+				+ 1] == '_' && env_var->str[env_var->i + 2])))
 		handle_simple_var(env_var, var_name);
-	else if (env_var->str[env_var->i] == '$' && \
-			env_var->str[env_var->i + 1] == '_' && \
-			env_var->str[env_var->i + 2] == '\0' )
+	else if (env_var->str[env_var->i] == '$' && env_var->str[env_var->i
+		+ 1] == '_' && env_var->str[env_var->i + 2] == '\0')
 		handle_expansion_var(env_var, '_');
 	else
 		env_var->res[env_var->j++] = env_var->str[env_var->i++];

@@ -42,15 +42,15 @@ bool	check_quotes_in_tokens(t_token *head)
 
 bool	check_subshell_closed(t_token *head)
 {
-	int		depth;
+	int	depth;
 
 	depth = 0;
 	if (head && head->data[0] == '(' && !head->next)
 		return (false);
 	while (head)
 	{
-		if ((head->data[0] == '(' && ft_strlen(head->data) == 1) && \
-			(head->next->data[0] == ')' && ft_strlen(head->next->data) == 1))
+		if ((head->data[0] == '(' && ft_strlen(head->data) == 1)
+			&& (head->next->data[0] == ')' && ft_strlen(head->next->data) == 1))
 			return (false);
 		if (head->data[0] == '(' && ft_strlen(head->data) == 1)
 			depth++;

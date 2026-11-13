@@ -18,8 +18,8 @@ void	cleanup_and_exit(int status, char **args, char **env, t_info *info)
 		(clear_env_arr(env), env = NULL);
 	(free_tree(info->root), info->root = NULL);
 	if (info->nested_subshell_root)
-		(free_tree(info->nested_subshell_root), \
-		info->nested_subshell_root = NULL);
+		(free_tree(info->nested_subshell_root),
+			info->nested_subshell_root = NULL);
 	if (args)
 		free_args(args);
 	if (info->path)

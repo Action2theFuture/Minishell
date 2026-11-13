@@ -12,8 +12,8 @@
 
 #include "minishell.h"
 
-static void	update_quote_state(\
-					char ch, bool *in_single_quotes, bool *in_double_quotes)
+static void	update_quote_state(char ch, bool *in_single_quotes,
+		bool *in_double_quotes)
 {
 	if (ch == '\'' && !(*in_double_quotes))
 		*in_single_quotes = !(*in_single_quotes);

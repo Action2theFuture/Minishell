@@ -15,33 +15,31 @@
 int	wait_for_child_task(t_info *info)
 {
 	int		status;
+	pid_t	wpid;
 	bool	printed_signal_msg;
 
 	status = 0;
 	printed_signal_msg = false;
 	set_signal_handler(IGN);
-	while (wait(&status) != -1)
+	wpid = wait(&status);
+	while (wpid != -1)
 	{
-		if (WIFSIGNALED(status))
+		if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT
+			&& !printed_signal_msg)
+			(ft_putstr_fd("^C\n", STDERR_FILENO), printed_signal_msg = true);
+		if (wpid == info->pid)
 		{
-			if (WTERMSIG(status) == SIGINT && !printed_signal_msg)
-			{
-				ft_putstr_fd("^C\n", STDERR_FILENO);
-				printed_signal_msg = true;
-			}
-			else if (WTERMSIG(status) == SIGPIPE)
-				continue ;
-			info->exit_status = 128 + WTERMSIG(status);
+			if (WIFSIGNALED(status) && WTERMSIG(status) != SIGPIPE)
+				info->exit_status = 128 + WTERMSIG(status);
+			else if (WIFEXITED(status))
+				info->exit_status = WEXITSTATUS(status);
 		}
-		else if (WIFEXITED(status))
-			info->exit_status = WEXITSTATUS(status);
+		wpid = wait(&status);
 	}
-	set_signal_handler(SIGNAL_HANDLER);
-	return (SUCCESS);
+	return (set_signal_handler(SIGNAL_HANDLER), SUCCESS);
 }
 
-static void	execute_child_process(\
-		char *cmd, char **args, t_info *info)
+static void	execute_child_process(char *cmd, char **args, t_info *info)
 {
 	char	**env;
 

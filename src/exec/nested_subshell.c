@@ -12,14 +12,14 @@
 
 #include "minishell.h"
 
-static void	handle_child_process(\
-		t_info *info, t_info *subshell_info, t_ast *subshell_node)
+static void	handle_child_process(t_info *info, t_info *subshell_info,
+		t_ast *subshell_node)
 {
 	if (info->token)
 		(free_token(info->token), info->token = NULL);
 	if (info->nested_subshell_root)
-		(free_tree(info->nested_subshell_root), \
-		info->nested_subshell_root = NULL);
+		(free_tree(info->nested_subshell_root),
+			info->nested_subshell_root = NULL);
 	if (backup_stdio(info) == FAILURE)
 		fd_log_error(NULL, NULL, strerror(errno));
 	set_signal_handler(DFL);
@@ -32,9 +32,8 @@ static void	handle_child_process(\
 	cleanup_and_exit(info->exit_status, NULL, NULL, info);
 }
 
-static int	process_nested_subshell_node(\
-			t_ast *nested_subshell_node, t_token *token, \
-			t_info *subshell_info, t_info *info)
+static int	process_nested_subshell_node(t_ast *nested_subshell_node,
+		t_token *token, t_info *subshell_info, t_info *info)
 {
 	pid_t	pid;
 	t_ast	*subshell_node;
@@ -44,6 +43,7 @@ static int	process_nested_subshell_node(\
 	subshell_info->token = token;
 	subshell_info->in_subshell = true;
 	pid = fork();
+	info->pid = pid;
 	if (pid == -1)
 		return (fd_log_error("fork_error", NULL, NULL));
 	if (pid == 0)
@@ -71,8 +71,8 @@ void	start_nested_subshell_node(t_ast *node, t_info *info)
 		return ;
 	}
 	init_info(&subshell_info, info->env, info->root);
-	info->exit_status = process_nested_subshell_node(\
-			nested_subshell_node, token_head, &subshell_info, info);
+	info->exit_status = process_nested_subshell_node(nested_subshell_node,
+			token_head, &subshell_info, info);
 	free_token(subshell_info.token);
 	free_tree(subshell_info.nested_subshell_root);
 	clear_info(&subshell_info);

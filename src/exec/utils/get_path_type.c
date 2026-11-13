@@ -12,8 +12,8 @@
 
 #include "minishell.h"
 
-static t_path_type	check_absolute_or_relative(\
-				const char *path, struct stat path_stat)
+static t_path_type	check_absolute_or_relative(const char *path,
+		struct stat path_stat)
 {
 	if (S_ISDIR(path_stat.st_mode) || S_ISREG(path_stat.st_mode))
 	{
@@ -27,8 +27,8 @@ static char	*get_path_in_env(t_env *env)
 {
 	while (env)
 	{
-		if (env->name && env->content && \
-			ft_strlen(env->name) == 4 && ft_strncmp(env->name, "PATH", 4) == 0)
+		if (env->name && env->content && ft_strlen(env->name) == 4
+			&& ft_strncmp(env->name, "PATH", 4) == 0)
 			return (env->content);
 		env = env->next;
 	}

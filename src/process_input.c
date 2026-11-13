@@ -14,8 +14,8 @@
 
 // print_tree(root, 10);
 // print_token(tokens);
-static void	parse_and_execute(\
-		t_token *tokens, t_env *env, int *exit_status, int *err)
+static void	parse_and_execute(t_token *tokens, t_env *env, int *exit_status,
+		int *err)
 {
 	t_token_list	*token_list;
 	t_ast			*root;
@@ -57,8 +57,8 @@ static void	tokenize_and_validate(char *input, t_token **tokens, int *err)
 
 void	process_input(char *input, t_env *env, int *exit_status)
 {
-	t_token			*tokens;
-	int				err;
+	t_token	*tokens;
+	int		err;
 
 	tokens = NULL;
 	err = -1;

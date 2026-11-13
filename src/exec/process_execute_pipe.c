@@ -35,8 +35,8 @@ static void	handle_middle_and_last_pipe_segment(t_ast *pipe_node, t_info *info)
 		pipe_node = pipe_node->parent;
 		if (!pipe_node)
 			break ;
-		if (info->is_re_pipe && \
-			pipe_node->parent && pipe_node->parent->type == PIPE)
+		if (info->is_re_pipe && pipe_node->parent
+			&& pipe_node->parent->type == PIPE)
 		{
 			info->pipe_loc = FIRST;
 			process_subshell_or_phrase_node(pipe_node->left, info);
@@ -91,8 +91,7 @@ void	process_pipe_node(t_ast *pipe_node, t_info *info)
 		info->is_pipe = true;
 		info->is_re_pipe = false;
 	}
-	while (pipe_node && pipe_node->right && \
-		pipe_node->right->type == PIPE)
+	while (pipe_node && pipe_node->right && pipe_node->right->type == PIPE)
 	{
 		pipe_node = pipe_node->right;
 		info->has_multiple_pipes = true;

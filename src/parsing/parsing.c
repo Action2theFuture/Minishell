@@ -38,9 +38,9 @@ static bool	parsor(t_token **token, t_ast **root, int start)
 
 bool	parsing_tree(t_token_list **tokens, t_ast **root)
 {
-	t_token		*tmp;
-	t_token		*token;
-	int			priority;
+	t_token	*tmp;
+	t_token	*token;
+	int		priority;
 
 	if (!tokens || !*tokens)
 		return (NULL);

@@ -43,7 +43,7 @@ static char	*conver_env_item_to_str(t_env *cur)
 
 static char	**convert_list_to_array(t_env *cur, char **arr)
 {
-	int		idx;
+	int	idx;
 
 	idx = 0;
 	if (!cur)

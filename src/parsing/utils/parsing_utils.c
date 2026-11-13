@@ -91,8 +91,8 @@ int	calculate_depth(const char *str)
 
 void	remove_outer_parentheses(char **str, t_ast **root)
 {
-	int		len;
-	int		depth;
+	int	len;
+	int	depth;
 
 	len = ft_strlen(*str);
 	depth = calculate_depth(*str);

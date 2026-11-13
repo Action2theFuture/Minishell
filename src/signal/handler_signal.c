@@ -12,10 +12,11 @@
 
 #include "minishell.h"
 
-static void	handler_sigint(pid_t pid)
+static void	signal_handler(int signo)
 {
-	if (pid == -1)
+	if (signo == SIGINT)
 	{
+		g_heredoc_interrupted = SIGINT;
 		rl_on_new_line();
 		rl_redisplay();
 		ft_putstr_fd("  \n", STDERR_FILENO);
@@ -25,36 +26,12 @@ static void	handler_sigint(pid_t pid)
 	}
 }
 
-static void	handler_sigquit(pid_t pid)
-{
-	if (pid == -1)
-	{
-		rl_on_new_line();
-		rl_redisplay();
-		ft_putstr_fd("  \b\b", STDERR_FILENO);
-	}
-	else
-		ft_putstr_fd("^\\Quit (core dumped)\n", STDERR_FILENO);
-}
-
-static void	signal_handler(int signo)
-{
-	pid_t	pid;
-	int		status;
-
-	pid = waitpid(-1, &status, WNOHANG);
-	if (signo == SIGINT)
-		handler_sigint(pid);
-	else if (signo == SIGQUIT)
-		handler_sigquit(pid);
-}
-
 void	set_signal_handler(int sig_int)
 {
 	if (sig_int == SIGNAL_HANDLER)
 	{
 		signal(SIGINT, signal_handler);
-		signal(SIGQUIT, signal_handler);
+		signal(SIGQUIT, SIG_IGN);
 	}
 	else if (sig_int == IGN)
 	{

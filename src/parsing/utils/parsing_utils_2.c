@@ -39,10 +39,10 @@ char	*append_with_semicolon(char *original, char *to_append)
 		return (NULL);
 	}
 	ft_strlcpy(new_str, original, new_len);
-	new_str[original_len] = ARR_SEP;
+	new_str[original_len] = CHAR_SEP;
 	new_str[original_len + 1] = '\0';
-	ft_strlcpy(\
-			new_str + original_len + 1, to_append, new_len - original_len - 1);
+	ft_strlcpy(new_str + original_len + 1, to_append, new_len - original_len
+		- 1);
 	free((char *)original);
 	return (new_str);
 }

@@ -12,8 +12,8 @@
 
 #include "minishell.h"
 
-static bool	handle_parse_redirection_with_cmd(
-	t_token **token, t_ast **phrase_node, t_ast **left)
+static bool	handle_parse_redirection_with_cmd(t_token **token,
+		t_ast **phrase_node, t_ast **left)
 {
 	t_ast	*attach_node;
 	t_ast	*right;
@@ -28,8 +28,8 @@ static bool	handle_parse_redirection_with_cmd(
 		parse_io_redirection(token, &((*left)->right));
 		*left = (*left)->right;
 		while (*token && (*token)->type == REDIRECTION)
-			(parse_io_redirection(token, &attach_node), \
-			*left = attach_to_tree(*left, attach_node, LEFT));
+			(parse_io_redirection(token, &attach_node),
+				*left = attach_to_tree(*left, attach_node, LEFT));
 	}
 	else if (*token && (*token)->type == SUBSHELL)
 	{
@@ -42,8 +42,8 @@ static bool	handle_parse_redirection_with_cmd(
 }
 
 // case : [<in1 cmd1 in2>]
-bool	parse_redirection_with_cmd(
-	t_token **token, t_ast **phrase_node, t_ast **node)
+bool	parse_redirection_with_cmd(t_token **token, t_ast **phrase_node,
+		t_ast **node)
 {
 	t_ast	*left;
 
@@ -62,31 +62,34 @@ bool	parse_redirection_with_cmd(
 }
 
 // << eof cat > test.txt
-// Deletes this function 
-// because the command that follows the argument value will not be executed 
+// Deletes this function
+// because the command that follows the argument value will not be executed
 // because the argument value is entered as an argument
 /*
 static void	handle_redirection_token(\
-			t_token **token, t_ast **node, t_ast *io_redirection_node)
+						t_token **token, t_ast **node, t_ast
+*io_redirection_node)
 {
-	char	*arg_tokens;
+		char	*arg_tokens;
+		t_ast	*io_redirection_node;
+	t_ast	*io_redirection_node;
 
-	if (*token && (*token)->type == CMD)
-	{
-		if ((*node)->type == OUT_REDIR || (*node)->type == OUT_APPEND)
+		if (*token && (*token)->type == CMD)
 		{
-			arg_tokens = arg_parsing(token);
-			io_redirection_node->right = new_node(arg_tokens, ARGS);
-			free(arg_tokens);
+				if ((*node)->type == OUT_REDIR || (*node)->type == OUT_APPEND)
+				{
+						arg_tokens = arg_parsing(token);
+						io_redirection_node->right = new_node(arg_tokens, ARGS);
+						free(arg_tokens);
+				}
+				else
+				{
+						// io_redirection_node->right = new_node((*token)->data,
+ARGS);
+						// *token = (*token)->next;
+				}
 		}
-		else
-		{
-			// io_redirection_node->right = new_node((*token)->data, ARGS);
-			// *token = (*token)->next;
-		}
-	}
 }*/
-
 bool	parse_io_redirection(t_token **token, t_ast **node)
 {
 	t_ast	*io_redirection_node;
@@ -112,6 +115,7 @@ bool	parse_io_redirection(t_token **token, t_ast **node)
 
 bool	parse_redirection(t_token **token, t_ast **node)
 {
+
 	t_ast	*redirection_node;
 	t_ast	*left;
 

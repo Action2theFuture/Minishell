@@ -21,8 +21,8 @@ t_file_list	*get_entry_list(t_file_list *file_list, DIR *dir)
 	entry = readdir(dir);
 	while (entry)
 	{
-		if (ft_strncmp(entry->d_name, ".", 1) != 0 && \
-			ft_strncmp(entry->d_name, "..", 2) != 0)
+		if (ft_strncmp(entry->d_name, ".", 1) != 0 && ft_strncmp(entry->d_name,
+				"..", 2) != 0)
 		{
 			file_list->names[++index] = ft_strdup(entry->d_name);
 			if (file_list->names[index] == NULL)
@@ -55,7 +55,7 @@ DIR	*get_dir(const char *path, int file_count, t_file_list **file_list)
 	if ((*file_list)->names == NULL)
 	{
 		perror("malloc");
-		free(file_list);
+		free(*file_list);
 		closedir(dir);
 		return (NULL);
 	}

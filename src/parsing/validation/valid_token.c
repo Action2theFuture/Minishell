@@ -20,8 +20,8 @@ int	valid_token(t_token *head)
 		return (UNCLOSED_QUOTE);
 	if (!check_subshell_closed(head))
 		return (TOKEN_ERROR);
-	if (check_logical_err(head) || check_redir_err(head) || \
-		check_operator_before_after_err(head) || check_subshell_err(head))
+	if (check_logical_err(head) || check_redir_err(head)
+		|| check_operator_before_after_err(head) || check_subshell_err(head))
 		return (TOKEN_ERROR);
 	return (-1);
 }

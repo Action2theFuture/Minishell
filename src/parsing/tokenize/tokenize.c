@@ -12,8 +12,8 @@
 
 #include "minishell.h"
 
-static int	process_character(\
-		const char **input, const char **start, int *depth, t_token **tokens)
+static int	process_character(const char **input, const char **start,
+		int *depth, t_token **tokens)
 {
 	int	err;
 

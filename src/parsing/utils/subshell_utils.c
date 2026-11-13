@@ -53,8 +53,8 @@ static bool	process_parentheses(t_token **cur, int *depth)
 
 static int	calculate_len(t_token *cur)
 {
-	int		depth;
-	int		len;
+	int	depth;
+	int	len;
 
 	depth = 0;
 	len = 0;
@@ -69,8 +69,8 @@ static int	calculate_len(t_token *cur)
 	return (len);
 }
 
-static void	process_token_list(\
-	t_token **token, char *result, int *depth, int *result_idx)
+static void	process_token_list(t_token **token, char *result, int *depth,
+		int *result_idx)
 {
 	int	len;
 

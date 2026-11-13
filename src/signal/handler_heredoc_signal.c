@@ -15,12 +15,16 @@
 static void	handler_heredoc_sigint(int signo)
 {
 	if (signo == SIGINT)
+	{
 		g_heredoc_interrupted = 1;
+		ft_putstr_fd("\n", STDERR_FILENO);
+		close(STDIN_FILENO);
+	}
 }
 
 void	set_heredoc_signal_handler(void)
 {
-	struct sigaction	sa;
+	struct sigaction sa;
 
 	sa.sa_handler = handler_heredoc_sigint;
 	sigemptyset(&sa.sa_mask);

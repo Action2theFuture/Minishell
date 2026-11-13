@@ -14,8 +14,8 @@
 
 static void	remove_outer_double_quotes(t_env_var *env_var)
 {
-	while (env_var->str[0] == '\"' && \
-		env_var->str[ft_strlen(env_var->str) - 1] == '\"')
+	while (env_var->str[0] == '\"' && env_var->str[ft_strlen(env_var->str)
+		- 1] == '\"')
 	{
 		remove_surrounding_double_quotes((char *)env_var->str);
 		env_var->is_value_expansion = true;
@@ -24,9 +24,8 @@ static void	remove_outer_double_quotes(t_env_var *env_var)
 
 static void	remove_outer_single_quotes(t_env_var *env_var)
 {
-	while (env_var->str[0] == '\'' && \
-		env_var->str[ft_strlen(env_var->str) - 1] == '\'' && \
-		!env_var->is_value_expansion)
+	while (env_var->str[0] == '\'' && env_var->str[ft_strlen(env_var->str)
+		- 1] == '\'' && !env_var->is_value_expansion)
 		remove_surrounding_single_quotes((char *)env_var->str);
 }
 
@@ -35,10 +34,10 @@ static void	process_str(t_env_var *env_var)
 	while (env_var->str[env_var->i])
 	{
 		pass_double_quotes(env_var);
-		if ((env_var->str[env_var->i] == '\'' && \
-			(env_var->str[env_var->i - 1] == '\"' || \
-			env_var->str[env_var->i + 1] == '\"')) && \
-			env_var->is_value_expansion == true)
+		if ((env_var->str[env_var->i] == '\'' && ((env_var->i > 0
+				&& env_var->str[env_var->i - 1] == '\"')
+				|| env_var->str[env_var->i + 1] == '\"'))
+				&& env_var->is_value_expansion == true)
 			env_var->i++;
 		else if (env_var->str[env_var->i] == '$' && env_var->is_value_expansion)
 			handle_dollar_sign(env_var);

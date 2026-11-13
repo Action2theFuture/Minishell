@@ -67,10 +67,10 @@ static void	print_all(t_ast *node, const char *direction)
 		printf("%s: %s\n", direction, type_str);
 }
 
-static void	print_tree_util(\
-			t_ast *node, int space, int depth, const char *direction)
+static void	print_tree_util(t_ast *node, int space, int depth,
+		const char *direction)
 {
-	int		i;
+	int	i;
 
 	if (node == NULL)
 		return ;

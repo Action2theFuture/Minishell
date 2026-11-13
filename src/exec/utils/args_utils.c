@@ -23,9 +23,9 @@ static void	clear_flag(char **str, int idx)
 	free(str);
 }
 
-static char **split_flags(const char *flags)
+static char	**split_flags(const char *flags)
 {
-	size_t 	len;
+	size_t	len;
 	int		idx;
 	int		i;
 	char	**res;

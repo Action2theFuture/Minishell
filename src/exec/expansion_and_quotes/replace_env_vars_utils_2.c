@@ -71,12 +71,11 @@ void	handle_normal_var_without_quotes(t_handler_info *h_info)
 	}
 }
 
-void	extract_var_name_from_input(\
-					t_handler_info *h_info, const char *input)
+void	extract_var_name_from_input(t_handler_info *h_info, const char *input)
 {
 	h_info->var_len = 0;
-	while (h_info->var_len < MAX_ARGS - 1 && \
-		input[h_info->i] && !is_special_char(input[h_info->i]))
+	while (h_info->var_len < MAX_ARGS - 1 && input[h_info->i]
+		&& !is_special_char(input[h_info->i]))
 		h_info->var[h_info->var_len++] = input[h_info->i++];
 	h_info->var[h_info->var_len] = '\0';
 }

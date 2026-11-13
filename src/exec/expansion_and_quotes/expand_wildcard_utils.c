@@ -12,8 +12,8 @@
 
 #include "minishell.h"
 
-char	**reallocate_matches(\
-	char **matches, int *capacity, int required_capacity)
+char	**reallocate_matches(char **matches, int *capacity,
+		int required_capacity)
 {
 	int		new_capacity;
 	int		i;
@@ -60,8 +60,8 @@ void	mark_path_visited(const char *path, t_visited_paths *visited)
 
 	cnt = visited->count + 1;
 	if (visited->count >= visited->capacity)
-		visited->paths = reallocate_matches(\
-		visited->paths, &visited->capacity, cnt);
+		visited->paths = reallocate_matches(visited->paths, &visited->capacity,
+				cnt);
 	visited->paths[visited->count] = ft_strdup(path);
 	visited->count++;
 }

@@ -66,10 +66,10 @@ static char	*ft_strdup_result(char *src, size_t n)
 
 char	**ft_split(char const *str, char c)
 {
-	char		**str_arr;
-	size_t		i;
-	size_t		j;
-	size_t		tmp;
+	char	**str_arr;
+	size_t	i;
+	size_t	j;
+	size_t	tmp;
 
 	if (!str)
 		return (NULL);

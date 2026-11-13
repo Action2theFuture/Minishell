@@ -21,34 +21,48 @@ t_env	*ft_envlast(t_env *lst)
 	return (lst);
 }
 
-// t_env *del_first(t_env **lst)
-// {
-//     t_env **tmp;
-//     tmp = (*lst)->next;
-//     free(*lst);
-//     return (tmp);
-// }
+static void	remove_head_node(t_env *head)
+{
+	t_env	*next_node;
+
+	free(head->name);
+	if (head->content)
+		free(head->content);
+	next_node = head->next;
+	if (next_node)
+	{
+		head->name = next_node->name;
+		head->content = next_node->content;
+		head->next = next_node->next;
+		free(next_node);
+	}
+	else
+	{
+		head->name = ft_strdup("");
+		head->content = NULL;
+	}
+}
 
 int	del_node(t_env **lst, const char *to_unset)
 {
 	t_env	*cur;
 	t_env	*prev;
+	size_t	target_len;
 
-	if (!lst || !*lst)
+	if (!lst || !*lst || !to_unset)
 		return (0);
 	cur = *lst;
 	prev = NULL;
+	target_len = ft_strlen(to_unset);
 	while (cur)
 	{
-		if (ft_strncmp(cur->name, to_unset, ft_strlen(to_unset)) == 0)
+		if (ft_strlen(cur->name) == target_len && ft_strncmp(cur->name,
+				to_unset, target_len) == 0)
 		{
 			if (prev == NULL)
-				*lst = cur->next;
-			else
-				prev->next = cur->next;
-			free(cur->name);
-			free(cur->content);
-			free(cur);
+				return (remove_head_node(cur), 1);
+			prev->next = cur->next;
+			(free(cur->name), free(cur->content), free(cur));
 			return (1);
 		}
 		prev = cur;
@@ -59,7 +73,7 @@ int	del_node(t_env **lst, const char *to_unset)
 
 int	ft_unset(const char *cmd, const char **args, t_env *list)
 {
-	int	i;
+	int i;
 
 	(void)cmd;
 	i = 1;

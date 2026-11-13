@@ -35,8 +35,8 @@ static int	handle_invalid_identifier(const char *arg)
 	return (FAILURE);
 }
 
-static void	split_name_content(\
-		const char *arg, char **name, char **content, bool *is_plus)
+static void	split_name_content(const char *arg, char **name, char **content,
+		bool *is_plus)
 {
 	if (ft_strchr(arg, '='))
 	{
@@ -48,8 +48,8 @@ static void	split_name_content(\
 		*name = ft_strdup((char *)arg);
 }
 
-static void	process_export_arg(\
-		char *name, char *content, bool is_plus, t_env *list)
+static void	process_export_arg(char *name, char *content, bool is_plus,
+		t_env *list)
 {
 	bool	is_var_in_env;
 

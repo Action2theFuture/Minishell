@@ -27,8 +27,8 @@ static char	*get_env_content(char *arg, t_info *info)
 	return (NULL);
 }
 
-char	*process_replace_env_vars(\
-				char *arg, t_info *info, bool is_value_expansion)
+char	*process_replace_env_vars(char *arg, t_info *info,
+		bool is_value_expansion)
 {
 	char	*new_arg;
 	char	*trim_str;
@@ -65,8 +65,7 @@ char	*process_replace_expansion_var(t_info *info)
 	return (new_arg);
 }
 
-void	extract_var_name(\
-			const char *str, size_t *i, char *var_name)
+void	extract_var_name(const char *str, size_t *i, char *var_name)
 {
 	size_t	var_start;
 

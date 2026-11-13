@@ -14,8 +14,8 @@
 
 bool	ft_isspace(char c)
 {
-	return (c == ' ' || c == '\t' || c == '\n' || c == '\r' \
-	|| c == '\f' || c == '\v');
+	return (c == ' ' || c == '\t' || c == '\n' || c == '\r' || c == '\f'
+		|| c == '\v');
 }
 
 bool	is_all_whitespace(const char *str)

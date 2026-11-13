@@ -17,13 +17,21 @@ static int	validate_exit_args(const char **args)
 	int	i;
 
 	i = 0;
+	if (args[1][i] == '-' || args[1][i] == '+')
+		i++;
+	if (!args[1][i])
+	{
+		ft_putstr_fd("minishell$> exit: ", STDERR_FILENO);
+		ft_putstr_fd((char *)args[1], STDERR_FILENO);
+		ft_putstr_fd(": numeric argument required\n", STDERR_FILENO);
+		return (255);
+	}
 	while (args[1][i])
 	{
-		if (!ft_isdigit(\
-			args[1][i]) && args[1][i] != '-' && args[1][i] != '+')
+		if (!ft_isdigit(args[1][i]))
 		{
 			ft_putstr_fd("minishell$> exit: ", STDERR_FILENO);
-			ft_putstr_fd((char *)args[0], STDERR_FILENO);
+			ft_putstr_fd((char *)args[1], STDERR_FILENO);
 			ft_putstr_fd(": numeric argument required\n", STDERR_FILENO);
 			return (255);
 		}
@@ -60,7 +68,7 @@ int	ft_exit(t_info *info)
 		cleanup_and_exit(EXIT_SUCCESS, info->args, NULL, info);
 	}
 	else if (num_args > 2)
-		return (ft_putstr_fd("minishell: exit: too many arguments\n", \
-			STDERR_FILENO), FAILURE);
+		return (ft_putstr_fd("minishell: exit: too many arguments\n",
+				STDERR_FILENO), FAILURE);
 	return (SUCCESS);
 }

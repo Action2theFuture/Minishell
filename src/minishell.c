@@ -32,7 +32,13 @@ static void	shell_loop(t_env *env, int *exit_status)
 
 	while ("minishell")
 	{
+		g_heredoc_interrupted = 0;
 		input = readline("minishell$> ");
+		if (g_heredoc_interrupted == SIGINT)
+		{
+			*exit_status = 130;
+			g_heredoc_interrupted = 0;
+		}
 		if (!input)
 		{
 			exit_shell();

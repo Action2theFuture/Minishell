@@ -17,10 +17,10 @@ static char	*get_path_in_env(t_env *env)
 	while (env)
 	{
 		if (ft_strncmp(env->name, "PATH", 4) == 0 && ft_strlen(env->name) == 4)
-			break ;
+			return (env->content);
 		env = env->next;
 	}
-	return (env->content);
+	return (NULL);
 }
 
 static char	*construct_path(const char *dir, const char *cmd)
@@ -78,6 +78,8 @@ char	*find_cmd_in_path(const char *cmd, t_env *env)
 	char	*path;
 
 	cmd_path = get_path_in_env(env);
+	if (!cmd_path)
+		return (NULL);
 	path_env_cpy = ft_strdup(cmd_path);
 	if (!path_env_cpy)
 	{

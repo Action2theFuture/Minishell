@@ -12,8 +12,7 @@
 
 #include "minishell.h"
 
-static void	execute_cmd(\
-				char *cmd, char **args, t_info *info, char **env)
+static void	execute_cmd(char *cmd, char **args, t_info *info, char **env)
 {
 	if (ft_strlen(cmd) == 1 && ft_strncmp(cmd, ".", 1) == 0)
 		cleanup_and_exit(execve_log_error(cmd, errno), args, env, info);
@@ -27,28 +26,32 @@ static void	execute_cmd(\
 	else if (info->path)
 	{
 		if (execve(info->path, args, env) == -1)
-			cleanup_and_exit(\
-					126 + execve_log_error(cmd, EFAULT), args, env, info);
+			cleanup_and_exit(126 + execve_log_error(cmd, EFAULT), args, env,
+				info);
 		(free(info->path), info->path = NULL);
 	}
 	if (execve(cmd, args, env) == -1)
 		cleanup_and_exit(126 + execve_log_error(cmd, EFAULT), args, env, info);
 }
 
-static int	monitor_child_task(char *cmd, pid_t pid, t_info *info)
+static int	monitor_child_task(pid_t pid, t_info *info)
 {
 	int	status;
+	int	sig;
 
 	status = 0;
-	if ((ft_strlen(cmd) == ft_strlen("./minishell")) && \
-		ft_strncmp(cmd, "./minishell", 11) == 0)
-		set_signal_handler(IGN);
-	waitpid(pid, &status, 0);
+	set_signal_handler(IGN);
+	if (waitpid(pid, &status, 0) == -1)
+		return (set_signal_handler(SIGNAL_HANDLER), FAILURE);
 	if (WIFSIGNALED(status))
 	{
-		if (WTERMSIG(status) == SIGINT)
+		sig = WTERMSIG(status);
+		if (sig == SIGINT)
 			ft_putstr_fd("^C\n", STDERR_FILENO);
-		info->exit_status = 128 + WTERMSIG(status);
+		else if (sig == SIGQUIT)
+			ft_putstr_fd("^\\Quit (core dumped)\n", STDERR_FILENO);
+		if (sig != SIGPIPE)
+			info->exit_status = 128 + sig;
 	}
 	else if (WIFEXITED(status))
 		info->exit_status = WEXITSTATUS(status);
@@ -58,20 +61,19 @@ static int	monitor_child_task(char *cmd, pid_t pid, t_info *info)
 
 int	launch_process_cmd(char *cmd, char **args, t_info *info)
 {
-	pid_t	pid;
-	char	**env;
+	pid_t pid;
+	char **env;
 
 	pid = fork();
 	if (pid == -1)
 		return (fd_log_error("fork error", NULL, NULL));
-	env = (char **)list_to_array(info->env);
-	if (env == NULL)
-		return (perror("Empty env"), 1);
-	if (pid == 0)
-		(execute_cmd(cmd, args, info, env));
+	else if (pid == 0)
+	{
+		set_signal_handler(DFL);
+		env = list_to_array(info->env);
+		execute_cmd(cmd, args, info, env);
+	}
 	else
-		monitor_child_task(cmd, pid, info);
-	if (env)
-		clear_env_arr(env);
-	return (info->exit_status);
+		return (monitor_child_task(pid, info));
+	return (SUCCESS);
 }

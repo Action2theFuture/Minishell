@@ -64,7 +64,8 @@ void	append_builtin_node(t_env *head, char *name, char *content)
 	cur = head;
 	while (cur)
 	{
-		if (ft_strncmp(cur->name, name, ft_strlen(name)) == 0)
+		if (ft_strlen(cur->name) == ft_strlen(name) && ft_strncmp(cur->name,
+				name, ft_strlen(name)) == 0)
 		{
 			concatenate_content(&cur->content, content);
 			return ;
@@ -77,14 +78,14 @@ void	update_builtin_node(t_env *head, char *name, char *content)
 {
 	while (head)
 	{
-		if (ft_strncmp(name, head->name, ft_strlen(name)) == 0 && \
-			ft_strlen(name) == ft_strlen(head->name))
+		if (ft_strncmp(name, head->name, ft_strlen(name)) == 0
+			&& ft_strlen(name) == ft_strlen(head->name))
 		{
-			if (head->content && content)
+			if (content)
 			{
-				free(head->content);
-				if (content)
-					head->content = ft_strdup((char *)content);
+				if (head->content)
+					free(head->content);
+				head->content = ft_strdup((char *)content);
 			}
 			return ;
 		}

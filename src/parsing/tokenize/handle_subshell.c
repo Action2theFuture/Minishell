@@ -29,7 +29,7 @@ int	add_depth_token(const char **input, int *depth, t_token **tokens)
 	{
 		if (is_syntax_error(*tokens))
 			return (SYNTAX_ERROR);
-		if (*(*input - 1) == '$')
+		if (*tokens && *(*input - 1) == '$')
 			return (SYNTAX_ERROR);
 		add_token(tokens, "(", 1);
 		(*input)++;
@@ -43,9 +43,8 @@ int	add_depth_token(const char **input, int *depth, t_token **tokens)
 	}
 	return (-1);
 }
-
-int	handle_open_subshell(\
-	const char **input, int *depth, const char **start, t_token **list)
+int	handle_open_subshell(const char **input, int *depth, const char **start,
+		t_token **list)
 {
 	if (is_syntax_error(*list))
 		return (SYNTAX_ERROR);
@@ -56,8 +55,8 @@ int	handle_open_subshell(\
 	return (-1);
 }
 
-int	handle_close_subshell(\
-	const char **input, int *depth, const char **start, t_token **list)
+int	handle_close_subshell(const char **input, int *depth, const char **start,
+		t_token **list)
 {
 	if (*depth > 0)
 	{

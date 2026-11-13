@@ -16,36 +16,35 @@
 # include "minishell_types.h"
 
 // string_utils.c
-bool					ft_isspace(char c);
-bool					is_all_whitespace(const char *str);
-void					remove_control_characters(char *str);
-int						count_repeated_chars(const char *str, int c);
+bool	ft_isspace(char c);
+bool	is_all_whitespace(const char *str);
+void	remove_control_characters(char *str);
+int		count_repeated_chars(const char *str, int c);
 
 // string_utils_2.c
-char					*trim_first_last(char *str);
-char					*trim_whitespace(const char *str);
-char					*ft_strndup(const char *str, size_t n);
-bool					is_operator(const char *cmd);
-bool					is_special_char(char c);
+char	*trim_first_last(char *str);
+char	*trim_whitespace(const char *str);
+char	*ft_strndup(const char *str, size_t n);
+bool	is_operator(const char *cmd);
+bool	is_special_char(char c);
 
 // string_utils_3.c
-char					*concat_three_strings(\
-		char *str1, char *str2, char *str3);
-char					*concat_two_strings(char *str1, char *str2);
+char	*concat_three_strings(char *str1, char *str2, char *str3);
+char	*concat_two_strings(char *str1, char *str2);
 
 // quotes_str.c
-void					remove_quotes(char *str);
-void					remove_surrounding_single_quotes(char *str);
-void					remove_surrounding_double_quotes(char *str);
-void					remove_empty_quotes(char *str);
-void					remove_double_quotes_inside_single_quotes(char *str);
+void	remove_quotes(char *str);
+void	remove_surrounding_single_quotes(char *str);
+void	remove_surrounding_double_quotes(char *str);
+void	remove_empty_quotes(char *str);
+void	remove_double_quotes_inside_single_quotes(char *str);
 
 // subshell_and_quote_str.c
-bool					are_parentheses_balanced(const char *input);
+bool	are_parentheses_balanced(const char *input);
 
 // error_utils.c
-int						fd_log_error(char *cmd, char *arg, char *error);
-int						execve_log_error(char *cmd, int error);
-void					parse_log_error(int err, int *exit_status);
+int		fd_log_error(char *cmd, char *arg, char *error);
+int		execve_log_error(char *cmd, int error);
+void	parse_log_error(int err, int *exit_status);
 
 #endif // UTILS_H

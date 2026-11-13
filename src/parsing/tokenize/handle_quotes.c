@@ -12,8 +12,8 @@
 
 #include "minishell.h"
 
-static void	update_quote_state(\
-			char c, bool *in_single_quote, bool *in_double_quote)
+static void	update_quote_state(char c, bool *in_single_quote,
+		bool *in_double_quote)
 {
 	if (c == '\'' && !(*in_double_quote))
 		*in_single_quote = !(*in_single_quote);
@@ -37,8 +37,8 @@ static bool	are_quotes_balanced(const char *str, int *i)
 		update_quote_state(str[*i], &in_single_quote, &in_double_quote);
 		if (!in_single_quote && !in_double_quote)
 		{
-			if (first_char == str[*i] && *i > 0 && \
-				str[*i + 1] != '\'' && str[*i + 1] != '\"')
+			if (first_char == str[*i] && *i > 0 && str[*i + 1] != '\'' && str[*i
+				+ 1] != '\"')
 				return (*i += 1, true);
 		}
 		(*i)++;
@@ -59,8 +59,8 @@ static int	calculate_token_len(const char **input, int *i)
 	while ((*input)[*i] && !ft_isspace((*input)[*i]))
 	{
 		prev_i = *i;
-		while ((*input)[*i] && !ft_isspace((*input)[*i]) && \
-		!ft_strchr(SHELL_METACHARS, (*input)[*i]))
+		while ((*input)[*i] && !ft_isspace((*input)[*i])
+			&& !ft_strchr(SHELL_METACHARS, (*input)[*i]))
 			(*i)++;
 		if (prev_i == *i)
 			break ;
@@ -72,10 +72,9 @@ static int	calculate_token_len(const char **input, int *i)
 }
 
 // printf("input : %s\n", *input);
-int	handle_quotes(\
-	const char **input, const char **start, t_token **list)
+int	handle_quotes(const char **input, const char **start, t_token **list)
 {
-	int			i;
+	int	i;
 
 	i = 0;
 	*start = *input;

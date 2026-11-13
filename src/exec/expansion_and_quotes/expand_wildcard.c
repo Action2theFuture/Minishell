@@ -12,8 +12,8 @@
 
 #include "minishell.h"
 
-static bool	process_dir_entry(\
-		const char *pattern, struct dirent *entry, t_expand_info *e_info)
+static bool	process_dir_entry(const char *pattern, struct dirent *entry,
+		t_expand_info *e_info)
 {
 	struct stat	info;
 	char		path[MAX_ARGS];
@@ -29,8 +29,8 @@ static bool	process_dir_entry(\
 	{
 		if (e_info->cnt >= e_info->capacity)
 		{
-			new_matches = reallocate_matches(\
-					e_info->matches, &e_info->capacity, e_info->cnt + 1);
+			new_matches = reallocate_matches(e_info->matches, &e_info->capacity,
+					e_info->cnt + 1);
 			if (!new_matches)
 				return (perror("reallocte error"), false);
 			e_info->matches = new_matches;
@@ -40,8 +40,8 @@ static bool	process_dir_entry(\
 	return (true);
 }
 
-static void	expand_wildcard_in_cur_dir(\
-					const char *pattern, t_expand_info *e_info)
+static void	expand_wildcard_in_cur_dir(const char *pattern,
+		t_expand_info *e_info)
 {
 	DIR				*dir;
 	struct dirent	*entry;
@@ -74,8 +74,8 @@ static int	count_new_args(char **args, t_expand_info *e_info)
 	i = 0;
 	while (args[i])
 	{
-		if (i == 0 || !(ft_strchr(args[i], '*') && \
-			!(ft_strchr(args[i], '\"') || ft_strchr(args[i], '\''))))
+		if (i == 0 || !(ft_strchr(args[i], '*') && !(ft_strchr(args[i], '\"')
+					|| ft_strchr(args[i], '\''))))
 		{
 			cnt++;
 		}
@@ -93,12 +93,12 @@ static int	count_new_args(char **args, t_expand_info *e_info)
 	return (cnt);
 }
 
-static void	populate_new_args(\
-		char **new_args, char **args, t_expand_info *e_info)
+static void	populate_new_args(char **new_args, char **args,
+		t_expand_info *e_info)
 {
-	int			i;
-	int			j;
-	int			new_idx;
+	int	i;
+	int	j;
+	int	new_idx;
 
 	i = -1;
 	new_idx = 0;
@@ -109,8 +109,8 @@ static void	populate_new_args(\
 			new_args[new_idx++] = ft_strdup(args[i]);
 			continue ;
 		}
-		if (ft_strchr(args[i], '*') && \
-			!(ft_strchr(args[i], '\"') || ft_strchr(args[i], '\'')))
+		if (ft_strchr(args[i], '*') && !(ft_strchr(args[i], '\"')
+				|| ft_strchr(args[i], '\'')))
 		{
 			j = -1;
 			while (++j < e_info->cnt)
@@ -137,7 +137,7 @@ bool	expand_wildcard(char ***args)
 	new_args = (char **)malloc(sizeof(char *) * (new_arg_cnt + 1));
 	if (!new_args)
 		return ((perror("malloc error"), clear_expand_info(e_info)), false);
-	(populate_new_args(new_args, *args, e_info), \
-	clear_visited_paths(&visited), clear_expand_info(e_info));
+	(populate_new_args(new_args, *args, e_info), clear_visited_paths(&visited),
+		clear_expand_info(e_info));
 	return (free_args(*args), *args = new_args, true);
 }

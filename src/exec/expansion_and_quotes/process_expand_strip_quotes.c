@@ -12,8 +12,8 @@
 
 #include "minishell.h"
 
-static void	process_single_quote(\
-		const char *input, int *i, char *new_str, t_info *info)
+static void	process_single_quote(const char *input, int *i, char *new_str,
+		t_info *info)
 {
 	t_quote_info	*quote_info;
 	char			res[MAX_ARGS];
@@ -33,8 +33,8 @@ static void	process_single_quote(\
 	quote_info->in_single_quotes = !quote_info->in_single_quotes;
 }
 
-static void	process_double_quote(\
-		const char *input, int *i, char *new_str, t_info *info)
+static void	process_double_quote(const char *input, int *i, char *new_str,
+		t_info *info)
 {
 	t_quote_info	*quote_info;
 	char			res[MAX_ARGS];
@@ -54,8 +54,8 @@ static void	process_double_quote(\
 	quote_info->in_double_quotes = !quote_info->in_double_quotes;
 }
 
-static void	process_regular_char(\
-		const char input_char, char *new_str, t_quote_info *quote_info)
+static void	process_regular_char(const char input_char, char *new_str,
+		t_quote_info *quote_info)
 {
 	char	tmp[2];
 
@@ -65,8 +65,8 @@ static void	process_regular_char(\
 	quote_info->new_str_len++;
 }
 
-char	*process_expand_strip_quotes(\
-				char *new_str, const char *input, t_info *info)
+char	*process_expand_strip_quotes(char *new_str, const char *input,
+		t_info *info)
 {
 	t_quote_info	*quote_info;
 	int				i;

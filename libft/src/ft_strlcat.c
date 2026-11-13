@@ -42,9 +42,9 @@ size_t	ft_strlcat(char *dst, const char *src, size_t len)
 	size_t	ret;
 
 	if (!len)
-		return 0;
+		return (0);
 	if (!dst && !src)
-		return 0;
+		return (0);
 	i = 0;
 	while (*dst && i < len)
 	{

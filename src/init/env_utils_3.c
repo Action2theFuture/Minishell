@@ -21,8 +21,8 @@ char	*find_var_in_env(char *name, t_env *head)
 	cur = head;
 	while (cur)
 	{
-		if (ft_strlen(name) == ft_strlen(cur->name) && \
-		ft_strncmp(cur->name, name, ft_strlen(name)) == 0)
+		if (ft_strlen(name) == ft_strlen(cur->name) && ft_strncmp(cur->name,
+				name, ft_strlen(name)) == 0)
 			return (cur->content);
 		cur = cur->next;
 	}
